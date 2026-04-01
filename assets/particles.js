@@ -10,6 +10,10 @@
   var camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 1, 2000);
   camera.position.z = 500;
 
+  // Theme detection
+  function isLight(){ return document.documentElement.getAttribute('data-theme')==='light'; }
+  var lightMode = isLight();
+
   var offCanvas = document.createElement('canvas');
   var RES = 200;
   offCanvas.width = RES; offCanvas.height = Math.round(RES * (795/714));
@@ -53,23 +57,18 @@
     geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
-    // ====== MORPH TARGETS ======
-
-    // 0: Logo
     var logoPos = new Float32Array(rawPoints);
 
-    // 1: Expanding nebula (sphere with noise)
     var nebulaPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
       var phi = Math.acos(2 * (i / N) - 1);
-      var theta = 2.399963 * i; // golden angle
+      var theta = 2.399963 * i;
       var rad = 200 + Math.sin(phi * 5 + theta * 3) * 50;
       nebulaPos[i*3] = rad * Math.sin(phi) * Math.cos(theta);
       nebulaPos[i*3+1] = rad * Math.cos(phi);
       nebulaPos[i*3+2] = rad * Math.sin(phi) * Math.sin(theta);
     }
 
-    // 2: Flowing aurora (organic wave)
     var auroraPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
       var t = i / N;
@@ -77,12 +76,9 @@
       var phase = t * Math.PI * 4;
       var ay = Math.sin(phase) * 120 + Math.sin(phase * 2.5) * 40;
       var az = Math.cos(phase * 1.3) * 80 + (Math.random() - 0.5) * 40;
-      auroraPos[i*3] = ax;
-      auroraPos[i*3+1] = ay;
-      auroraPos[i*3+2] = az;
+      auroraPos[i*3] = ax; auroraPos[i*3+1] = ay; auroraPos[i*3+2] = az;
     }
 
-    // 3: Double helix (DNA)
     var helixPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
       var ht = (i / N) * Math.PI * 8;
@@ -94,7 +90,6 @@
       helixPos[i*3+2] = Math.sin(ht) * hr * strand;
     }
 
-    // 4: Stardust (scattered with clusters)
     var starPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
       var sphi = Math.acos(2 * Math.random() - 1);
@@ -109,8 +104,11 @@
     var targetCount = targets.length;
 
     var mat = new THREE.PointsMaterial({
-      size: 1.5, vertexColors: true, transparent: true, opacity: 0.4,
-      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
+      size: lightMode ? 2 : 1.5,
+      vertexColors: true, transparent: true,
+      opacity: lightMode ? 0.5 : 0.4,
+      blending: lightMode ? THREE.NormalBlending : THREE.AdditiveBlending,
+      depthWrite: false, sizeAttenuation: true
     });
 
     var mesh = new THREE.Points(geo, mat);
@@ -128,13 +126,38 @@
     var pos = geo.attributes.position.array;
     var col = geo.attributes.color.array;
 
-    var palettes = [
+    // Dark palettes (bright colors on dark bg)
+    var darkPalettes = [
       [[0.545,0.361,0.965],[0.388,0.4,0.945],[0.655,0.546,0.98]],
       [[0.4,0.35,0.96],[0.3,0.5,0.95],[0.55,0.4,0.98]],
       [[0.0,0.75,0.3],[0.2,0.65,0.5],[0.35,0.85,0.5]],
       [[0.91,0.475,0.976],[0.7,0.4,0.96],[0.95,0.55,0.85]],
       [[0.6,0.55,0.97],[0.5,0.5,0.94],[0.75,0.65,0.88]]
     ];
+
+    // Light palettes (deep saturated on light bg)
+    var lightPalettes = [
+      [[0.29,0.13,0.72],[0.22,0.18,0.68],[0.38,0.22,0.78]],
+      [[0.2,0.15,0.7],[0.15,0.25,0.65],[0.3,0.18,0.75]],
+      [[0.0,0.45,0.18],[0.1,0.4,0.28],[0.15,0.5,0.22]],
+      [[0.6,0.2,0.72],[0.45,0.18,0.68],[0.65,0.25,0.6]],
+      [[0.32,0.25,0.7],[0.28,0.22,0.65],[0.4,0.3,0.6]]
+    ];
+
+    var palettes = lightMode ? lightPalettes : darkPalettes;
+
+    // Listen for theme changes
+    new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        if (m.attributeName === 'data-theme') {
+          lightMode = isLight();
+          palettes = lightMode ? lightPalettes : darkPalettes;
+          mat.blending = lightMode ? THREE.NormalBlending : THREE.AdditiveBlending;
+          mat.size = lightMode ? 2 : 1.5;
+          mat.needsUpdate = true;
+        }
+      });
+    }).observe(document.documentElement, { attributes: true });
 
     function smoothstep(x) { return x * x * (3 - 2 * x); }
 
@@ -154,6 +177,8 @@
       var to = targets[Math.min(si + 1, totalT)];
       var fp = palettes[si];
       var tp = palettes[Math.min(si + 1, totalT)];
+
+      var baseOp = lightMode ? 0.4 : 0.35;
 
       for (i = 0; i < N; i++) {
         var i3 = i * 3;
@@ -179,7 +204,7 @@
       mesh.rotation.x = Math.sin(smoothScroll * Math.PI) * 0.12;
       mesh.rotation.z = Math.sin(time * 0.25) * 0.015;
 
-      mat.opacity = 0.35 + Math.sin(smoothScroll * Math.PI) * 0.12;
+      mat.opacity = baseOp + Math.sin(smoothScroll * Math.PI) * 0.12;
 
       renderer.render(scene, camera);
     }

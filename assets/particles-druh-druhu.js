@@ -1,6 +1,8 @@
 // ДРУГ ДРУГУ: single point → orbital ring → honeycomb → neural network → galaxy cluster
 (function(){
   var canvas=document.getElementById('three-bg');
+  function isLight(){return document.documentElement.getAttribute('data-theme')==='light'}
+  var lightMode=isLight();
   if(!window.THREE){canvas.style.display='none';return}
   var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
@@ -36,11 +38,14 @@
     t4[i*3]=gc[0]+Math.cos(ga)*gr;t4[i*3+1]=gc[1]+Math.sin(ga)*gr*(Math.random()*.3+.1);t4[i*3+2]=gc[2]+Math.sin(ga)*gr}
 
   var targets=[t0,t1,t2,t3,t4];var TC=targets.length;
-  var mat=new THREE.PointsMaterial({size:1.4,vertexColors:true,transparent:true,opacity:.35,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+  var mat=new THREE.PointsMaterial({size:lightMode?1.8:1.4,vertexColors:true,transparent:true,opacity:lightMode?.45:.35,blending:lightMode?THREE.NormalBlending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
   var mesh=new THREE.Points(geo,mat);scene.add(mesh);
   var scrollP=0,smoothS=0,time=0;
-  var palettes=[[[.91,.475,.976],[.7,.4,.96],[.95,.55,.85]],[[.85,.45,.97],[.65,.4,.95],[.9,.5,.88]],[[.75,.4,.96],[.6,.45,.94],[.85,.5,.97]],[[.91,.475,.976],[.7,.5,.95],[.8,.55,.96]],[[.65,.35,.97],[.55,.4,.95],[.75,.45,.98]]];
-  function ss(x){return x*x*(3-2*x)}
+  var darkPal=[[[.91,.475,.976],[.7,.4,.96],[.95,.55,.85]],[[.85,.45,.97],[.65,.4,.95],[.9,.5,.88]],[[.75,.4,.96],[.6,.45,.94],[.85,.5,.97]],[[.91,.475,.976],[.7,.5,.95],[.8,.55,.96]],[[.65,.35,.97],[.55,.4,.95],[.75,.45,.98]]];
+    var lightPal=[[[.6,.18,.72],[.42,.16,.7],[.65,.22,.58]],[[.55,.2,.7],[.4,.18,.65],[.6,.22,.6]],[[.48,.18,.7],[.35,.2,.65],[.55,.22,.72]],[[.6,.18,.72],[.42,.22,.65],[.5,.25,.7]],[[.38,.15,.72],[.3,.18,.65],[.48,.2,.75]]];
+    var palettes=lightMode?lightPal:darkPal;
+  new MutationObserver(function(m){m.forEach(function(mu){if(mu.attributeName==='data-theme'){lightMode=isLight();palettes=lightMode?lightPal:darkPal;mat.blending=lightMode?THREE.NormalBlending:THREE.AdditiveBlending;mat.size=lightMode?1.8:1.4;mat.needsUpdate=true}})}).observe(document.documentElement,{attributes:true});
+    function ss(x){return x*x*(3-2*x)}
   window.addEventListener('scroll',function(){var m=document.documentElement.scrollHeight-innerHeight;scrollP=m>0?Math.min(scrollY/m,1):0},{passive:true});
   var pos=geo.attributes.position.array,col=geo.attributes.color.array;
   function animate(){requestAnimationFrame(animate);time+=.002;smoothS+=(scrollP-smoothS)*.035;

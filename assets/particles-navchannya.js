@@ -1,6 +1,8 @@
 // НАВЧАННЯ: seed → sprouting roots → growing tree → branching → blooming canopy
 (function(){
   var canvas=document.getElementById('three-bg');
+  function isLight(){return document.documentElement.getAttribute('data-theme')==='light'}
+  var lightMode=isLight();
   if(!window.THREE){canvas.style.display='none';return}
   var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
@@ -37,11 +39,14 @@
       t4[i*3]=br*Math.sin(bphi)*Math.cos(bth);t4[i*3+1]=150+br*Math.cos(bphi)*.6;t4[i*3+2]=br*Math.sin(bphi)*Math.sin(bth)}}
 
   var targets=[t0,t1,t2,t3,t4];var TC=targets.length;
-  var mat=new THREE.PointsMaterial({size:1.4,vertexColors:true,transparent:true,opacity:.35,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+  var mat=new THREE.PointsMaterial({size:lightMode?1.8:1.4,vertexColors:true,transparent:true,opacity:lightMode?.45:.35,blending:lightMode?THREE.NormalBlending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
   var mesh=new THREE.Points(geo,mat);scene.add(mesh);
   var scrollP=0,smoothS=0,time=0;
-  var palettes=[[[.2,.83,.52],[.13,.7,.4],[.3,.75,.45]],[[.15,.7,.35],[.1,.6,.3],[.25,.65,.4]],[[0,.75,.3],[.2,.65,.5],[.35,.85,.5]],[[.2,.8,.45],[.3,.7,.55],[.1,.75,.35]],[[.43,.88,.74],[.3,.82,.6],[.55,.9,.7]]];
-  function ss(x){return x*x*(3-2*x)}
+  var darkPal=[[[.2,.83,.52],[.13,.7,.4],[.3,.75,.45]],[[.15,.7,.35],[.1,.6,.3],[.25,.65,.4]],[[0,.75,.3],[.2,.65,.5],[.35,.85,.5]],[[.2,.8,.45],[.3,.7,.55],[.1,.75,.35]],[[.43,.88,.74],[.3,.82,.6],[.55,.9,.7]]];
+    var lightPal=[[[.02,.42,.25],[.05,.35,.2],[.12,.38,.22]],[[.06,.35,.18],[.04,.3,.15],[.1,.32,.2]],[[0,.38,.15],[.08,.32,.25],[.14,.42,.25]],[[.08,.4,.22],[.12,.35,.28],[.04,.38,.18]],[[.18,.48,.38],[.12,.42,.3],[.25,.5,.35]]];
+    var palettes=lightMode?lightPal:darkPal;
+  new MutationObserver(function(m){m.forEach(function(mu){if(mu.attributeName==='data-theme'){lightMode=isLight();palettes=lightMode?lightPal:darkPal;mat.blending=lightMode?THREE.NormalBlending:THREE.AdditiveBlending;mat.size=lightMode?1.8:1.4;mat.needsUpdate=true}})}).observe(document.documentElement,{attributes:true});
+    function ss(x){return x*x*(3-2*x)}
   window.addEventListener('scroll',function(){var m=document.documentElement.scrollHeight-innerHeight;scrollP=m>0?Math.min(scrollY/m,1):0},{passive:true});
   var pos=geo.attributes.position.array,col=geo.attributes.color.array;
   function animate(){requestAnimationFrame(animate);time+=.002;smoothS+=(scrollP-smoothS)*.03;

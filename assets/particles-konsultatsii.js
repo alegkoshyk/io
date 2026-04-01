@@ -1,6 +1,8 @@
 // КОНСУЛЬТАЦІЇ: scattered chaos → converging laser → arrow → burst → focused point
 (function(){
   var canvas=document.getElementById('three-bg');
+  function isLight(){return document.documentElement.getAttribute('data-theme')==='light'}
+  var lightMode=isLight();
   if(!window.THREE){canvas.style.display='none';return}
   var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
@@ -33,11 +35,14 @@
     t4[i*3]=fr*Math.sin(fphi)*Math.cos(fth);t4[i*3+1]=fr*Math.sin(fphi)*Math.sin(fth);t4[i*3+2]=fr*Math.cos(fphi)}
 
   var targets=[t0,t1,t2,t3,t4];var TC=targets.length;
-  var mat=new THREE.PointsMaterial({size:1.3,vertexColors:true,transparent:true,opacity:.35,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+  var mat=new THREE.PointsMaterial({size:lightMode?1.7:1.3,vertexColors:true,transparent:true,opacity:lightMode?.45:.35,blending:lightMode?THREE.NormalBlending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
   var mesh=new THREE.Points(geo,mat);scene.add(mesh);
   var scrollP=0,smoothS=0,time=0;
-  var palettes=[[[.388,.4,.945],[.3,.45,.95],[.5,.4,.97]],[[.4,.5,.96],[.35,.55,.94],[.5,.45,.97]],[[.5,.55,.97],[.4,.5,.95],[.6,.5,.98]],[[.7,.5,.98],[.55,.45,.97],[.8,.6,.95]],[[.388,.4,.945],[.5,.55,.97],[.4,.5,.96]]];
-  function ss(x){return x*x*(3-2*x)}
+  var darkPal=[[[.388,.4,.945],[.3,.45,.95],[.5,.4,.97]],[[.4,.5,.96],[.35,.55,.94],[.5,.45,.97]],[[.5,.55,.97],[.4,.5,.95],[.6,.5,.98]],[[.7,.5,.98],[.55,.45,.97],[.8,.6,.95]],[[.388,.4,.945],[.5,.55,.97],[.4,.5,.96]]];
+    var lightPal=[[[.2,.18,.68],[.15,.22,.65],[.25,.18,.7]],[[.2,.25,.7],[.18,.28,.65],[.25,.22,.7]],[[.25,.28,.72],[.2,.25,.65],[.3,.25,.75]],[[.4,.25,.72],[.28,.22,.7],[.45,.3,.65]],[[.2,.18,.68],[.25,.28,.72],[.2,.25,.7]]];
+    var palettes=lightMode?lightPal:darkPal;
+  new MutationObserver(function(m){m.forEach(function(mu){if(mu.attributeName==='data-theme'){lightMode=isLight();palettes=lightMode?lightPal:darkPal;mat.blending=lightMode?THREE.NormalBlending:THREE.AdditiveBlending;mat.size=lightMode?1.8:1.4;mat.needsUpdate=true}})}).observe(document.documentElement,{attributes:true});
+    function ss(x){return x*x*(3-2*x)}
   window.addEventListener('scroll',function(){var m=document.documentElement.scrollHeight-innerHeight;scrollP=m>0?Math.min(scrollY/m,1):0},{passive:true});
   var pos=geo.attributes.position.array,col=geo.attributes.color.array;
   function animate(){requestAnimationFrame(animate);time+=.0025;smoothS+=(scrollP-smoothS)*.04;
