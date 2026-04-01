@@ -14,9 +14,9 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/key
           chmod 600 ~/.ssh/key
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/key root@${{ secrets.SERVER_HOST }} '
-            cd /opt/sites/pi &&
+            cd /opt/sites/pi/public &&
             git fetch origin &&
-            git checkout -f origin/main -- . &&
+            git reset --hard origin/main &&
             echo "Deployed at $(date)"
           '
           rm -f ~/.ssh/key
