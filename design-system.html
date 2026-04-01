@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — personality.engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --space:#0B1829;--space-light:#0f2038;--space-mid:#142a47;--space-surface:#1a3355;
+  --light:#F2F0DB;--light-dim:#d4d2be;--light-muted:#8a897a;--light-faint:#4a4940;
+  --violet:#8B5CF6;--violet-dim:rgba(139,92,246,.5);--violet-glow:rgba(139,92,246,.15);--violet-bright:#A78BFA;
+  --indigo:#6366F1;--indigo-dim:rgba(99,102,241,.5);--indigo-bright:#818CF8;
+  --pink:#E879F9;--pink-dim:rgba(232,121,249,.4);--pink-bright:#F0ABFC;
+  --emerald:#34D399;--emerald-dim:rgba(52,211,153,.45);--emerald-bright:#6EE7B7;
+  --amber:#FBBF24;--amber-dim:rgba(251,191,36,.4);
+  --anahata:#00CC44;--anahata-glow:rgba(0,204,68,.12);
+  --red:#FF1A1A;
+  --border:rgba(242,240,219,.08);--border-hover:rgba(242,240,219,.18);
+  --serif:'Cormorant Garamond','Georgia',serif;--sans:'Raleway',sans-serif;--display:'Playfair Display',serif;--mono:'JetBrains Mono',monospace;
+  --radius:16px;--radius-lg:24px;--radius-pill:50px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--space);color:var(--light);font-family:var(--sans);font-weight:300;line-height:1.7;font-size:16px;-webkit-font-smoothing:antialiased}
+
+/* LAYOUT */
+.ds-container{max-width:1200px;margin:0 auto;padding:0 60px}
+.ds-section{padding:100px 0;border-bottom:1px solid var(--border)}
+.ds-section:last-child{border:none}
+
+/* HEADER */
+.ds-header{padding:80px 0 60px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.ds-header::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,var(--violet-glow),transparent 60%);filter:blur(80px);pointer-events:none}
+.ds-header .ds-container{position:relative;z-index:2}
+.ds-header h1{font-family:var(--display);font-size:3rem;font-weight:400;margin-bottom:8px}
+.ds-header h1 span{color:var(--violet)}
+.ds-header .ds-subtitle{font-family:var(--serif);font-size:1.3rem;font-style:italic;color:var(--light-muted)}
+.ds-header .ds-version{margin-top:16px;font-family:var(--mono);font-size:.75rem;color:var(--light-faint);letter-spacing:.05em}
+
+/* NAV */
+.ds-nav{position:sticky;top:0;z-index:100;background:rgba(11,24,41,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 0}
+.ds-nav-inner{display:flex;gap:28px;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+.ds-nav-inner::-webkit-scrollbar{display:none}
+.ds-nav-inner a{color:var(--light-muted);text-decoration:none;font-size:.75rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;transition:color .3s;padding:6px 0;border-bottom:1px solid transparent}
+.ds-nav-inner a:hover,.ds-nav-inner a.active{color:var(--violet);border-color:var(--violet)}
+
+/* SECTION TITLES */
+.ds-title{font-family:var(--display);font-size:2rem;font-weight:400;margin-bottom:8px}
+.ds-desc{color:var(--light-muted);font-size:.95rem;margin-bottom:48px;max-width:600px}
+
+/* CODE */
+.ds-code{font-family:var(--mono);font-size:.78rem;color:var(--violet-bright);background:rgba(139,92,246,.06);padding:3px 10px;border-radius:6px;border:1px solid rgba(139,92,246,.12)}
+.ds-code-block{font-family:var(--mono);font-size:.78rem;color:var(--light-dim);background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);padding:24px;overflow-x:auto;line-height:1.8;margin:16px 0}
+.ds-code-block .hl{color:var(--violet-bright)}
+.ds-code-block .val{color:var(--emerald)}
+.ds-code-block .cm{color:var(--light-faint)}
+
+/* ====== COLORS ====== */
+.color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-bottom:40px}
+.color-card{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);transition:transform .3s}
+.color-card:hover{transform:translateY(-4px)}
+.color-swatch{height:100px;position:relative;display:flex;align-items:flex-end;padding:12px}
+.color-swatch .color-hex{font-family:var(--mono);font-size:.72rem;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5);opacity:.8}
+.color-info{padding:14px 16px;background:var(--space-light)}
+.color-name{font-size:.85rem;font-weight:500;color:var(--light);margin-bottom:2px}
+.color-var{font-family:var(--mono);font-size:.7rem;color:var(--light-faint)}
+.color-group-title{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--light-muted);margin-bottom:16px;margin-top:40px}
+.color-group-title:first-child{margin-top:0}
+
+/* PAGE ACCENTS */
+.page-accent-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:30px}
+.page-accent{text-align:center;padding:28px 16px;border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .3s}
+.page-accent:hover{border-color:var(--border-hover);transform:translateY(-3px)}
+.page-accent-dot{width:40px;height:40px;border-radius:50%;margin:0 auto 12px}
+.page-accent-name{font-size:.85rem;color:var(--light);margin-bottom:4px}
+.page-accent-hex{font-family:var(--mono);font-size:.7rem;color:var(--light-faint)}
+
+/* ====== TYPOGRAPHY ====== */
+.type-specimen{margin-bottom:48px;padding:36px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.type-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.type-font-name{font-size:.85rem;font-weight:500;color:var(--light)}
+.type-font-info{font-family:var(--mono);font-size:.7rem;color:var(--light-faint)}
+.type-sample{margin-bottom:12px}
+.type-scale{display:grid;gap:20px;margin-top:30px}
+.type-row{display:flex;align-items:baseline;gap:24px;padding:12px 0;border-bottom:1px solid var(--border)}
+.type-row:last-child{border:none}
+.type-label{font-family:var(--mono);font-size:.68rem;color:var(--light-faint);min-width:120px;flex-shrink:0}
+
+/* ====== SPACING ====== */
+.spacing-grid{display:grid;gap:12px}
+.spacing-row{display:flex;align-items:center;gap:20px;padding:8px 0}
+.spacing-bar{height:16px;background:var(--violet-glow);border:1px solid var(--violet-dim);border-radius:4px;transition:all .3s}
+.spacing-row:hover .spacing-bar{background:var(--violet-dim)}
+.spacing-label{font-family:var(--mono);font-size:.72rem;color:var(--light-muted);min-width:80px}
+.spacing-value{font-family:var(--mono);font-size:.72rem;color:var(--light-faint);min-width:60px}
+
+/* ====== RADIUS ====== */
+.radius-grid{display:flex;gap:32px;flex-wrap:wrap;margin-top:20px}
+.radius-item{text-align:center}
+.radius-box{width:80px;height:80px;border:2px solid var(--violet-dim);background:rgba(139,92,246,.06);margin-bottom:10px;transition:all .3s}
+.radius-item:hover .radius-box{border-color:var(--violet);background:rgba(139,92,246,.12)}
+.radius-name{font-family:var(--mono);font-size:.7rem;color:var(--light-faint)}
+.radius-val{font-size:.72rem;color:var(--light-muted);margin-top:2px}
+
+/* ====== BUTTONS ====== */
+.btn-showcase{display:flex;gap:20px;flex-wrap:wrap;align-items:center;margin-bottom:32px}
+.ds-btn{display:inline-block;padding:16px 44px;font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .5s cubic-bezier(.22,1,.36,1);border-radius:var(--radius-pill)}
+.ds-btn-primary{background:var(--violet);color:#fff}
+.ds-btn-primary:hover{background:var(--violet-bright);transform:translateY(-2px);box-shadow:0 12px 50px var(--violet-glow)}
+.ds-btn-outline{background:transparent;color:var(--light);border:1px solid rgba(242,240,219,.2)}
+.ds-btn-outline:hover{border-color:var(--light-dim);background:rgba(242,240,219,.05);transform:translateY(-2px)}
+.ds-btn-sm{padding:10px 28px;font-size:.74rem}
+.ds-btn-page{border-radius:var(--radius-pill)}
+.btn-states{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:24px}
+.btn-state-card{text-align:center;padding:24px 16px;border:1px solid var(--border);border-radius:var(--radius)}
+.btn-state-label{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--light-faint);margin-top:12px}
+
+/* ====== COMPONENTS ====== */
+.comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.comp-card{padding:32px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.comp-title{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--violet);margin-bottom:16px}
+.comp-demo{margin-bottom:16px}
+
+/* Label */
+.ds-label{font-family:var(--sans);font-size:.7rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;display:inline-block;padding:6px 18px;border:1px solid;border-radius:var(--radius-pill)}
+.ds-label-violet{color:var(--violet);border-color:rgba(139,92,246,.2);background:rgba(139,92,246,.05)}
+.ds-label-indigo{color:var(--indigo-bright);border-color:rgba(99,102,241,.2);background:rgba(99,102,241,.05)}
+.ds-label-pink{color:var(--pink);border-color:rgba(232,121,249,.2);background:rgba(232,121,249,.05)}
+.ds-label-emerald{color:var(--emerald);border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.05)}
+
+/* Cards */
+.ds-card{padding:28px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .4s}
+.ds-card:hover{border-color:var(--border-hover);transform:translateY(-4px)}
+
+/* List items */
+.ds-list-item{display:flex;align-items:center;gap:18px;padding:18px 24px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);transition:all .4s;margin-bottom:8px}
+.ds-list-item:hover{border-color:var(--border-hover);transform:translateX(8px);background:var(--space-mid)}
+.ds-list-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ====== EFFECTS ====== */
+.effects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.effect-demo{padding:48px 24px;text-align:center;border:1px solid var(--border);border-radius:var(--radius-lg);position:relative;overflow:hidden;min-height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.effect-name{font-size:.85rem;color:var(--light);margin-bottom:4px;position:relative;z-index:2}
+.effect-desc{font-size:.75rem;color:var(--light-faint);position:relative;z-index:2}
+
+.effect-orb{position:absolute;width:200px;height:200px;border-radius:50%;filter:blur(60px);top:50%;left:50%;transform:translate(-50%,-50%);animation:orbPulse 4s ease-in-out infinite alternate}
+@keyframes orbPulse{from{transform:translate(-50%,-50%) scale(.8);opacity:.3}to{transform:translate(-50%,-50%) scale(1.2);opacity:.6}}
+
+.effect-glow::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,var(--violet-glow),transparent 60%);pointer-events:none;animation:glowPulse 3s ease-in-out infinite alternate}
+@keyframes glowPulse{from{opacity:.3}to{opacity:.8}}
+
+.effect-shimmer .shimmer-text{font-family:var(--display);font-size:1.6rem;background:linear-gradient(120deg,var(--violet-dim),var(--violet-bright),var(--violet-dim));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+@keyframes shimmer{to{background-position:200% center}}
+
+.effect-noise::after{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;border-radius:var(--radius-lg)}
+
+/* ====== ICONS / SYMBOLS ====== */
+.symbol-showcase{display:flex;gap:32px;align-items:center;margin-top:30px}
+.symbol-box{width:120px;height:135px;border:1px solid var(--border);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;transition:all .4s;padding:16px}
+.symbol-box:hover{border-color:var(--violet-dim);transform:scale(1.05)}
+.symbol-box svg{width:100%;height:100%}
+
+/* ====== PAGE MAP ====== */
+.page-map{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:30px}
+.page-map-card{padding:24px 16px;border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .3s;position:relative;overflow:hidden}
+.page-map-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.page-map-card:nth-child(1)::before{background:var(--violet)}
+.page-map-card:nth-child(2)::before{background:var(--violet)}
+.page-map-card:nth-child(3)::before{background:var(--indigo)}
+.page-map-card:nth-child(4)::before{background:var(--pink)}
+.page-map-card:nth-child(5)::before{background:var(--emerald)}
+.page-map-card:hover{border-color:var(--border-hover);transform:translateY(-4px)}
+.page-map-title{font-family:var(--display);font-size:1rem;color:var(--light);margin-bottom:6px}
+.page-map-file{font-family:var(--mono);font-size:.65rem;color:var(--light-faint)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){.ds-container{padding:0 30px}.color-grid{grid-template-columns:repeat(3,1fr)}.comp-grid,.effects-grid{grid-template-columns:1fr}.page-accent-row,.page-map{grid-template-columns:repeat(2,1fr)}.btn-states{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:768px){.ds-container{padding:0 20px}.color-grid{grid-template-columns:repeat(2,1fr)}.radius-grid{gap:16px}.page-accent-row,.page-map{grid-template-columns:1fr}.btn-states{grid-template-columns:1fr}.ds-section{padding:60px 0}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="ds-header">
+<div class="ds-container">
+<h1><span>personality</span>.engineering</h1>
+<div class="ds-subtitle">Design System & Brand Guidelines</div>
+<div class="ds-version">v1.0 — April 2026</div>
+</div></div>
+
+<!-- NAV -->
+<div class="ds-nav">
+<div class="ds-container">
+<div class="ds-nav-inner">
+<a href="#colors">Кольори</a>
+<a href="#typography">Типографіка</a>
+<a href="#spacing">Простір</a>
+<a href="#radius">Радіуси</a>
+<a href="#buttons">Кнопки</a>
+<a href="#labels">Лейбли</a>
+<a href="#components">Компоненти</a>
+<a href="#effects">Ефекти</a>
+<a href="#symbol">Символ</a>
+<a href="#pages">Сторінки</a>
+</div>
+</div></div>
+
+<div class="ds-container">
+
+<!-- ==================== COLORS ==================== -->
+<div class="ds-section" id="colors">
+<div class="ds-title">Кольори</div>
+<div class="ds-desc">Палітра побудована на основі SPACE (темно-синій) та LIGHT (кремовий) з чотирма акцентними кольорами для різних сторінок.</div>
+
+<div class="color-group-title">Основа — SPACE</div>
+<div class="color-grid">
+<div class="color-card"><div class="color-swatch" style="background:#0B1829"><span class="color-hex">#0B1829</span></div><div class="color-info"><div class="color-name">Space</div><div class="color-var">--space</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:#0f2038"><span class="color-hex">#0F2038</span></div><div class="color-info"><div class="color-name">Space Light</div><div class="color-var">--space-light</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:#142a47"><span class="color-hex">#142A47</span></div><div class="color-info"><div class="color-name">Space Mid</div><div class="color-var">--space-mid</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:#1a3355"><span class="color-hex">#1A3355</span></div><div class="color-info"><div class="color-name">Space Surface</div><div class="color-var">--space-surface</div></div></div>
+</div>
+
+<div class="color-group-title">Текст — LIGHT</div>
+<div class="color-grid">
+<div class="color-card"><div class="color-swatch" style="background:#F2F0DB"><span class="color-hex" style="color:#0B1829">#F2F0DB</span></div><div class="color-info"><div class="color-name">Light</div><div class="color-var">--light (заголовки)</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:#d4d2be"><span class="color-hex" style="color:#0B1829">#D4D2BE</span></div><div class="color-info"><div class="color-name">Light Dim</div><div class="color-var">--light-dim (текст)</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:#8a897a"><span class="color-hex">#8A897A</span></div><div class="color-info"><div class="color-name">Light Muted</div><div class="color-var">--light-muted (вторинний)</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:#4a4940"><span class="color-hex">#4A4940</span></div><div class="color-info"><div class="color-name">Light Faint</div><div class="color-var">--light-faint (підказки)</div></div></div>
+</div>
+
+<div class="color-group-title">Акценти по сторінках</div>
+<div class="page-accent-row">
+<div class="page-accent"><div class="page-accent-dot" style="background:#8B5CF6"></div><div class="page-accent-name">Violet</div><div class="page-accent-hex">Головна + Наставництво</div></div>
+<div class="page-accent"><div class="page-accent-dot" style="background:#6366F1"></div><div class="page-accent-name">Indigo</div><div class="page-accent-hex">Консультації</div></div>
+<div class="page-accent"><div class="page-accent-dot" style="background:#E879F9"></div><div class="page-accent-name">Pink</div><div class="page-accent-hex">Друг Другу</div></div>
+<div class="page-accent"><div class="page-accent-dot" style="background:#34D399"></div><div class="page-accent-name">Emerald</div><div class="page-accent-hex">Навчання</div></div>
+<div class="page-accent"><div class="page-accent-dot" style="background:#FBBF24"></div><div class="page-accent-name">Amber</div><div class="page-accent-hex">Курс «365 днів»</div></div>
+</div>
+
+<div class="color-group-title">Утілітарні</div>
+<div class="color-grid">
+<div class="color-card"><div class="color-swatch" style="background:#00CC44"><span class="color-hex">#00CC44</span></div><div class="color-info"><div class="color-name">Anahata</div><div class="color-var">Маркери списків, успіх</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:rgba(242,240,219,.08)"><span class="color-hex">light 8%</span></div><div class="color-info"><div class="color-name">Border</div><div class="color-var">--border</div></div></div>
+<div class="color-card"><div class="color-swatch" style="background:rgba(242,240,219,.18)"><span class="color-hex">light 18%</span></div><div class="color-info"><div class="color-name">Border Hover</div><div class="color-var">--border-hover</div></div></div>
+</div>
+</div>
+
+<!-- ==================== TYPOGRAPHY ==================== -->
+<div class="ds-section" id="typography">
+<div class="ds-title">Типографіка</div>
+<div class="ds-desc">Три шрифтові сімейства з чіткими ролями. Display для заголовків, Serif для акцентів і цитат, Sans для інтерфейсу.</div>
+
+<div class="type-specimen">
+<div class="type-meta">
+<div class="type-font-name">Playfair Display</div>
+<div class="type-font-info">--display · Заголовки H1–H2, ціни, великі числа</div>
+</div>
+<div class="type-sample" style="font-family:var(--display);font-size:2.8rem;font-weight:400;line-height:1.2;color:var(--light)">Архітектура мислення, рішень і масштабу</div>
+<div class="type-sample" style="font-family:var(--display);font-size:1.8rem;font-weight:400;font-style:italic;color:var(--violet-bright);margin-top:12px">Italic для акцентних слів</div>
+</div>
+
+<div class="type-specimen">
+<div class="type-meta">
+<div class="type-font-name">Cormorant Garamond</div>
+<div class="type-font-info">--serif · Цитати, підзаголовки, великий акцентний текст</div>
+</div>
+<div class="type-sample" style="font-family:var(--serif);font-size:1.8rem;font-weight:300;font-style:italic;color:var(--light-dim);line-height:1.5">Іноді саме одна розмова стає точкою перелому у житті та бізнесі людини.</div>
+</div>
+
+<div class="type-specimen">
+<div class="type-meta">
+<div class="type-font-name">Raleway</div>
+<div class="type-font-info">--sans · UI текст, кнопки, лейбли, параграфи</div>
+</div>
+<div class="type-sample" style="font-family:var(--sans);font-size:1.05rem;font-weight:300;color:var(--light-dim);line-height:1.85">Допомагаю людині побачити головне, прибрати зайве і повернутися до своєї сили, ясності та масштабу. Бо часто наступний рівень життя починається не з нової стратегії.</div>
+</div>
+
+<div class="type-scale">
+<div style="font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--light-muted);margin-bottom:12px">Шкала розмірів</div>
+<div class="type-row"><span class="type-label">H1</span><span style="font-family:var(--display);font-size:clamp(2.4rem,5vw,3.8rem);color:var(--light)">Заголовок</span></div>
+<div class="type-row"><span class="type-label">H2</span><span style="font-family:var(--display);font-size:clamp(1.9rem,3.5vw,2.8rem);color:var(--light)">Підзаголовок</span></div>
+<div class="type-row"><span class="type-label">H3</span><span style="font-family:var(--serif);font-size:1.5rem;font-weight:500;color:var(--light)">Секція</span></div>
+<div class="type-row"><span class="type-label">Body</span><span style="font-family:var(--sans);font-size:1.05rem;color:var(--light-dim)">Основний текст параграфів</span></div>
+<div class="type-row"><span class="type-label">Quote</span><span style="font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--light-muted)">Цитати та акценти</span></div>
+<div class="type-row"><span class="type-label">Label</span><span style="font-family:var(--sans);font-size:.7rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--violet)">СЕКЦІЯ ЛЕЙБЛ</span></div>
+<div class="type-row"><span class="type-label">Caption</span><span style="font-family:var(--sans);font-size:.82rem;color:var(--light-muted)">Підписи та мета-інформація</span></div>
+<div class="type-row"><span class="type-label">Code</span><span style="font-family:var(--mono);font-size:.78rem;color:var(--violet-bright)">var(--accent-bright)</span></div>
+</div>
+</div>
+
+<!-- ==================== SPACING ==================== -->
+<div class="ds-section" id="spacing">
+<div class="ds-title">Простір</div>
+<div class="ds-desc">Система відступів побудована на базових значеннях. Секції мають великі padding, елементи — менші gap.</div>
+
+<div class="spacing-grid">
+<div class="spacing-row"><span class="spacing-label">4px</span><div class="spacing-bar" style="width:4px"></div><span class="spacing-value">micro</span></div>
+<div class="spacing-row"><span class="spacing-label">8px</span><div class="spacing-bar" style="width:16px"></div><span class="spacing-value">xs</span></div>
+<div class="spacing-row"><span class="spacing-label">14px</span><div class="spacing-bar" style="width:28px"></div><span class="spacing-value">sm</span></div>
+<div class="spacing-row"><span class="spacing-label">20px</span><div class="spacing-bar" style="width:40px"></div><span class="spacing-value">md</span></div>
+<div class="spacing-row"><span class="spacing-label">28px</span><div class="spacing-bar" style="width:56px"></div><span class="spacing-value">lg</span></div>
+<div class="spacing-row"><span class="spacing-label">40px</span><div class="spacing-bar" style="width:80px"></div><span class="spacing-value">xl</span></div>
+<div class="spacing-row"><span class="spacing-label">60px</span><div class="spacing-bar" style="width:120px"></div><span class="spacing-value">2xl (container pad)</span></div>
+<div class="spacing-row"><span class="spacing-label">80px</span><div class="spacing-bar" style="width:160px"></div><span class="spacing-value">3xl (gap)</span></div>
+<div class="spacing-row"><span class="spacing-label">130px</span><div class="spacing-bar" style="width:260px"></div><span class="spacing-value">4xl (section pad)</span></div>
+</div>
+
+<div class="ds-code-block" style="margin-top:32px">
+<span class="cm">/* Контейнери */</span><br>
+<span class="hl">.section-narrow</span> { max-width: <span class="val">860px</span> }<br>
+<span class="hl">.section-wide</span> { max-width: <span class="val">1100px</span> | <span class="val">1200px</span> }<br>
+<span class="hl">.section-pad</span> { padding: <span class="val">130px 60px</span> }<br>
+<br>
+<span class="cm">/* Responsive */</span><br>
+@1024px → padding: <span class="val">90px 40px</span><br>
+@768px → padding: <span class="val">60px 24px</span>
+</div>
+</div>
+
+<!-- ==================== RADIUS ==================== -->
+<div class="ds-section" id="radius">
+<div class="ds-title">Радіуси</div>
+<div class="ds-desc">Три рівні заокруглення. Pill для кнопок і тегів, Large для карток, Base для списків.</div>
+
+<div class="radius-grid">
+<div class="radius-item"><div class="radius-box" style="border-radius:0"></div><div class="radius-name">none</div><div class="radius-val">0px</div></div>
+<div class="radius-item"><div class="radius-box" style="border-radius:6px"></div><div class="radius-name">sm</div><div class="radius-val">6px</div></div>
+<div class="radius-item"><div class="radius-box" style="border-radius:16px"></div><div class="radius-name">base</div><div class="radius-val">16px</div></div>
+<div class="radius-item"><div class="radius-box" style="border-radius:24px"></div><div class="radius-name">lg</div><div class="radius-val">24px</div></div>
+<div class="radius-item"><div class="radius-box" style="border-radius:50px"></div><div class="radius-name">pill</div><div class="radius-val">50px</div></div>
+<div class="radius-item"><div class="radius-box" style="border-radius:50%"></div><div class="radius-name">circle</div><div class="radius-val">50%</div></div>
+</div>
+
+<div class="ds-code-block" style="margin-top:32px">
+<span class="hl">--radius</span>: <span class="val">16px</span>;    <span class="cm">/* Списки, FAQ, теги */</span><br>
+<span class="hl">--radius-lg</span>: <span class="val">24px</span>;  <span class="cm">/* Картки, блоки */</span><br>
+<span class="hl">--radius-pill</span>: <span class="val">50px</span>; <span class="cm">/* Кнопки, лейбли */</span>
+</div>
+</div>
+
+<!-- ==================== BUTTONS ==================== -->
+<div class="ds-section" id="buttons">
+<div class="ds-title">Кнопки</div>
+<div class="ds-desc">Pill-shaped кнопки з двома варіантами: заповнена (primary) та контурна (outline). Hover з translateY та glow.</div>
+
+<div class="btn-showcase">
+<button class="ds-btn ds-btn-primary">Подати заявку</button>
+<button class="ds-btn ds-btn-outline">Обрати формат</button>
+<button class="ds-btn ds-btn-primary ds-btn-sm">Маленька</button>
+<button class="ds-btn ds-btn-outline ds-btn-sm">Маленька</button>
+</div>
+
+<div style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--light-muted);margin:32px 0 16px">Кольорові варіанти по сторінках</div>
+<div class="btn-showcase">
+<button class="ds-btn" style="background:var(--violet);color:#fff">Violet</button>
+<button class="ds-btn" style="background:var(--indigo);color:#fff">Indigo</button>
+<button class="ds-btn" style="background:var(--pink);color:var(--space)">Pink</button>
+<button class="ds-btn" style="background:var(--emerald);color:var(--space)">Emerald</button>
+</div>
+
+<div class="ds-code-block" style="margin-top:24px">
+<span class="cm">/* Параметри */</span><br>
+padding: <span class="val">16px 44px</span> | sm: <span class="val">10px 28px</span><br>
+font-size: <span class="val">.8rem</span> | sm: <span class="val">.74rem</span><br>
+letter-spacing: <span class="val">.14em</span><br>
+border-radius: <span class="val">50px</span><br>
+transition: <span class="val">all .5s cubic-bezier(.22,1,.36,1)</span><br>
+hover: <span class="val">translateY(-2px) + box-shadow glow</span>
+</div>
+</div>
+
+<!-- ==================== LABELS ==================== -->
+<div class="ds-section" id="labels">
+<div class="ds-title">Лейбли секцій</div>
+<div class="ds-desc">Pill-shaped мікро-лейбли над кожним заголовком секції. Колір відповідає акценту сторінки.</div>
+
+<div class="btn-showcase">
+<div class="ds-label ds-label-violet">Флагман</div>
+<div class="ds-label ds-label-indigo">Швидкий формат</div>
+<div class="ds-label ds-label-pink">Peer-to-peer</div>
+<div class="ds-label ds-label-emerald">Перший рівень</div>
+</div>
+
+<div class="ds-code-block" style="margin-top:24px">
+font-size: <span class="val">.7rem</span><br>
+letter-spacing: <span class="val">.22em</span><br>
+padding: <span class="val">6px 18px</span><br>
+border: <span class="val">1px solid accent 20%</span><br>
+background: <span class="val">accent 5%</span><br>
+border-radius: <span class="val">50px</span>
+</div>
+</div>
+
+<!-- ==================== COMPONENTS ==================== -->
+<div class="ds-section" id="components">
+<div class="ds-title">Компоненти</div>
+<div class="ds-desc">Базові елементи інтерфейсу, які повторюються на всіх сторінках.</div>
+
+<div class="comp-grid">
+<div class="comp-card">
+<div class="comp-title">Картка</div>
+<div class="comp-demo">
+<div class="ds-card">
+<div style="font-family:var(--display);font-size:1.3rem;color:var(--light);margin-bottom:8px">Персональне наставництво</div>
+<div style="font-size:.92rem;color:var(--light-muted)">Глибока індивідуальна робота з мисленням і масштабом.</div>
+</div>
+</div>
+<div style="font-family:var(--mono);font-size:.68rem;color:var(--light-faint)">bg: space-light · border: 8% · radius: 24px · hover: translateY(-4px)</div>
+</div>
+
+<div class="comp-card">
+<div class="comp-title">Елемент списку</div>
+<div class="comp-demo">
+<div class="ds-list-item"><div class="ds-list-dot" style="background:var(--anahata);box-shadow:0 0 10px var(--anahata-glow)"></div><div style="font-size:.98rem;color:var(--light-dim)">Готові до чесності і розвитку</div></div>
+<div class="ds-list-item"><div class="ds-list-dot" style="background:var(--violet);box-shadow:0 0 10px var(--violet-glow)"></div><div style="font-size:.98rem;color:var(--light-dim)">Хочуть сильне оточення</div></div>
+</div>
+<div style="font-family:var(--mono);font-size:.68rem;color:var(--light-faint)">radius: 16px · hover: translateX(8px) · dot: 8px circle</div>
+</div>
+
+<div class="comp-card">
+<div class="comp-title">Цитата</div>
+<div class="comp-demo">
+<div style="font-family:var(--serif);font-size:1.15rem;font-style:italic;color:var(--light);padding:20px 24px;border-left:3px solid var(--violet-dim);background:rgba(139,92,246,.04);border-radius:0 16px 16px 0">Масштаб життя починається з масштабу особистості.</div>
+</div>
+<div style="font-family:var(--mono);font-size:.68rem;color:var(--light-faint)">border-left: 3px accent · bg: accent 4% · radius: 0 16 16 0</div>
+</div>
+
+<div class="comp-card">
+<div class="comp-title">Розділювач</div>
+<div class="comp-demo" style="padding:20px 0">
+<div style="width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--violet-dim),transparent);margin:0 auto;border-radius:2px"></div>
+</div>
+<div style="font-family:var(--mono);font-size:.68rem;color:var(--light-faint)">width: 60px · gradient: transparent → accent → transparent</div>
+</div>
+</div>
+</div>
+
+<!-- ==================== EFFECTS ==================== -->
+<div class="ds-section" id="effects">
+<div class="ds-title">Ефекти</div>
+<div class="ds-desc">Три.js частинки, orb-градієнти, shimmer-текст, noise-overlay — ключові візуальні ефекти.</div>
+
+<div class="effects-grid">
+<div class="effect-demo"><div class="effect-orb" style="background:var(--violet-glow)"></div><div class="effect-name">Orb Gradient</div><div class="effect-desc">blur(120px) + animation</div></div>
+<div class="effect-demo effect-glow"><div class="effect-name">Section Glow</div><div class="effect-desc">radial-gradient overlay</div></div>
+<div class="effect-demo effect-shimmer"><div class="shimmer-text">Shimmer</div><div class="effect-desc" style="margin-top:8px">gradient text animation</div></div>
+<div class="effect-demo effect-noise"><div class="effect-name">Noise Overlay</div><div class="effect-desc">feTurbulence SVG filter</div></div>
+<div class="effect-demo" style="background:var(--space-light)"><div class="effect-name">Three.js Particles</div><div class="effect-desc">SVG → canvas → point cloud<br>additive blending<br>sine wave motion</div></div>
+<div class="effect-demo"><div class="effect-name">Reveal on Scroll</div><div class="effect-desc">IntersectionObserver<br>translateY(40px) → 0<br>staggered delays</div></div>
+</div>
+
+<div class="ds-code-block" style="margin-top:24px">
+<span class="cm">/* Reveal animation */</span><br>
+<span class="hl">.reveal</span> { opacity: <span class="val">0</span>; transform: <span class="val">translateY(40px)</span>; }<br>
+<span class="hl">.reveal.visible</span> { opacity: <span class="val">1</span>; transform: <span class="val">translateY(0)</span>; }<br>
+transition: <span class="val">1s cubic-bezier(.22, 1, .36, 1)</span><br>
+<span class="hl">.rd1</span> delay: <span class="val">.15s</span> | <span class="hl">.rd2</span>: <span class="val">.3s</span> | <span class="hl">.rd3</span>: <span class="val">.45s</span> | <span class="hl">.rd4</span>: <span class="val">.6s</span>
+</div>
+</div>
+
+<!-- ==================== SYMBOL ==================== -->
+<div class="ds-section" id="symbol">
+<div class="ds-title">Символ бренду</div>
+<div class="ds-desc">SVG-символ використовується як Three.js particle shape, preloader animation, фонові декоративні елементи.</div>
+
+<div class="symbol-showcase">
+<div class="symbol-box"><svg viewBox="0 0 714 795" xmlns="http://www.w3.org/2000/svg"><path fill="#8B5CF6" d="M388.515 730.355C406.274 712.516 406.274 683.593 388.515 665.754C370.755 647.915 341.961 647.915 324.201 665.754C306.442 683.593 306.442 712.516 324.201 730.355C341.961 748.195 370.755 748.195 388.515 730.355Z"/><path fill="#8B5CF6" d="M367.98 447.263C395.209 440.807 412.072 413.402 405.646 386.052C399.219 358.701 371.936 341.762 344.708 348.217C317.479 354.673 300.616 382.078 307.042 409.428C313.469 436.779 340.752 453.718 367.98 447.263Z"/><path fill="#8B5CF6" d="M388.514 130.137C406.273 112.298 406.273 83.3749 388.514 65.5356C370.754 47.6964 341.96 47.6964 324.201 65.5356C306.441 83.3749 306.441 112.298 324.201 130.137C341.96 147.976 370.754 147.976 388.514 130.137Z"/><path fill="#8B5CF6" d="M519.58 79C508.16 73 496.377 67.7 484.285 63C487.266 74.1 488.859 85.8 488.859 97.8L454.572 97.8C454.382 90.7 454.008 87.2C452.566 73.7 448.398 61 442.068 49.6C425.244 19.5 393.162-0.8 356.354-0.8C319.546-0.8 287.828 19.3 270.934 49.1C264.533 60.4 260.289 73.1 258.766 86.6C258.348 90.3 258.137 94 258.137 97.8L228.608 62.3C216.483 66.9 204.673 72.2 193.22 78.1C77.556 137.4-1.654 258.3-1.654 397.7C-1.654 537.2 77.604 658.1 193.35 717.4C204.5 723.1 215.985 728.3 227.768 732.8C224.635 721.5 222.96 709.5 222.96 697.2L257.839 696.9C258.077 704.9 258.543 708.7C260.159 722.3 264.522 735.1 271.058 746.4C288.061 775.8 319.758 795.6 356.056 795.6C392.355 795.6 424.295 775.6 441.244 746C447.737 734.7 452.051 721.9 453.612 708.4C454.051 704.6 454.268 700.8 454.268 696.9L483.157 732.8C495.613 728 507.732 722.6 519.477 716.5C634.188 656.8 712.579 536.5 712.579 397.7C712.579 259 634.242 138.8 519.586 79.1Z"/></svg></div>
+<div class="symbol-box" style="background:var(--space-light)"><svg viewBox="0 0 714 795" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#8B5CF6" stroke-width="2" d="M388.515 730.355C406.274 712.516 406.274 683.593 388.515 665.754C370.755 647.915 341.961 647.915 324.201 665.754C306.442 683.593 306.442 712.516 324.201 730.355C341.961 748.195 370.755 748.195 388.515 730.355Z"/><path fill="none" stroke="#8B5CF6" stroke-width="2" d="M367.98 447.263C395.209 440.807 412.072 413.402 405.646 386.052C399.219 358.701 371.936 341.762 344.708 348.217C317.479 354.673 300.616 382.078 307.042 409.428C313.469 436.779 340.752 453.718 367.98 447.263Z"/><path fill="none" stroke="#8B5CF6" stroke-width="2" d="M388.514 130.137C406.273 112.298 406.273 83.3749 388.514 65.5356C370.754 47.6964 341.96 47.6964 324.201 65.5356C306.441 83.3749 306.441 112.298 324.201 130.137C341.96 147.976 370.754 147.976 388.514 130.137Z"/></svg></div>
+<div class="symbol-box"><svg viewBox="0 0 714 795" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(139,92,246,.15)" d="M388.515 730.355C406.274 712.516 406.274 683.593 388.515 665.754C370.755 647.915 341.961 647.915 324.201 665.754C306.442 683.593 306.442 712.516 324.201 730.355C341.961 748.195 370.755 748.195 388.515 730.355Z"/><path fill="rgba(139,92,246,.15)" d="M367.98 447.263C395.209 440.807 412.072 413.402 405.646 386.052C399.219 358.701 371.936 341.762 344.708 348.217C317.479 354.673 300.616 382.078 307.042 409.428C313.469 436.779 340.752 453.718 367.98 447.263Z"/><path fill="rgba(139,92,246,.15)" d="M388.514 130.137C406.273 112.298 406.273 83.3749 388.514 65.5356C370.754 47.6964 341.96 47.6964 324.201 65.5356C306.441 83.3749 306.441 112.298 324.201 130.137C341.96 147.976 370.754 147.976 388.514 130.137Z"/></svg></div>
+</div>
+
+<div class="ds-code-block" style="margin-top:24px">
+<span class="cm">/* Використання символу */</span><br>
+<span class="hl">Preloader</span>: stroke-dasharray animation (малювання)<br>
+<span class="hl">Three.js</span>: SVG → offscreen canvas → pixel sampling → point cloud<br>
+<span class="hl">Фон</span>: opacity .03–.04, slow rotation 60–80s<br>
+<span class="hl">Final CTA</span>: breathe animation (scale + opacity pulse)
+</div>
+</div>
+
+<!-- ==================== PAGES ==================== -->
+<div class="ds-section" id="pages">
+<div class="ds-title">Карта сторінок</div>
+<div class="ds-desc">5 сторінок екосистеми. Кожна має унікальний акцентний колір, але спільну дизайн-систему.</div>
+
+<div class="page-map">
+<div class="page-map-card"><div class="page-map-title">Головна</div><div class="page-map-file">personality-engineering.html</div></div>
+<div class="page-map-card"><div class="page-map-title">Наставництво</div><div class="page-map-file">nastavnytstvo.html</div></div>
+<div class="page-map-card"><div class="page-map-title">Консультації</div><div class="page-map-file">konsultatsii.html</div></div>
+<div class="page-map-card"><div class="page-map-title">Друг Другу</div><div class="page-map-file">druh-druhu.html</div></div>
+<div class="page-map-card"><div class="page-map-title">Навчання</div><div class="page-map-file">navchannya.html</div></div>
+</div>
+
+<div class="ds-code-block" style="margin-top:32px">
+<span class="cm">/* Спільне для всіх сторінок */</span><br>
+• Three.js particle background (SVG symbol shape)<br>
+• Sticky nav з blur + scroll effect<br>
+• Reveal on scroll (IntersectionObserver)<br>
+• Hero parallax (translateY on scroll)<br>
+• Orb gradient blobs<br>
+• Noise overlay (fixed, z-index: 9999)<br>
+• Rounded forms (pill buttons, 24px cards, 16px lists)<br>
+• Google Fonts: Playfair Display + Cormorant Garamond + Raleway<br>
+<br>
+<span class="cm">/* Унікальне */</span><br>
+Головна: preloader з SVG draw + «ЗАВАНТАЖУЙ НОВУ ВЕРСІЮ СЕБЕ»<br>
+Наставництво: timeline, investment cards, selection steps<br>
+Консультації: hero 2-col layout, comparison strip<br>
+Друг Другу: 3-level cards, principles pills, moderator grid<br>
+Навчання: course blocks, connection flow, recommendation cards
+</div>
+</div>
+
+</div>
+
+<footer style="padding:60px;border-top:1px solid var(--border);text-align:center">
+<div style="font-family:var(--serif);font-size:1rem;color:var(--light-faint);margin-bottom:8px">personality.engineering — Design System</div>
+<div style="font-size:.75rem;color:var(--light-faint);opacity:.5">v1.0 · April 2026</div>
+</footer>
+
+<script>
+// Sticky nav active state
+const sections = document.querySelectorAll('.ds-section');
+const navLinks = document.querySelectorAll('.ds-nav-inner a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (scrollY >= s.offsetTop - 200) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+// Smooth scroll
+document.querySelectorAll('.ds-nav-inner a').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+  });
+});
+</script>
+</body>
+</html>

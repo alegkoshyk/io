@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Анкети — personality.engineering</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/global.css">
+<style>
+/* ====== ANKETY PAGE-SPECIFIC ====== */
+/* Override nav for ankety - always scrolled-style */
+nav{background:rgba(11,24,41,.95);backdrop-filter:blur(24px);padding:20px 60px;border-radius:0 0 var(--radius-lg) var(--radius-lg)}
+nav.scrolled{padding:20px 60px}
+
+.container{max-width:800px;margin:0 auto;padding:0 40px}
+
+/* TABS */
+.tabs-wrap{padding:100px 0 0;position:relative}
+.tabs{display:flex;gap:8px;margin-bottom:60px;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;padding-bottom:4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:12px 28px;border:1px solid var(--border);border-radius:var(--radius-pill);font-size:.78rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--light-muted);cursor:pointer;transition:all .4s;white-space:nowrap;background:none;font-family:var(--sans)}
+.tab:hover{border-color:var(--border-hover);color:var(--light)}
+.tab.active{border-color:var(--accent-dim);color:var(--accent);background:rgba(139,92,246,.06)}
+
+/* FORM PANELS */
+.form-panel{display:none;animation:panelIn .5s ease}
+.form-panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* FORM HEADER */
+.form-header{margin-bottom:50px;position:relative;padding-bottom:40px;border-bottom:1px solid var(--border)}
+.form-header .label{font-family:var(--sans);font-size:.7rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;display:inline-block;padding:6px 18px;border:1px solid;border-radius:var(--radius-pill);margin-bottom:20px}
+.form-header h1{font-family:var(--display);font-size:clamp(1.8rem,3vw,2.6rem);font-weight:400;margin-bottom:12px}
+.form-header p{color:var(--light-muted);font-size:1rem;max-width:600px}
+
+/* PROGRESS */
+.progress-bar{display:flex;gap:4px;margin-bottom:40px}
+.progress-step{flex:1;height:3px;border-radius:3px;background:var(--border);transition:background .4s}
+.progress-step.done{background:var(--accent)}
+.progress-step.current{background:var(--accent-dim)}
+.progress-label{font-size:.72rem;color:var(--light-faint);letter-spacing:.1em;margin-bottom:12px}
+
+/* FORM SECTIONS */
+.form-section{margin-bottom:48px}
+.form-section-title{font-family:var(--serif);font-size:1.25rem;color:var(--light);margin-bottom:6px}
+.form-section-desc{font-size:.88rem;color:var(--light-faint);margin-bottom:24px}
+.form-section-num{font-family:var(--display);font-size:.85rem;color:var(--accent-dim);margin-bottom:8px}
+
+/* FIELDS */
+.field{margin-bottom:28px}
+.field-label{display:block;font-size:.85rem;color:var(--light-dim);margin-bottom:8px;font-weight:400}
+.field-label .req{color:var(--accent);margin-left:4px}
+.field-hint{font-size:.78rem;color:var(--light-faint);font-style:italic;margin-top:6px}
+input[type="text"],input[type="email"],input[type="tel"],input[type="url"],input[type="number"],select{width:100%;padding:16px 20px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);color:var(--light);font-family:var(--sans);font-size:.95rem;font-weight:300;transition:all .3s;outline:none;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--accent-dim);box-shadow:0 0 0 3px var(--accent-glow)}
+input::placeholder,textarea::placeholder{color:var(--light-faint)}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238a897a' d='M1.41.59L6 5.17 10.59.59 12 2 6 8 0 2z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px}
+select option{background:var(--space-light);color:var(--light)}
+textarea{width:100%;padding:16px 20px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);color:var(--light);font-family:var(--sans);font-size:.95rem;font-weight:300;transition:all .3s;outline:none;resize:vertical;min-height:120px;line-height:1.7}
+
+/* RADIO / CHECKBOX */
+.option-group{display:grid;gap:10px}
+.option-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .3s}
+.option-item:hover{border-color:var(--border-hover);background:var(--space-mid)}
+.option-item.selected{border-color:var(--accent-dim);background:rgba(139,92,246,.06)}
+.option-item input{display:none}
+.option-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--light-faint);flex-shrink:0;margin-top:1px;transition:all .3s;position:relative}
+.option-item.selected .option-dot{border-color:var(--accent);background:var(--accent)}
+.option-item.selected .option-dot::after{content:'';position:absolute;inset:4px;border-radius:50%;background:#fff}
+.option-check{width:20px;height:20px;border-radius:6px;border:2px solid var(--light-faint);flex-shrink:0;margin-top:1px;transition:all .3s;position:relative;display:flex;align-items:center;justify-content:center}
+.option-item.selected .option-check{border-color:var(--accent);background:var(--accent)}
+.option-item.selected .option-check::after{content:'¹3';color:#fff;font-size:.7rem}
+.option-text{font-size:.95rem;color:var(--light-dim)}
+.option-text small{display:block;font-size:.82rem;color:var(--light-faint);margin-top:4px}
+
+/* SCALE */
+.scale-row{display:flex;gap:8px;margin-top:8px}
+.scale-btn{flex:1;padding:14px 8px;text-align:center;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;transition:all .3s;font-family:var(--sans);font-size:.9rem;color:var(--light-muted)}
+.scale-btn:hover{border-color:var(--border-hover);color:var(--light)}
+.scale-btn.selected{border-color:var(--accent-dim);background:rgba(139,92,246,.08);color:var(--accent)}
+.scale-labels{display:flex;justify-content:space-between;margin-top:6px}
+.scale-labels span{font-size:.7rem;color:var(--light-faint)}
+
+/* ROW */
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:48px 0}
+
+/* SUBMIT */
+.form-submit{margin-top:48px;padding-top:40px;border-top:1px solid var(--border)}
+.form-submit .btn{width:100%;text-align:center;padding:18px 48px;font-size:.82rem}
+.btn-violet{background:#8B5CF6;color:#fff}.btn-violet:hover{background:#A78BFA;box-shadow:0 12px 50px rgba(139,92,246,.15)}
+.btn-indigo{background:#6366F1;color:#fff}.btn-indigo:hover{background:#818CF8}
+.btn-pink{background:#E879F9;color:var(--space)}.btn-pink:hover{background:#F0ABFC}
+.btn-emerald{background:#34D399;color:var(--space)}.btn-emerald:hover{background:#6EE7B7}
+.submit-note{text-align:center;margin-top:20px;font-size:.82rem;color:var(--light-faint)}
+
+/* PRIVACY */
+.privacy-note{margin-top:24px;padding:20px 24px;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.1);border-radius:var(--radius);font-size:.82rem;color:var(--light-muted);line-height:1.6}
+
+/* CONFIRMATION */
+.confirmation{text-align:center;padding:80px 40px;display:none}
+.confirmation.show{display:block}
+.conf-icon{font-size:3rem;margin-bottom:20px}
+.conf-title{font-family:var(--display);font-size:1.8rem;color:var(--light);margin-bottom:12px}
+.conf-text{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--light-muted);max-width:460px;margin:0 auto}
+
+@media(max-width:768px){.container{padding:0 20px}nav{padding:16px 24px}.tabs{gap:6px}.tab{padding:10px 20px;font-size:.72rem}.field-row{grid-template-columns:1fr}.scale-row{flex-wrap:wrap}.scale-btn{min-width:calc(20% - 8px)}}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+<a href="/" class="nav-logo">personality.engineering</a>
+<div class="nav-links" id="navLinks">
+<a href="/nastavnytstvo.html">Наставництво</a>
+<a href="/konsultatsii.html">Консультації</a>
+<a href="/druh-druhu.html">Друг Другу</a>
+<a href="/navchannya.html">Навчання</a>
+<a href="/ankety.html" class="nav-cta">Заявка</a>
+</div>
+<div class="nav-overlay" id="navOverlay"></div>
+<button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="container">
+<div class="tabs-wrap">
+
+<!-- TABS -->
+<div class="tabs">
+<button class="tab active" onclick="showPanel('mentorship')">Наставництво</button>
+<button class="tab" onclick="showPanel('consultation')">Консультація</button>
+<button class="tab" onclick="showPanel('druh')">Друг Другу</button>
+<button class="tab" onclick="showPanel('course')">Навчання</button>
+</div>
+
+<!-- ================================================================ -->
+<!-- PANEL 1: НАСТАВНИЦТВО (найдетальніша анкета)                     -->
+<!-- ================================================================ -->
+<div class="form-panel active" id="panel-mentorship">
+
+<div class="form-header">
+<div class="label" style="color:var(--violet);border-color:rgba(139,92,246,.2);background:rgba(139,92,246,.05)">Заявка</div>
+<h1>Анкета на персональне наставництво</h1>
+<p>Ця анкета допомагає мені зрозуміти, хто ви, де знаходитесь і чи зможу бути корисним. Відповідайте чесно — це перший крок до роботи.</p>
+</div>
+
+<!-- Section 1: Про вас -->
+<div class="form-section">
+<div class="form-section-num">01</div>
+<div class="form-section-title">Про вас</div>
+<div class="form-section-desc">Базова інформація для знайомства</div>
+
+<div class="field-row">
+<div class="field">
+<label class="field-label">Ім'я та прізвище <span class="req">*</span></label>
+<input type="text" placeholder="Юрій Петренко">
+</div>
+<div class="field">
+<label class="field-label">Вік</label>
+<input type="number" placeholder="35">
+</div>
+</div>
+
+<div class="field-row">
+<div class="field">
+<label class="field-label">Email <span class="req">*</span></label>
+<input type="email" placeholder="your@email.com">
+</div>
+<div class="field">
+<label class="field-label">Телефон / Telegram</label>
+<input type="tel" placeholder="+380...">
+</div>
+</div>
+
+<div class="field">
+<label class="field-label">Місто та країна</label>
+<input type="text" placeholder="Київ, Україна">
+</div>
+</div>
+
+<!-- Section 2: Бізнес і роль -->
+<div class="form-section">
+<div class="form-section-num">02</div>
+<div class="form-section-title">Бізнес і роль</div>
+<div class="form-section-desc">Розуміння вашого контексту і масштабу</div>
+
+<div class="field">
+<label class="field-label">Яка ваша роль? <span class="req">*</span></label>
+<div class="option-group">
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="role"><div class="option-dot"></div><div class="option-text">Засновник / власник бізнесу</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="role"><div class="option-dot"></div><div class="option-text">CEO / генеральний директор</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="role"><div class="option-dot"></div><div class="option-text">C-level / топ-менеджер</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="role"><div class="option-dot"></div><div class="option-text">Партнер у бізнесі</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="role"><div class="option-dot"></div><div class="option-text">Інше</div></label>
+</div>
+</div>
+
+<div class="field">
+<label class="field-label">Сфера бізнесу / діяльності <span class="req">*</span></label>
+<input type="text" placeholder="IT, e-commerce, виробництво...">
+</div>
+
+<div class="field-row">
+<div class="field">
+<label class="field-label">Скільки років у підприємництві?</label>
+<select>
+<option value="">Оберіть</option>
+<option>Менше 3 років</option>
+<option>3–5 років</option>
+<option>5–10 років</option>
+<option>10–20 років</option>
+<option>20+ років</option>
+</select>
+</div>
+<div class="field">
+<label class="field-label">Розмір команди</label>
+<select>
+<option value="">Оберіть</option>
+<option>Solo</option>
+<option>2–10 людей</option>
+<option>10–50 людей</option>
+<option>50–200 людей</option>
+<option>200+ людей</option>
+</select>
+</div>
+</div>
+
+<div class="field">
+<label class="field-label">Річний оборот бізнесу (приблизно)</label>
+<select>
+<option value="">Оберіть</option>
+<option>До 100K €</option>
+<option>100K – 500K €</option>
+<option>500K – 1M €</option>
+<option>1M – 5M €</option>
+<option>5M+ €</option>
+<option>Не хочу вказувати</option>
+</select>
+<div class="field-hint">Це допомагає зрозуміти масштаб. Точна цифра не потрібна.</div>
+</div>
+</div>
+
+<!-- Section 3: Точка, де ви зараз -->
+<div class="form-section">
+<div class="form-section-num">03</div>
+<div class="form-section-title">Точка, де ви зараз</div>
+<div class="form-section-desc">Найважливіша частина. Це допоможе зрозуміти, чи зможу бути корисним.</div>
+
+<div class="field">
+<label class="field-label">Що відбувається у вашому житті / бізнесі зараз? <span class="req">*</span></label>
+<textarea placeholder="Опишіть свою поточну ситуацію — що відчуваєте, з чим стикаєтесь, що турбує..."></textarea>
+<div class="field-hint">Пишіть те, що є насправді. Без прикрас. Чим чесніше — тим краще.</div>
+</div>
+
+<div class="field">
+<label class="field-label">Що ви вже спробували для вирішення?</label>
+<textarea placeholder="Коучинг, психологія, навчання, самостійна робота..." rows="3"></textarea>
+</div>
+
+<div class="field">
+<label class="field-label">З яких із цих тверджень ви себе впізнаєте? <span class="req">*</span></label>
+<div class="option-group">
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Відчуваю, що можу значно більше, але щось тримає</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Є внутрішній хаос попри зовнішній успіх</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Старі підходи перестали працювати</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Складно приймати важливі рішення</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Не розумію, чого насправді хочу</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Знаходжуся в точці переходу або кризи</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Хочу краще зрозуміти себе і свої сенси</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Потрібне сильне дзеркало і чесний зворотний зв'язок</div></label>
+</div>
+</div>
+</div>
+
+<!-- Section 4: Запит і очікування -->
+<div class="form-section">
+<div class="form-section-num">04</div>
+<div class="form-section-title">Запит і очікування</div>
+<div class="form-section-desc">Що ви хочете від наставництва</div>
+
+<div class="field">
+<label class="field-label">Що конкретно ви хочете змінити у своєму житті або бізнесі? <span class="req">*</span></label>
+<textarea placeholder="Опишіть, який результат був би для вас ідеальним через 6–12 місяців..."></textarea>
+</div>
+
+<div class="field">
+<label class="field-label">Наскільки ви готові до чесності з собою?</label>
+<div class="scale-row">
+<div class="scale-btn" onclick="selectScale(this)">1</div>
+<div class="scale-btn" onclick="selectScale(this)">2</div>
+<div class="scale-btn" onclick="selectScale(this)">3</div>
+<div class="scale-btn" onclick="selectScale(this)">4</div>
+<div class="scale-btn" onclick="selectScale(this)">5</div>
+<div class="scale-btn" onclick="selectScale(this)">6</div>
+<div class="scale-btn" onclick="selectScale(this)">7</div>
+<div class="scale-btn" onclick="selectScale(this)">8</div>
+<div class="scale-btn" onclick="selectScale(this)">9</div>
+<div class="scale-btn" onclick="selectScale(this)">10</div>
+</div>
+<div class="scale-labels"><span>Ще не впевнений</span><span>Повністю готовий</span></div>
+</div>
+
+<div class="field">
+<label class="field-label">Наскільки ви готові до дій і змін?</label>
+<div class="scale-row">
+<div class="scale-btn" onclick="selectScale(this)">1</div>
+<div class="scale-btn" onclick="selectScale(this)">2</div>
+<div class="scale-btn" onclick="selectScale(this)">3</div>
+<div class="scale-btn" onclick="selectScale(this)">4</div>
+<div class="scale-btn" onclick="selectScale(this)">5</div>
+<div class="scale-btn" onclick="selectScale(this)">6</div>
+<div class="scale-btn" onclick="selectScale(this)">7</div>
+<div class="scale-btn" onclick="selectScale(this)">8</div>
+<div class="scale-btn" onclick="selectScale(this)">9</div>
+<div class="scale-btn" onclick="selectScale(this)">10</div>
+</div>
+<div class="scale-labels"><span>Поки думаю</span><span>Готовий діяти</span></div>
+</div>
+
+<div class="field">
+<label class="field-label">Чому саме зараз? Що стало тригером?</label>
+<textarea placeholder="Що підштовхнуло вас до цього рішення саме зараз..." rows="3"></textarea>
+</div>
+</div>
+
+<!-- Section 5: Глибокі питання -->
+<div class="form-section">
+<div class="form-section-num">05</div>
+<div class="form-section-title">Запитання про головне</div>
+<div class="form-section-desc">Ці питання не мають правильних відповідей. Вони для мене — і для вас.</div>
+
+<div class="field">
+<label class="field-label">Хто ви насправді — якщо прибрати ролі, статус і очікування інших?</label>
+<textarea placeholder="Дайте собі час на це питання..." rows="4"></textarea>
+</div>
+
+<div class="field">
+<label class="field-label">Якою ви бачите найкращу версію свого життя через 3 роки?</label>
+<textarea placeholder="Бізнес, стосунки, стан, сенси, вплив..." rows="4"></textarea>
+</div>
+
+<div class="field">
+<label class="field-label">Що ви найбільше боїтесь побачити, якщо подивитесь чесно на себе?</label>
+<textarea placeholder="Це питання для сміливих. Але саме воно може змінити все." rows="3"></textarea>
+<div class="field-hint">Ви можете пропустити це питання. Але якщо відповісте — це скаже мені багато.</div>
+</div>
+</div>
+
+<!-- Section 6: Практичне -->
+<div class="form-section">
+<div class="form-section-num">06</div>
+<div class="form-section-title">Практичне</div>
+
+<div class="field">
+<label class="field-label">Який формат вас цікавить? <span class="req">*</span></label>
+<div class="option-group">
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="format"><div class="option-dot"></div><div class="option-text">6 місяців — 7 000€<small>Глибокий старт трансформації</small></div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="format"><div class="option-dot"></div><div class="option-text">12 місяців — 11 000€<small>Повна глибина і закріплення</small></div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="format"><div class="option-dot"></div><div class="option-text">Ще не визначився — хочу обговорити</div></label>
+</div>
+</div>
+
+<div class="field">
+<label class="field-label">Як ви дізнались про мене?</label>
+<select>
+<option value="">Оберіть</option>
+<option>Рекомендація знайомого</option>
+<option>Instagram / соцмережі</option>
+<option>Сайт / пошук</option>
+<option>YBC / Board</option>
+<option>Подкаст / інтерв'ю</option>
+<option>Інше</option>
+</select>
+</div>
+
+<div class="field">
+<label class="field-label">Є щось важливе, що я маю знати?</label>
+<textarea placeholder="Будь-яка додаткова інформація, яку вважаєте важливою..." rows="3"></textarea>
+</div>
+</div>
+
+<div class="privacy-note">
+🔒 Вся інформація суворо конфіденційна. Ваші відповіді побачить тільки Юрій Дмитрієв особисто. Дані не передаються третім сторонам і не використовуються для маркетингу.
+</div>
+
+<div class="form-submit">
+<button class="btn btn-violet" onclick="showConfirmation('mentorship')">Відправити заявку</button>
+<div class="submit-note">Після відправки я особисто переглядаю кожну анкету і зв'язуюсь протягом 3 робочих днів.</div>
+</div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PANEL 2: КОНСУЛЬТАЦІЯ                                            -->
+<!-- ================================================================ -->
+<div class="form-panel" id="panel-consultation">
+
+<div class="form-header">
+<div class="label" style="color:var(--indigo-bright);border-color:rgba(99,102,241,.2);background:rgba(99,102,241,.05)">Запис</div>
+<h1>Запис на разову консультацію</h1>
+<p>Коротка анкета, щоб я міг підготуватися до нашої зустрічі і використати час максимально ефективно.</p>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="field-label">Ім'я <span class="req">*</span></label><input type="text" placeholder="Ваше ім'я"></div>
+<div class="field"><label class="field-label">Email <span class="req">*</span></label><input type="email" placeholder="your@email.com"></div>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="field-label">Телефон / Telegram</label><input type="tel" placeholder="+380..."></div>
+<div class="field"><label class="field-label">Роль</label><input type="text" placeholder="CEO, засновник..."></div>
+</div>
+
+<div class="field">
+<label class="field-label">Сфера бізнесу</label>
+<input type="text" placeholder="IT, retail, послуги...">
+</div>
+
+<div class="form-divider"></div>
+
+<div class="field">
+<label class="field-label">Що відбувається зараз? З яким запитом хочете прийти? <span class="req">*</span></label>
+<textarea placeholder="Опишіть ситуацію і що хочете отримати від нашої розмови..." rows="5"></textarea>
+<div class="field-hint">Чим конкретніше — тим ефективніше буде наша зустріч.</div>
+</div>
+
+<div class="field">
+<label class="field-label">Який результат був би для вас ідеальним після консультації?</label>
+<textarea placeholder="Ясність у конкретному питанні, рішення, новий погляд..." rows="3"></textarea>
+</div>
+
+<div class="field">
+<label class="field-label">Чи є терміновість? <span class="req">*</span></label>
+<div class="option-group">
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="urgency"><div class="option-dot"></div><div class="option-text">Так, потрібно найближчим часом<small>Протягом 1–3 днів</small></div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="urgency"><div class="option-dot"></div><div class="option-text">Цей тиждень</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="urgency"><div class="option-dot"></div><div class="option-text">Не терміново — готовий чекати зручний час</div></label>
+</div>
+</div>
+
+<div class="field">
+<label class="field-label">Зручний час для зустрічі</label>
+<div class="option-group">
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Ранок (9:00–12:00)</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">День (12:00–17:00)</div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Вечір (17:00–20:00)</div></label>
+</div>
+</div>
+
+<div class="privacy-note">🔒 Конфіденційність гарантована. Вартість: 800€. Оплата після підтвердження дати.</div>
+
+<div class="form-submit">
+<button class="btn btn-indigo" onclick="showConfirmation('consultation')">Записатися</button>
+<div class="submit-note">Зв'яжусь протягом 24 годин для узгодження дати і часу.</div>
+</div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PANEL 3: ДРУГ ДРУГУ                                              -->
+<!-- ================================================================ -->
+<div class="form-panel" id="panel-druh">
+
+<div class="form-header">
+<div class="label" style="color:var(--pink);border-color:rgba(232,121,249,.2);background:rgba(232,121,249,.05)">Заявка</div>
+<h1>Заявка на «Друг Другу»</h1>
+<p>Я формую кожну групу особисто. Ця анкета допоможе зрозуміти, чи є match між вами і середовищем.</p>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="field-label">Ім'я та прізвище <span class="req">*</span></label><input type="text" placeholder="Юрій Петренко"></div>
+<div class="field"><label class="field-label">Email <span class="req">*</span></label><input type="email" placeholder="your@email.com"></div>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="field-label">Телефон / Telegram</label><input type="tel" placeholder="+380..."></div>
+<div class="field"><label class="field-label">Місто</label><input type="text" placeholder="Київ, Україна"></div>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="field-label">Роль <span class="req">*</span></label><input type="text" placeholder="Засновник, CEO..."></div>
+<div class="field"><label class="field-label">Сфера бізнесу <span class="req">*</span></label><input type="text" placeholder="IT, виробництво..."></div>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="field-label">Років у підприємництві</label><select><option value="">Оберіть</option><option>3–5</option><option>5–10</option><option>10–20</option><option>20+</option></select></div>
+<div class="field"><label class="field-label">Розмір команди</label><select><option value="">Оберіть</option><option>2–10</option><option>10–50</option><option>50–200</option><option>200+</option></select></div>
+</div>
+
+<div class="form-divider"></div>
+
+<div class="field">
+<label class="field-label">Чому вам цікавий цей формат? <span class="req">*</span></label>
+<textarea placeholder="Що привернуло увагу і чого очікуєте від групи..." rows="4"></textarea>
+</div>
+
+<div class="field">
+<label class="field-label">Що ви можете дати іншим учасникам?</label>
+<textarea placeholder="Ваш досвід, експертиза, погляд, які можуть бути цінними для кола..." rows="3"></textarea>
+<div class="field-hint">Це не тест. Це допомагає мені формувати збалансовану групу.</div>
+</div>
+
+<div class="field">
+<label class="field-label">Які ваші цінності в роботі і житті?</label>
+<textarea placeholder="Що для вас важливо? Чим ви керуєтесь у прийнятті рішень?" rows="3"></textarea>
+</div>
+
+<div class="field">
+<label class="field-label">Що для вас означає чесність у колі? <span class="req">*</span></label>
+<div class="option-group">
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="honesty"><div class="option-dot"></div><div class="option-text">Готовий говорити і чути правду, навіть якщо вона некомфортна</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="honesty"><div class="option-dot"></div><div class="option-text">Готовий, але це для мене нове — потрібен час</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="honesty"><div class="option-dot"></div><div class="option-text">Чесність важлива, але маю межі</div></label>
+</div>
+</div>
+
+<div class="field">
+<label class="field-label">Чи є у вас досвід участі в групах, mastermind або подібних форматах?</label>
+<textarea placeholder="Якщо так — що працювало, що ні?" rows="3"></textarea>
+</div>
+
+<div class="privacy-note">🔒 Конфіденційність. Інвестиція: 2 400€ за 6 місяців (400€/міс, оплата наперед).</div>
+
+<div class="form-submit">
+<button class="btn btn-pink" onclick="showConfirmation('druh')">Подати заявку</button>
+<div class="submit-note">Після перегляду анкети я запрошу вас на коротку знайомчу зустріч.</div>
+</div>
+</div>
+
+<!-- ================================================================ -->
+<!-- PANEL 4: НАВЧАННЯ                                                -->
+<!-- ================================================================ -->
+<div class="form-panel" id="panel-course">
+
+<div class="form-header">
+<div class="label" style="color:var(--emerald);border-color:rgba(52,211,153,.2);background:rgba(52,211,153,.05)">Інтерес</div>
+<h1>Дізнатися більше про навчання</h1>
+<p>Залиште контакт і я повідомлю про старт курсів та ранній доступ.</p>
+</div>
+
+<div class="field-row">
+<div class="field"><label class="field-label">Ім'я <span class="req">*</span></label><input type="text" placeholder="Ваше ім'я"></div>
+<div class="field"><label class="field-label">Email <span class="req">*</span></label><input type="email" placeholder="your@email.com"></div>
+</div>
+
+<div class="field">
+<label class="field-label">Який курс вас цікавить? <span class="req">*</span></label>
+<div class="option-group">
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">«Стан» — повернення до себе через стан<small>Для тих, хто втомився триматися і хоче відчути життя</small></div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">«Життя Мрії» — створення карти свого життя<small>Для тих, хто хоче зрозуміти, чого насправді хоче</small></div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">«365 днів щастя» — система щоденного розвитку<small>Для тих, хто хоче зробити щастя звичкою</small></div></label>
+<label class="option-item" onclick="toggleCheck(this)"><input type="checkbox"><div class="option-check"></div><div class="option-text">Цікавлять всі — хочу дізнатися більше</div></label>
+</div>
+</div>
+
+<div class="field">
+<label class="field-label">Що зараз для вас найактуальніше?</label>
+<div class="option-group">
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="need"><div class="option-dot"></div><div class="option-text">Багато напруги і втоми — хочу спокою</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="need"><div class="option-dot"></div><div class="option-text">Не розумію, чого хочу — потрібна ясність</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="need"><div class="option-dot"></div><div class="option-text">Хочу більше радості і легкості</div></label>
+<label class="option-item" onclick="selectRadio(this)"><input type="radio" name="need"><div class="option-dot"></div><div class="option-text">Хочу почати працювати з собою системно</div></label>
+</div>
+</div>
+
+<div class="privacy-note">🔒 Email використовується тільки для повідомлень про курси. Без спаму.</div>
+
+<div class="form-submit">
+<button class="btn btn-emerald" onclick="showConfirmation('course')">Залишити заявку</button>
+<div class="submit-note">Повідомлю про старт і дам ранній доступ.</div>
+</div>
+</div>
+
+<!-- CONFIRMATION -->
+<div class="confirmation" id="confirmation">
+<div class="conf-icon">✨</div>
+<div class="conf-title">Заявку відправлено</div>
+<div class="conf-text">Дякую за вашу чесність і довіру. Я особисто переглядаю кожну анкету і зв'яжусь з вами найближчим часом.</div>
+<div style="margin-top:32px"><a href="/" class="btn btn-violet" style="width:auto;padding:14px 36px">На головну</a></div>
+</div>
+
+</div></div>
+
+<footer>
+<div class="footer-brand">personality.engineering</div>
+<p class="footer-copy">&copy; 2025 Юрій Дмитрієв — Інженерія Особистості</p>
+</footer>
+
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById('panel-' + id);
+  if (panel) panel.classList.add('active');
+  event.target.classList.add('active');
+  document.getElementById('confirmation').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function selectRadio(el) {
+  const group = el.closest('.option-group');
+  group.querySelectorAll('.option-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function toggleCheck(el) {
+  el.classList.toggle('selected');
+}
+
+function selectScale(el) {
+  el.parentElement.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function showConfirmation(type) {
+  document.querySelectorAll('.form-panel').forEach(p => p.classList.remove('active'));
+  const conf = document.getElementById('confirmation');
+  conf.style.display = 'block';
+  conf.classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// NAV
+const nav = document.getElementById('mainNav');
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+const navOverlay = document.getElementById('navOverlay');
+window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', scrollY > 60); }, { passive: true });
+function toggleNav() { menuToggle.classList.toggle('active'); navLinks.classList.toggle('show'); navOverlay.classList.toggle('show'); }
+function closeNav() { menuToggle.classList.remove('active'); navLinks.classList.remove('show'); navOverlay.classList.remove('show'); }
+menuToggle.addEventListener('click', toggleNav);
+navOverlay.addEventListener('click', closeNav);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+</script>
+</body>
+</html>

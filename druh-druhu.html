@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Друг Другу — Юрій Дмитрієв</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/global.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+/* ====== DRUH-DRUHU PAGE-SPECIFIC ====== */
+/* Recognition */
+.recognition{background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 50%,var(--space) 100%)}
+.recog-list{margin-top:36px}
+.recog-item{font-family:var(--serif);font-size:clamp(1.1rem,1.8vw,1.4rem);font-style:italic;color:var(--light-muted);padding:16px 20px 16px 44px;border-bottom:1px solid var(--border);transition:all .5s;position:relative;border-radius:var(--radius);margin-bottom:4px;cursor:default}
+.recog-item::before{content:'';position:absolute;left:16px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent-dim);transition:all .3s}
+.recog-item:hover{color:var(--light);padding-left:54px;background:rgba(232,121,249,.04)}
+.recog-item:hover::before{background:var(--accent);box-shadow:0 0 14px var(--accent-glow)}
+
+/* What is it */
+.what-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.what-quote{font-family:var(--display);font-size:clamp(1.5rem,2.5vw,2.2rem);font-weight:400;font-style:italic;color:var(--light);line-height:1.45}
+.what-pillars{display:grid;gap:16px;margin-top:30px}
+.what-pillar{padding:20px 24px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:16px;transition:all .4s}
+.what-pillar:hover{border-color:var(--accent-dim);transform:translateX(6px)}
+.pillar-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.what-pillar:nth-child(1) .pillar-dot{background:var(--accent);box-shadow:0 0 12px var(--accent-glow)}
+.what-pillar:nth-child(2) .pillar-dot{background:var(--accent2);box-shadow:0 0 12px var(--accent2-dim)}
+.what-pillar:nth-child(3) .pillar-dot{background:#8B5CF6;box-shadow:0 0 12px rgba(139,92,246,.12)}
+.what-pillar p{margin:0;font-size:1.02rem;color:var(--light-dim)}
+.accent2-dim{rgba(192,132,252,.4)}
+
+/* Why works */
+.works-section{background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.works-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,var(--accent-glow),transparent 50%);pointer-events:none}
+.works-content{position:relative;z-index:2;max-width:700px}
+.works-feature{display:flex;gap:18px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--border)}
+.works-feature:last-child{border:none}
+.works-icon{width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:8px;flex-shrink:0;box-shadow:0 0 10px var(--accent-glow)}
+.works-feature p{margin:0;color:var(--light-dim);font-size:1.02rem}
+
+/* Three levels */
+.levels-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:50px}
+.level-card{padding:44px 30px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .5s;position:relative;overflow:hidden}
+.level-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;transform:scaleX(0);transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.level-card:nth-child(1)::before{background:var(--accent)}.level-card:nth-child(2)::before{background:#C084FC}.level-card:nth-child(3)::before{background:#8B5CF6}
+.level-card:hover{border-color:var(--border-hover);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.4)}.level-card:hover::before{transform:scaleX(1)}
+.level-emoji{font-size:2.4rem;margin-bottom:16px;display:block;filter:grayscale(.3);transition:filter .3s}
+.level-card:hover .level-emoji{filter:grayscale(0)}
+.level-title{font-family:var(--display);font-size:1.35rem;color:var(--light);margin-bottom:12px}
+.level-desc{font-size:.95rem;color:var(--light-muted);margin:0;line-height:1.6}
+
+/* What changes */
+.changes-list{display:grid;gap:14px;margin-top:40px;max-width:600px}
+.change-item{display:flex;align-items:center;gap:18px;padding:18px 24px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);transition:all .4s}
+.change-item:hover{border-color:var(--accent-dim);transform:translateX(8px);background:var(--space-mid)}
+.change-dot{width:8px;height:8px;border-radius:50%;background:var(--anahata);flex-shrink:0;box-shadow:0 0 10px var(--anahata-glow)}
+.change-item p{margin:0;color:var(--light-dim);font-size:1rem}
+.change-highlight{margin-top:32px;font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--accent-bright)}
+
+/* Moderator */
+.mod-section{background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.mod-layout{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.mod-stats{list-style:none;margin-top:24px}
+.mod-stats li{padding:14px 0;border-bottom:1px solid var(--border);color:var(--light-dim);font-size:1rem;display:flex;align-items:center;gap:14px}
+.mod-stats li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.mod-holds{margin-top:40px}
+.mod-hold-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:20px}
+.mod-hold{text-align:center;padding:24px 16px;background:var(--space);border:1px solid var(--border);border-radius:var(--radius);transition:all .3s}
+.mod-hold:hover{border-color:var(--accent-dim)}
+.mod-hold p{margin:0;font-family:var(--serif);font-size:1.15rem;color:var(--light)}
+
+/* Format */
+.format-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:40px}
+.format-item{padding:24px 28px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;gap:16px;transition:all .4s}
+.format-item:hover{border-color:var(--accent-dim);transform:translateY(-3px)}
+.format-icon{font-family:var(--display);font-size:1.6rem;color:var(--accent);flex-shrink:0}
+.format-item p{margin:0;color:var(--light-dim);font-size:.98rem}
+
+/* Principles */
+.principles-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:40px;justify-content:center}
+.principle-tag{padding:14px 28px;border:1px solid var(--border);border-radius:var(--radius-pill);font-family:var(--serif);font-size:1.1rem;color:var(--light-dim);transition:all .4s;cursor:default}
+.principle-tag:hover{border-color:var(--accent-dim);color:var(--light);background:rgba(232,121,249,.05);transform:translateY(-3px)}
+
+/* For who */
+.fw-list{display:grid;gap:14px;margin-top:40px}
+.fw-item{display:flex;align-items:center;gap:18px;padding:18px 24px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);transition:all .4s}
+.fw-item:hover{border-color:var(--border-hover);transform:translateX(8px);background:var(--space-mid)}
+.fw-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;box-shadow:0 0 10px var(--accent-glow)}
+.fw-item p{margin:0;color:var(--light-dim);font-size:1rem}
+
+/* Investment */
+.invest{position:relative;overflow:hidden}
+.invest::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 80%,var(--accent-glow),transparent 50%);pointer-events:none}
+.invest-card{position:relative;z-index:2;max-width:560px;margin:50px auto 0;text-align:center;padding:56px 48px;background:var(--space-light);border:1px solid var(--accent-dim);border-radius:var(--radius-lg);transition:all .5s}
+.invest-card:hover{transform:translateY(-6px);box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.invest-price{font-family:var(--display);font-size:clamp(2.8rem,5vw,4rem);font-weight:400;color:var(--light);line-height:1;margin-bottom:6px}
+.invest-price span{font-size:.4em;color:var(--light-muted);vertical-align:super}
+.invest-per{font-size:.85rem;color:var(--accent);letter-spacing:.08em;margin-bottom:8px}
+.invest-monthly{font-size:.9rem;color:var(--light-muted);margin-bottom:28px}
+.invest-card .btn{width:100%}
+.invest-bottom{margin-top:40px;text-align:center;position:relative;z-index:2}
+.invest-bottom p{font-family:var(--serif);font-size:1.08rem;font-style:italic;color:var(--light-muted);max-width:550px;margin:0 auto 10px}
+
+/* Selection */
+.select-content{max-width:600px;margin:0 auto;text-align:center}
+.select-features{list-style:none;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.select-feat{padding:14px 28px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-pill);font-size:.95rem;color:var(--light-dim);transition:all .3s}
+.select-feat:hover{border-color:var(--accent-dim);color:var(--light)}
+
+/* Final big text */
+.final-big{font-family:var(--display);font-size:clamp(1.3rem,2.2vw,1.8rem);font-style:italic;color:var(--accent-bright);margin:28px 0;line-height:1.5}
+
+@media(max-width:1024px){.what-layout,.mod-layout{grid-template-columns:1fr;gap:40px}.levels-grid{grid-template-columns:1fr;max-width:420px;margin-left:auto;margin-right:auto}.format-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.mod-hold-grid{grid-template-columns:1fr}.principles-row{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body data-accent="pink">
+
+<canvas id="three-bg"></canvas>
+
+<nav id="mainNav">
+<a href="/" class="nav-logo">personality.engineering</a>
+<div class="nav-links" id="navLinks">
+<a href="/nastavnytstvo.html">Наставництво</a>
+<a href="/konsultatsii.html">Консультації</a>
+<a href="/druh-druhu.html">Друг Другу</a>
+<a href="/navchannya.html">Навчання</a>
+<a href="/ankety.html" class="nav-cta">Заявка</a>
+</div>
+<div class="nav-overlay" id="navOverlay"></div>
+<button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- 1. HERO -->
+<section class="hero">
+<div class="orb orb-1"></div><div class="orb orb-2"></div>
+<div class="hero-content">
+<div class="hero-badge"><div class="label">Peer-to-peer формат</div></div>
+<h1>Сильні люди ростуть швидше <em>разом</em>, ніж поодинці</h1>
+<p class="hero-sub">«Друг Другу» — це персональна рада директорів твого життя і бізнесу. Мале коло сильних підприємців і лідерів, де через досвід, чесність і довіру ти починаєш бачити більше, думати ширше і приймати сильніші рішення.</p>
+<div class="hero-killer">Рівень твого життя — це рівень людей поруч.</div>
+<div class="btn-group"><a href="#final" class="btn btn-primary">Подати заявку</a><a href="#format" class="btn btn-outline">Про формат</a></div>
+</div></section>
+
+<!-- 2. RECOGNITION -->
+<section class="recognition section-pad"><div class="section-narrow">
+<div class="reveal"><div class="label">Впізнавання</div><h2>Можливо, ти вже це відчуваєш</h2></div>
+<div class="recog-list">
+<div class="recog-item reveal rd1">Ти багато вирішуєш сам</div>
+<div class="recog-item reveal rd2">Іноді не вистачає сильного зовнішнього погляду</div>
+<div class="recog-item reveal rd3">Є питання, які не обговориш з командою або близькими</div>
+<div class="recog-item reveal rd4">Складно зрозуміти, чи рухаєшся ти в правильному напрямку</div>
+<div class="recog-item reveal">Є відчуття, що ти можеш значно більше</div>
+</div>
+<p class="reveal" style="margin-top:32px;font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--light-muted)">Навіть сильні люди упираються у власні обмеження. Бо ми всі обмежені своїм досвідом.</p>
+</div></section>
+
+<!-- 3. WHAT IS IT -->
+<section class="section-pad" id="what"><div class="section-wide">
+<div class="what-layout">
+<div class="reveal">
+<div class="label">Суть</div>
+<h2>Що це насправді</h2>
+<p>Це не mastermind. І не клуб заради знайомств.</p>
+<div class="what-quote">Це <em style="color:var(--accent)">коло довіри</em>. Мале, сильне і ретельно відібране.</div>
+<p style="margin-top:20px">Тут немає ієрархії. Є принцип: рівний до рівного. Кожен учасник — це досвід, мислення і шлях.</p>
+</div>
+<div class="reveal rd2">
+<div class="what-pillars">
+<div class="what-pillar"><div class="pillar-dot"></div><p>Колективний розум</p></div>
+<div class="what-pillar"><div class="pillar-dot"></div><p>Об'єднання досвіду</p></div>
+<div class="what-pillar"><div class="pillar-dot"></div><p>Джерело сильних рішень</p></div>
+</div>
+</div>
+</div></div></section>
+
+<!-- 4. WHY WORKS -->
+<section class="works-section section-pad" id="works"><div class="section-narrow">
+<div class="works-content reveal">
+<div class="label">Механізм</div>
+<h2>Чому це працює</h2>
+<p>Кожна людина має сліпі зони. І обмеження власного досвіду.</p>
+<p>Коли на твій запит дивляться 8–10 сильних людей:</p>
+<div class="works-feature"><div class="works-icon"></div><p>З різними бізнесами</p></div>
+<div class="works-feature"><div class="works-icon"></div><p>З різними ринками і напрямками</p></div>
+<div class="works-feature"><div class="works-icon"></div><p>З різним мисленням</p></div>
+<p style="margin-top:24px;color:var(--light)">Ти отримуєш нову якість бачення.</p>
+<p style="font-family:var(--serif);font-size:1.15rem;font-style:italic;color:var(--accent-bright)">І часто — рішення, яке сам не побачив би.</p>
+</div></div></section>
+
+<!-- 5. GROUP VALUE -->
+<section class="section-pad"><div class="section-narrow">
+<div class="reveal"><div class="label">Глибина</div><h2>Що дає група кожному</h2></div>
+<div class="reveal rd1" style="max-width:680px">
+<p>Кожен кейс у колі працює не тільки для того, хто його приносить. Коли один учасник ділиться запитом, інші бачать у ньому себе, свої ситуації, помилки і можливості.</p>
+<p>З часом, коли склад групи стабільний, зростає довіра. А разом із довірою — глибина, чесність і якість рішень.</p>
+<p style="color:var(--accent-bright)">Через досвід інших ти починаєш точніше калібрувати власне мислення, процеси і свої наступні кроки.</p>
+</div></div></section>
+
+<!-- 6. THREE LEVELS -->
+<section class="section-pad" style="background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border)"><div class="section-wide">
+<div class="reveal" style="text-align:center"><div class="label">Цінність</div><h2>Три рівні взаємодії</h2></div>
+<div class="levels-grid">
+<div class="level-card reveal rd1">
+<span class="level-emoji">💡</span>
+<div class="level-title">Мудрість</div>
+<div class="level-desc">Ти отримуєш досвід і бачення інших людей.</div>
+</div>
+<div class="level-card reveal rd2">
+<span class="level-emoji">⚡</span>
+<div class="level-title">Відповідальність</div>
+<div class="level-desc">Ти ростеш, бо стаєш частиною сильного середовища.</div>
+</div>
+<div class="level-card reveal rd3">
+<span class="level-emoji">🔄</span>
+<div class="level-title">Віддача</div>
+<div class="level-desc">Ти даєш у коло найкраще, що маєш. І через це ростеш сам.</div>
+</div>
+</div></div></section>
+
+<!-- 7. WHAT CHANGES -->
+<section class="section-pad"><div class="section-narrow">
+<div class="reveal"><div class="label">Трансформація</div><h2>Що змінюється</h2><p>Змінюються не тільки рішення. Змінюється рівень мислення.</p></div>
+<div class="changes-list">
+<div class="change-item reveal rd1"><div class="change-dot"></div><p>Ти бачиш ширше</p></div>
+<div class="change-item reveal rd2"><div class="change-dot"></div><p>Швидше знаходиш рішення</p></div>
+<div class="change-item reveal rd3"><div class="change-dot"></div><p>Менше варишся в собі</p></div>
+<div class="change-item reveal rd4"><div class="change-dot"></div><p>Приймаєш сильніші рішення</p></div>
+<div class="change-item reveal"><div class="change-dot"></div><p>Ростеш швидше</p></div>
+</div>
+<div class="change-highlight reveal">І головне — ти більше не один.</div>
+</div></section>
+
+<!-- 8. MODERATOR -->
+<section class="mod-section section-pad"><div class="section-wide">
+<div class="mod-layout">
+<div class="reveal">
+<div class="label">Модератор</div>
+<h2>Роль модератора</h2>
+<p>Це не просто зустрічі. Це керований процес.</p>
+<ul class="mod-stats">
+<li>100+ змодерованих зустрічей підприємців</li>
+<li>Викладач школи модерації в Board</li>
+<li>Ментор підприємців у міжнародній бізнес-спільноті Board</li>
+<li>Засновник і модератор чоловічого кола «ОЧІ»</li>
+</ul>
+</div>
+<div class="reveal rd2">
+<div class="mod-holds">
+<h3 style="font-family:var(--serif);font-size:1.3rem;color:var(--light)">Я тримаю:</h3>
+<div class="mod-hold-grid">
+<div class="mod-hold"><p>Глибину</p></div>
+<div class="mod-hold"><p>Структуру</p></div>
+<div class="mod-hold"><p>Чесність</p></div>
+<div class="mod-hold"><p>Безпечний простір</p></div>
+</div>
+</div>
+</div>
+</div></div></section>
+
+<!-- 9. FORMAT -->
+<section class="section-pad" id="format"><div class="section-narrow">
+<div class="reveal"><div class="label">Формат</div><h2>Як це працює</h2></div>
+<div class="format-grid">
+<div class="format-item reveal rd1"><div class="format-icon">👥</div><p>До 10 людей у групі</p></div>
+<div class="format-item reveal rd2"><div class="format-icon">📅</div><p>6 місяців роботи</p></div>
+<div class="format-item reveal rd3"><div class="format-icon">🔁</div><p>2 зустрічі на місяць</p></div>
+<div class="format-item reveal rd4"><div class="format-icon">💬</div><p>Міжсесійна взаємодія</p></div>
+</div>
+<div class="reveal" style="margin-top:32px">
+<p>Я особисто формую кожну групу: різні ніші, різний досвід, сильні особистості.</p>
+<p style="color:var(--accent-bright)">Це дає максимально широкий кут бачення.</p>
+</div></div></section>
+
+<!-- 10. PRINCIPLES -->
+<section class="section-pad" style="background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border)"><div class="section-narrow">
+<div class="reveal" style="text-align:center"><div class="label">Середовище</div><h2>Принципи середовища</h2><p>Саме це створює якість кола.</p></div>
+<div class="principles-row reveal rd1">
+<div class="principle-tag">Довіра</div>
+<div class="principle-tag">Чесність</div>
+<div class="principle-tag">Конфіденційність</div>
+<div class="principle-tag">Глибина</div>
+<div class="principle-tag">Відповідальність</div>
+<div class="principle-tag">Внесок</div>
+</div></div></section>
+
+<!-- 11. FOR WHO -->
+<section class="section-pad"><div class="section-narrow">
+<div class="reveal"><div class="label">Аудиторія</div><h2>Для кого це</h2><p>Це для підприємців і топів, які:</p></div>
+<div class="fw-list">
+<div class="fw-item reveal rd1"><div class="fw-dot"></div><p>Відчувають, що можуть значно більше</p></div>
+<div class="fw-item reveal rd2"><div class="fw-dot"></div><p>Знаходяться у точці росту або переходу</p></div>
+<div class="fw-item reveal rd3"><div class="fw-dot"></div><p>Мають багато відповідальності і рішень</p></div>
+<div class="fw-item reveal rd4"><div class="fw-dot"></div><p>Хочуть сильне оточення, а не просто знайомства</p></div>
+<div class="fw-item reveal"><div class="fw-dot"></div><p>Готові до чесності і розвитку</p></div>
+</div></div></section>
+
+<!-- 12. INVESTMENT -->
+<section class="invest section-pad" id="invest"><div class="section-narrow">
+<div class="reveal" style="text-align:center"><div class="label">Інвестиція</div><h2>Інвестиція в середовище</h2></div>
+<div class="invest-card reveal rd1">
+<div class="invest-price">2 400<span>€</span></div>
+<div class="invest-per">за 6 місяців</div>
+<div class="invest-monthly">400€/місяць, оплата наперед</div>
+<a href="#final" class="btn btn-primary">Подати заявку</a>
+</div>
+<div class="invest-bottom reveal rd2">
+<p style="margin-top:36px">Це не про зустрічі. Це інвестиція в середовище, яке піднімає твій рівень мислення.</p>
+<p style="color:var(--accent-bright)">Один сильний інсайт. Одне рішення. Один новий кут бачення. Може змінити набагато більше, ніж коштує участь.</p>
+</div></div></section>
+
+<!-- 13. SELECTION -->
+<section class="section-pad" style="background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border)"><div class="section-narrow">
+<div class="select-content reveal">
+<div class="label">Відбір</div>
+<h2>Я формую кожну групу особисто</h2>
+<p>Дивлюсь: рівень, мислення, цінності, готовність до чесності.</p>
+<div class="select-features">
+<div class="select-feat">Рівень</div>
+<div class="select-feat">Мислення</div>
+<div class="select-feat">Цінності</div>
+<div class="select-feat">Готовність</div>
+</div>
+<p style="margin-top:28px;color:var(--accent-bright)">Бо саме люди створюють середовище. І саме середовище визначає результат.</p>
+</div></div></section>
+
+<!-- 14. FINAL -->
+<section class="final-section section-pad" id="final">
+<div class="orb-3"></div>
+<div class="final-content reveal">
+<div class="label">Рішення</div>
+<h2>Ти стаєш середнім значенням людей поруч</h2>
+<div class="final-big">Питання тільки в тому — хто ці люди.</div>
+<div class="sep sep-center"></div>
+<p>Якщо ти відчуваєш, що готовий до сильного оточення, до чесності і до росту — подай заявку.</p>
+<div class="btn-group" style="justify-content:center">
+<a href="#" class="btn btn-primary">Подати заявку</a>
+<a href="/" class="btn btn-outline">На головну</a>
+</div>
+</div></section>
+
+<footer>
+<div class="footer-brand">personality.engineering</div>
+<p class="footer-copy">&copy; 2025 Юрій Дмитрієв — Інженерія Особистості</p>
+</footer>
+
+<script>
+const nav=document.getElementById('mainNav');
+const menuToggle=document.getElementById('menuToggle');
+const navLinks=document.getElementById('navLinks');
+const navOverlay=document.getElementById('navOverlay');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>60)},{passive:true});
+function toggleNav(){menuToggle.classList.toggle('active');navLinks.classList.toggle('show');navOverlay.classList.toggle('show')}
+function closeNav(){menuToggle.classList.remove('active');navLinks.classList.remove('show');navOverlay.classList.remove('show')}
+menuToggle.addEventListener('click',toggleNav);
+navOverlay.addEventListener('click',closeNav);
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeNav));
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(e=>{e.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+reveals.forEach(el=>obs.observe(el));
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}})});
+window.addEventListener('scroll',()=>{const s=scrollY,h=document.querySelector('.hero-content');if(h&&s<innerHeight){h.style.transform=`translateY(${s*.1}px)`;h.style.opacity=1-s/(innerHeight*.85)}});
+
+(function(){
+  const canvas=document.getElementById('three-bg');
+  if(!window.THREE){canvas.style.display='none';return}
+  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+  const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,1,2000);camera.position.z=500;
+  const offCanvas=document.createElement('canvas');const RES=160;offCanvas.width=RES;offCanvas.height=RES*(795/714);const offCtx=offCanvas.getContext('2d');
+  const img=new Image();
+  const svgBlob=new Blob([`<svg viewBox="0 0 714 795" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M388.515 730.355C406.274 712.516 406.274 683.593 388.515 665.754C370.755 647.915 341.961 647.915 324.201 665.754C306.442 683.593 306.442 712.516 324.201 730.355C341.961 748.195 370.755 748.195 388.515 730.355Z"/><path fill="white" d="M367.98 447.263C395.209 440.807 412.072 413.402 405.646 386.052C399.219 358.701 371.936 341.762 344.708 348.217C317.479 354.673 300.616 382.078 307.042 409.428C313.469 436.779 340.752 453.718 367.98 447.263Z"/><path fill="white" d="M388.514 130.137C406.273 112.298 406.273 83.3749 388.514 65.5356C370.754 47.6964 341.96 47.6964 324.201 65.5356C306.441 83.3749 306.441 112.298 324.201 130.137C341.96 147.976 370.754 147.976 388.514 130.137Z"/><path fill="white" d="M519.58 79C508.16 73 496.377 67.7 484.285 63C487.266 74.1 488.859 85.8 488.859 97.8C488.832 100.6C488.642 109.9 487.504 119 485.51 127.7C483.553 136.3 480.772 144.5 477.255 152.4C473.802 160.1 469.634 167.4 464.843 174.3C459.705 181.6 453.84 188.4 447.363 194.6C436.469 204.9 423.834 213.4 409.937 219.6L373.639 195C386.512 192.7 398.523 187.9 409.141 181C417.742 175.5 425.433 168.7 431.932 160.8C437.406 154.2 442.035 146.9 445.656 139C449.2 131.2 451.77 122.9 453.217 114.3C454.106 108.9 454.572 103.4 454.572 97.8C454.382 90.7 454.008 87.2C452.566 73.7 448.398 61 442.068 49.6C425.244 19.5 393.162-0.8 356.354-0.8C319.546-0.8 287.828 19.3 270.934 49.1C264.533 60.4 260.289 73.1 258.766 86.6C258.348 90.3 258.137 94 258.137 97.8C258.57 108.5 259.4 113.7C260.793 122.4 263.318 130.7 266.814 138.4C270.381 146.4 274.972 153.7 280.408 160.4C286.863 168.3 294.511 175.2 303.075 180.7L305.687 182.4L358.967 218.5L375.26 229.6L410.669 253.6L435.07 270.2C437.585 271.8 440.003 273.4 442.366 275.1C479.992 302.3 504.464 346.7 504.464 396.7C504.464 459.8 465.667 513.7 410.75 535.8L379.357 515.1C434.116 504.3 475.428 455.9 475.428 397.7C475.428 354.8 452.908 317.1 419.081 296L367.297 262.5L344.094 247.5C344.094 247.5 278.365 207.1 264.755 194C258.316 187.8 252.495 181 247.394 173.6C242.641 166.8 238.527 159.4 235.118 151.7C231.643 143.8 228.912 135.5 227.004 126.9C225.063 118.2 223.979 109.1 223.844 99.8C223.828 85.5 225.492 73.6 228.608 62.3C216.483 66.9 204.673 72.2 193.22 78.1C77.556 137.4-1.654 258.3-1.654 397.7C-1.654 537.2 77.604 658.1 193.35 717.4C204.5 723.1 215.985 728.3 227.768 732.8C224.635 721.5 222.96 709.5 222.96 697.2C222.977 695.2C223.112 685.9 224.191 676.8 226.137 668.1C228.039 659.5 230.776 651.2 234.25 643.3C237.329 636.3 240.993 629.7 245.177 623.4L273.839 642.9C270.966 647.3 268.435 652 266.283 656.8C262.836 664.6 260.359 672.9 259.015 681.6C258.24 686.6 257.839 691.7 257.839 696.9C258.077 704.9 258.543 708.7C260.159 722.3 264.522 735.1 271.058 746.4C288.061 775.8 319.758 795.6 356.056 795.6C392.355 795.6 424.295 775.6 441.244 746C447.737 734.7 452.051 721.9 453.612 708.4C454.051 704.6 454.268 700.8 454.268 696.9C453.845 686.3 453.038 681.2C451.661 672.5 449.146 664.2 445.667 656.5C442.116 648.5 437.553 641.2 432.149 634.5C426.501 627.6 419.932 621.4 412.626 616.2L409.666 614.2C407.742 613 405.802 611.8 403.818 610.7L352.999 575.6L337.812 565.3L302.137 540.9L279.779 525.7C274.397 522.5 269.237 519 264.316 515.2C229.101 487.8 206.445 444.9 206.445 396.7C206.445 333.8 245.085 280 299.834 257.8L333.872 280.2C278.852 290.8 237.264 339.4 237.264 397.7C258.24 475.7 290.105 497.2L293.373 499.3H293.384L343.996 532.2L365.357 546.1C365.357 546.1 430.073 585.7 443.428 597.6C451.314 604.7 458.36 612.7 464.393 621.4C469.146 628.3 473.26 635.6 476.675 643.3C480.149 651.2 482.881 659.5 484.789 668.1C486.735 676.8 487.819 685.9 487.949 695.2C487.965 697.2C487.965 709.5 486.29 721.5 483.157 732.8C495.613 728 507.732 722.6 519.477 716.5C634.188 656.8 712.579 536.5 712.579 397.7C712.579 259 634.242 138.8 519.586 79.1Z"/></svg>`],{type:'image/svg+xml'});
+  const url=URL.createObjectURL(svgBlob);
+  img.onload=function(){
+    offCtx.drawImage(img,0,0,RES,RES*(795/714));
+    const id=offCtx.getImageData(0,0,offCanvas.width,offCanvas.height);
+    const pts=[];const step=3;
+    for(let y=0;y<offCanvas.height;y+=step)for(let x=0;x<offCanvas.width;x+=step){const i=(y*offCanvas.width+x)*4;if(id.data[i]>128)pts.push((x-offCanvas.width/2)*2.5,-(y-offCanvas.height/2)*2.5,(Math.random()-.5)*60)}
+    const N=pts.length/3;const geo=new THREE.BufferGeometry();
+    const pos=new Float32Array(pts);const cols=new Float32Array(N*3);const orig=new Float32Array(pts);
+    for(let i=0;i<N;i++){const r=Math.random();if(r<.5){cols[i*3]=.91;cols[i*3+1]=.475;cols[i*3+2]=.976}else if(r<.8){cols[i*3]=.753;cols[i*3+1]=.518;cols[i*3+2]=.988}else{cols[i*3]=.545;cols[i*3+1]=.361;cols[i*3+2]=.965}}
+    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('color',new THREE.BufferAttribute(cols,3));
+    const mat=new THREE.PointsMaterial({size:1.3,vertexColors:true,transparent:true,opacity:.25,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
+    const mesh=new THREE.Points(geo,mat);scene.add(mesh);
+    let t=0;
+    function animate(){requestAnimationFrame(animate);t+=.003;const p=geo.attributes.position.array;for(let i=0;i<N;i++){p[i*3]=orig[i*3]+Math.sin(t+i*.012)*2.5;p[i*3+1]=orig[i*3+1]+Math.cos(t+i*.018)*2.5;p[i*3+2]=orig[i*3+2]+Math.sin(t*.4+i*.025)*4}geo.attributes.position.needsUpdate=true;mesh.rotation.z=Math.sin(t*.25)*.015;renderer.render(scene,camera)}animate();URL.revokeObjectURL(url)};
+  img.src=url;
+  window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+})();
+</script>
+</body>
+</html>
