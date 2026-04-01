@@ -95,7 +95,7 @@
 <!-- NAV -->
 <nav id="mainNav">
 <a href="/" class="nav-logo">personality.engineering</a>
-<div class="nav-links" id="navLinks">
+<div class="nav-links" id="navLinks"><canvas id="menuParticles" style="position:absolute;inset:0;z-index:0;pointer-events:none"></canvas>
 <a href="/nastavnytstvo.html">Наставництво</a>
 <a href="/konsultatsii.html">Консультації</a>
 <a href="/druh-druhu.html">Друг Другу</a>
@@ -282,8 +282,8 @@ const menuToggle=document.getElementById('menuToggle');
 const navLinks=document.getElementById('navLinks');
 const navOverlay=document.getElementById('navOverlay');
 window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',scrollY>60)},{passive:true});
-function toggleNav(){menuToggle.classList.toggle('active');navLinks.classList.toggle('show');navOverlay.classList.toggle('show')}
-function closeNav(){menuToggle.classList.remove('active');navLinks.classList.remove('show');navOverlay.classList.remove('show')}
+function toggleNav(){menuToggle.classList.toggle('active');navLinks.classList.toggle('show');if(navLinks.classList.contains('show'))startMenuParticles();else stopMenuParticles();navOverlay.classList.toggle('show')}
+function closeNav(){menuToggle.classList.remove('active');navLinks.classList.remove('show');stopMenuParticles();navOverlay.classList.remove('show')}
 menuToggle.addEventListener('click',toggleNav);
 navOverlay.addEventListener('click',closeNav);
 navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeNav));
@@ -302,5 +302,6 @@ window.addEventListener('scroll',()=>{const s=scrollY,h=document.querySelector('
 // Particles loaded from external file
 </script>
 <script src="/assets/particles-konsultatsii.js"></script>
+<script src="/assets/menu-particles.js"></script>
 </body>
 </html>
