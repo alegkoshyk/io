@@ -12,7 +12,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --space:#0B1829;--space-light:#0f2038;--space-mid:#142a47;--space-surface:#1a3355;
-  --light:#F2F0DB;--light-dim:#d4d2be;--light-muted:#8a897a;--light-faint:#4a4940;
+  --light:#F2F0DB;--light-dim:#d4d2be;--light-muted:#a8a798;--light-faint:#4a4940;
   --accent:#8B5CF6;--accent-dim:rgba(139,92,246,.5);--accent-glow:rgba(139,92,246,.15);--accent-bright:#A78BFA;
   --accent2:#6366F1;--accent2-glow:rgba(99,102,241,.12);
   --pink:#E879F9;--pink-dim:rgba(232,121,249,.4);
@@ -37,7 +37,7 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 @keyframes drawSvg{to{stroke-dashoffset:0}}
 .preloader-text{font-family:var(--sans);font-size:clamp(.8rem,2vw,1rem);font-weight:500;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);overflow:hidden}
 .preloader-text span{display:inline-block;opacity:0;transform:translateY(20px);animation:letterIn .4s forwards}
-.preloader-skip{margin-top:50px;background:none;border:1px solid var(--accent-dim);color:var(--accent);font-family:var(--sans);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;padding:10px 32px;border-radius:var(--radius-pill);cursor:pointer;transition:all .3s;opacity:0;animation:fadeIn 1s 2s forwards}
+.preloader-skip{margin-top:50px;background:none;border:1px solid var(--accent-dim);color:var(--accent);font-family:var(--sans);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;padding:10px 32px;border-radius:var(--radius-pill);cursor:pointer;transition:all .3s;opacity:0;animation:fadeIn .5s .5s forwards}
 .preloader-skip:hover{background:var(--accent);color:var(--space)}
 @keyframes letterIn{to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{to{opacity:1}}
@@ -77,10 +77,12 @@ h3{font-family:var(--serif);font-size:1.5rem;font-weight:500;color:var(--light);
 p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 
 /* ====== BUTTONS ====== */
-.btn{display:inline-block;padding:16px 44px;font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .5s cubic-bezier(.22,1,.36,1);border-radius:var(--radius-pill)}
+.btn{display:inline-block;padding:16px 44px;will-change:transform;font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .5s cubic-bezier(.22,1,.36,1);border-radius:var(--radius-pill)}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-primary:hover{background:var(--accent-bright);transform:translateY(-2px);box-shadow:0 12px 50px var(--accent-glow)}
 .btn-outline{background:transparent;color:var(--light);border:1px solid rgba(242,240,219,.2);border-radius:var(--radius-pill)}
+.btn-text-link{background:none;border:none;color:var(--accent-bright);font-size:.82rem;padding:12px 20px;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(167,139,250,.3)}
+.btn-text-link:hover{text-decoration-color:var(--accent-bright);transform:translateY(-1px)}
 .btn-outline:hover{border-color:var(--light-dim);background:rgba(242,240,219,.05);transform:translateY(-2px)}
 .btn-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:36px}
 
@@ -105,9 +107,9 @@ p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 .hero-role{font-family:var(--serif);font-size:1.05rem;font-weight:300;color:var(--light-muted);margin-bottom:40px;opacity:0;animation:fadeUp 1s .5s forwards}
 .hero h1{opacity:0;animation:fadeUp 1s .7s forwards}.hero h1 em{font-style:italic;color:var(--accent-bright)}
 .hero-text{font-size:1.12rem;line-height:1.9;color:var(--light-dim);max-width:600px;opacity:0;animation:fadeUp 1s .9s forwards}
-.hero-quote{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--light);margin:40px 0;padding:24px 28px;border-left:3px solid var(--accent-dim);line-height:1.7;opacity:0;animation:fadeUp 1s 1.1s forwards;background:rgba(139,92,246,.04);border-radius:0 var(--radius) var(--radius) 0}
-.hero .btn-group{opacity:0;animation:fadeUp 1s 1.3s forwards}
-.trust-bar{margin-top:60px;padding-top:28px;border-top:1px solid var(--border);font-size:.82rem;color:var(--light-muted);letter-spacing:.02em;opacity:0;animation:fadeUp 1s 1.5s forwards}
+.hero-quote{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--light);margin:40px 0;padding:24px 28px;border-left:3px solid var(--accent-dim);line-height:1.7;opacity:0;animation:fadeUp 1s .9s forwards;background:rgba(139,92,246,.04);border-radius:0 var(--radius) var(--radius) 0}
+.hero .btn-group{opacity:0;animation:fadeUp 1s 1.1s forwards}
+.trust-bar{margin-top:60px;padding-top:28px;border-top:1px solid var(--border);font-size:.82rem;color:var(--light-muted);letter-spacing:.02em;opacity:0;animation:fadeUp 1s 1.3s forwards}
 .trust-bar span{color:var(--accent-dim);margin:0 10px}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
@@ -122,7 +124,7 @@ p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 .question-list{margin-top:50px}
 .question-item{font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;font-style:italic;color:var(--light-muted);padding:22px 20px 22px 30px;border-bottom:1px solid var(--border);transition:all .5s;cursor:default;position:relative;border-radius:var(--radius);margin-bottom:4px}
 .question-item::before{content:'';position:absolute;left:10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent-dim);transition:all .4s}
-.question-item:hover{color:var(--light);padding-left:40px;background:rgba(139,92,246,.04)}
+.question-item:hover{color:var(--light);transform:translateX(10px);background:rgba(139,92,246,.04)}
 .question-item:hover::before{background:var(--accent);box-shadow:0 0 16px var(--accent-glow)}
 .question-close{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--light-muted);margin-top:40px}
 
@@ -134,7 +136,7 @@ p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 .positioning{background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
 .positioning-content{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:2}
 .positioning-quote{font-family:var(--display);font-size:clamp(1.7rem,3vw,2.5rem);font-weight:400;font-style:italic;color:var(--light);line-height:1.4}
-.text-shimmer{background:linear-gradient(120deg,var(--accent-dim),var(--accent-bright),var(--accent-dim));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+.text-shimmer{background:linear-gradient(120deg,var(--accent-dim),var(--accent-bright),var(--accent-dim));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear forwards}
 @keyframes shimmer{to{background-position:200% center}}
 .text-accent{color:var(--accent-bright)}
 
@@ -165,6 +167,8 @@ p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 .format-card:nth-child(1) .format-number{color:rgba(139,92,246,.07)}.format-card:nth-child(2) .format-number{color:rgba(99,102,241,.07)}.format-card:nth-child(3) .format-number{color:rgba(232,121,249,.07)}
 .format-title{font-family:var(--display);font-size:1.45rem;margin-bottom:18px}
 .format-card:nth-child(1) .format-title{color:var(--accent-bright)}.format-card:nth-child(2) .format-title{color:var(--accent2)}.format-card:nth-child(3) .format-title{color:var(--pink)}
+.format-price{font-family:var(--display);font-size:1.6rem;color:var(--light);margin-bottom:28px;line-height:1}
+.format-price span{font-family:var(--sans);font-size:.78rem;color:var(--light-muted);font-weight:300;margin-left:4px}
 .format-desc{color:var(--light-dim);font-size:.96rem;line-height:1.8;margin-bottom:24px}
 .format-features{list-style:none;margin-bottom:32px}
 .format-features li{position:relative;padding-left:18px;color:var(--light-muted);font-size:.9rem;margin-bottom:8px}
@@ -204,9 +208,10 @@ p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 .faq-question{width:100%;background:none;border:none;color:var(--light);font-family:var(--serif);font-size:1.15rem;font-weight:400;text-align:left;padding:26px 40px 26px 20px;cursor:pointer;position:relative;transition:color .3s,background .3s;border-radius:var(--radius)}
 .faq-question:hover{color:var(--accent);background:rgba(139,92,246,.04)}
 .faq-question::after{content:'+';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:1.3rem;font-weight:300;color:var(--light-faint);transition:all .3s}
+.faq-item.active .faq-answer-inner{opacity:1;transform:translateY(0)}
 .faq-item.active .faq-question::after{content:'−';color:var(--accent)}
-.faq-answer{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.22,1,.36,1)}
-.faq-answer-inner{padding:0 20px 26px;color:var(--light-dim);font-size:.96rem;line-height:1.85}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .6s cubic-bezier(.16,1,.3,1)}
+.faq-answer-inner{padding:0 20px 26px;color:var(--light-dim);font-size:.96rem;line-height:1.85;opacity:0;transform:translateY(-8px);transition:opacity .4s .1s,transform .4s .1s}
 
 /* ====== FINAL ====== */
 .final-section{text-align:center;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--space) 0%,#060e18 100%)}
@@ -240,6 +245,16 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
   .hero-image{display:none}
   .visual-divider{height:180px}
 }
+
+/* ====== FOCUS STATES ====== */
+*:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.btn:focus-visible{outline-offset:4px}
+.faq-question:focus-visible{outline-offset:-2px}
+/* ====== NAV OVERLAY ====== */
+.nav-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;opacity:0;visibility:hidden;transition:all .3s}
+.nav-overlay.show{opacity:1;visibility:visible}
+/* ====== SCROLL PROGRESS ====== */
+.scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent-bright));z-index:1001;width:0%;transition:none;pointer-events:none}
 </style>
 </head>
 <body class="loading">
@@ -256,6 +271,8 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
   <button class="preloader-skip" onclick="closePreloader()">Пропустити</button>
 </div>
 
+<div class="scroll-progress" id="scrollProgress"></div>
+
 <!-- THREE.JS BG -->
 <canvas id="three-bg"></canvas>
 
@@ -266,6 +283,7 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 <a href="#formats">Формати</a><a href="#education">Навчання</a><a href="#principles">Принципи</a><a href="#faq">FAQ</a>
 <a href="#final" class="nav-cta">Заявка</a>
 </div>
+<div class="nav-overlay" id="navOverlay"></div>
 <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
@@ -349,9 +367,9 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 <section class="section-pad" id="formats"><div class="section-wide">
 <div class="reveal" style="text-align:center"><div class="label">Формати</div><h2>Обери формат, який відповідає<br>глибині твого запиту</h2></div>
 <div class="formats-grid">
-<div class="format-card reveal rd1"><div class="format-number">01</div><div class="format-title">Персональне наставництво</div><p class="format-desc">Глибока індивідуальна робота для тих, хто готовий вирости як Особистість — і через це змінити масштаб свого життя, рішень і бізнесу.</p><ul class="format-features"><li>2 зустрічі на місяць (60+ хв)</li><li>підтримка між зустрічами</li><li>6 або 12 місяців роботи</li><li>від 7 000€ за 6 місяців</li></ul><a href="#final" class="btn btn-primary">Подати заявку</a></div>
-<div class="format-card reveal rd2"><div class="format-number">02</div><div class="format-title">Разові консультації</div><p class="format-desc">Одна сильна розмова, яка може дати ясність, змінити кут мислення або допомогти прийняти рішення, що вплине на подальший шлях.</p><ul class="format-features"><li>онлайн, 90 хвилин</li><li>повний фокус на запиті</li><li>запис залишається у тебе</li><li>800€ за консультацію</li></ul><a href="#final" class="btn btn-outline">Записатися</a></div>
-<div class="format-card reveal rd3"><div class="format-number">03</div><div class="format-title">Друг Другу</div><p class="format-desc">Персональна рада директорів твого життя і бізнесу. Мале коло сильних людей — джерело чесності, довіри, мислення і росту.</p><ul class="format-features"><li>до 10 людей у групі</li><li>2 зустрічі на місяць</li><li>6 місяців роботи</li><li>2 400€ за 6 місяців</li></ul><a href="#final" class="btn btn-outline">Дізнатися більше</a></div>
+<div class="format-card reveal rd1"><div class="format-number">01</div><div class="format-title">Персональне наставництво</div><p class="format-desc">Глибока індивідуальна робота для тих, хто готовий вирости як Особистість — і через це змінити масштаб свого життя, рішень і бізнесу.</p><ul class="format-features"><li>2 зустрічі на місяць (60+ хв)</li><li>підтримка між зустрічами</li><li>6 або 12 місяців роботи</li></ul><div class="format-price">від 7 000€ <span>/ 6 місяців</span></div><a href="#final" class="btn btn-primary">Подати заявку</a></div>
+<div class="format-card reveal rd2"><div class="format-number">02</div><div class="format-title">Разові консультації</div><p class="format-desc">Одна сильна розмова, яка може дати ясність, змінити кут мислення або допомогти прийняти рішення, що вплине на подальший шлях.</p><ul class="format-features"><li>онлайн, 90 хвилин</li><li>повний фокус на запиті</li><li>запис залишається у тебе</li></ul><div class="format-price">800€ <span>/ сесія</span></div><a href="#final" class="btn btn-outline">Записатися</a></div>
+<div class="format-card reveal rd3"><div class="format-number">03</div><div class="format-title">Друг Другу</div><p class="format-desc">Персональна рада директорів твого життя і бізнесу. Мале коло сильних людей — джерело чесності, довіри, мислення і росту.</p><ul class="format-features"><li>до 10 людей у групі</li><li>2 зустрічі на місяць</li><li>6 місяців роботи</li></ul><div class="format-price">2 400€ <span>/ 6 місяців</span></div><a href="#final" class="btn btn-outline">Дізнатися більше</a></div>
 </div></div></section>
 
 <!-- EDUCATION -->
@@ -363,11 +381,7 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 <div class="course-card reveal rd3"><div class="course-tag">Незабаром</div><div class="course-title">«365 днів щастя»</div><p class="course-desc">Система щоденної роботи з собою. Практики, усвідомлення і фокус, які допомагають змінювати життя глибоко.</p></div>
 </div></div></section>
 
-<!-- CASES -->
-<section class="section-pad"><div class="section-narrow">
-<div class="reveal" style="text-align:center"><div class="label">Результати</div><h2>Це не історії успіху. Це моменти, коли люди почали жити по-справжньому.</h2></div>
-<div class="cases-placeholder reveal rd1"><p>Тут будуть реальні історії людей,<br>які прийняли складні рішення, вийшли на новий рівень<br>і повернули себе справжнього.</p><div class="sep sep-center" style="margin:20px auto 0"></div><p style="font-size:.85rem;color:var(--light-faint);font-style:normal">Розділ наповнюється</p></div>
-</div></section>
+<!-- CASES: hidden until content ready -->
 
 <!-- PRINCIPLES -->
 <section class="principles section-pad" id="principles"><div class="section-narrow"><div class="principles-content reveal">
@@ -401,11 +415,11 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 <p style="color:var(--accent-bright);font-family:var(--serif);font-size:1.15rem;font-style:italic;margin-top:28px">Якщо ти дочитав до цього місця — значить щось вже відгукнулось.</p>
 <div class="btn-group" style="justify-content:center">
 <a href="#" class="btn btn-primary">Подати заявку на наставництво</a>
-<a href="#" class="btn btn-outline">Записатися на консультацію</a>
-<a href="#" class="btn btn-outline">Дізнатися про «Друг Другу»</a>
+<a href="#" class="btn btn-text-link">Записатися на консультацію</a>
+<a href="#" class="btn btn-text-link">Дізнатися про «Друг Другу»</a>
 </div></div></section>
 
-<footer><div class="footer-brand">personality.engineering</div><p class="footer-copy">&copy; 2024 Юрій Дмитрієв — Інженерія Особистості</p></footer>
+<footer><div class="footer-brand">personality.engineering</div><p class="footer-copy">&copy; 2025 Юрій Дмитрієв — Інженерія Особистості</p></footer>
 
 <script src="/assets/particles.js"></script>
 <script>
@@ -416,9 +430,9 @@ document.querySelectorAll('#preloader svg path').forEach(function(path) {
   path.style.strokeDasharray = len;
   path.style.strokeDashoffset = len;
   if (path.classList.contains('dot-path')) {
-    path.style.animation = 'drawSvg 1.2s ' + (3.5) + 's cubic-bezier(.4,0,.2,1) forwards';
+    path.style.animation = 'drawSvg 1s ' + (2.2) + 's cubic-bezier(.4,0,.2,1) forwards';
   } else {
-    path.style.animation = 'drawSvg 5s cubic-bezier(.25,.1,.25,1) forwards';
+    path.style.animation = 'drawSvg 3s cubic-bezier(.25,.1,.25,1) forwards';
   }
 });
 
@@ -427,7 +441,7 @@ const ptEl = document.getElementById('preloaderText');
 preloaderText.split('').forEach((ch, i) => {
   const span = document.createElement('span');
   span.textContent = ch === ' ' ? '\u00A0' : ch;
-  span.style.animationDelay = (2 + i * 0.06) + 's';
+  span.style.animationDelay = (1.5 + i * 0.05) + 's';
   ptEl.appendChild(span);
 });
 
@@ -437,17 +451,26 @@ function closePreloader() {
   document.body.classList.remove('loading');
 }
 // Wait for main path (5s) + dots (1.2s after 3.5s = 4.7s) + pause
-setTimeout(closePreloader, 7000);
+setTimeout(closePreloader, 4500);
 
 // Particles loaded from external file
+
+// ====== SCROLL PROGRESS ======
+const scrollBar = document.getElementById('scrollProgress');
 
 // ====== NAV ======
 const nav = document.getElementById('mainNav');
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
-menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('show'); });
-navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menuToggle.classList.remove('active'); navLinks.classList.remove('show'); }));
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60);
+  const maxSc = document.documentElement.scrollHeight - innerHeight;
+  if (maxSc > 0) scrollBar.style.width = (scrollY / maxSc * 100) + '%');
+const navOverlay = document.getElementById('navOverlay');
+function toggleNav() { menuToggle.classList.toggle('active'); navLinks.classList.toggle('show'); navOverlay.classList.toggle('show'); }
+function closeNav() { menuToggle.classList.remove('active'); navLinks.classList.remove('show'); navOverlay.classList.remove('show'); }
+menuToggle.addEventListener('click', toggleNav);
+navOverlay.addEventListener('click', closeNav);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
 
 // ====== REVEAL ======
 const reveals = document.querySelectorAll('.reveal');
@@ -481,15 +504,24 @@ window.addEventListener('scroll', () => {
 
 // ====== COUNTER ======
 const sn = document.querySelectorAll('.stat-number');
-const co = new IntersectionObserver(e => {
-  e.forEach(e => {
-    if (!e.isIntersecting) return;
-    const el = e.target, t = el.textContent;
+const co = new IntersectionObserver(entries => {
+  entries.forEach((entry, idx) => {
+    if (!entry.isIntersecting) return;
+    const el = entry.target, t = el.textContent;
     if (t === '\u221E') return;
     const n = parseInt(t); if (isNaN(n)) return;
     const sf = t.replace(/[0-9]/g, '');
-    let c = 0; const st = Math.ceil(n/35);
-    const tm = setInterval(() => { c += st; if (c >= n) { c = n; clearInterval(tm); } el.textContent = c + sf; }, 35);
+    const dur = 1800;
+    setTimeout(() => {
+      const s = performance.now();
+      function step(now) {
+        const p = Math.min((now - s) / dur, 1);
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(e * n) + sf;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }, idx * 150);
     co.unobserve(el);
   });
 }, { threshold: .5 });
