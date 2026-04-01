@@ -462,9 +462,11 @@ const scrollBar = document.getElementById('scrollProgress');
 const nav = document.getElementById('mainNav');
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
-window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60);
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', scrollY > 60);
   const maxSc = document.documentElement.scrollHeight - innerHeight;
-  if (maxSc > 0) scrollBar.style.width = (scrollY / maxSc * 100) + '%');
+  if (maxSc > 0) scrollBar.style.width = (scrollY / maxSc * 100) + '%';
+}, { passive: true });
 const navOverlay = document.getElementById('navOverlay');
 function toggleNav() { menuToggle.classList.toggle('active'); navLinks.classList.toggle('show'); navOverlay.classList.toggle('show'); }
 function closeNav() { menuToggle.classList.remove('active'); navLinks.classList.remove('show'); navOverlay.classList.remove('show'); }
