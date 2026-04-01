@@ -223,6 +223,17 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 .for-who-item:nth-child(5).visible .for-who-icon-wrap svg *{transition-delay:.48s}
 .for-who-item:nth-child(6).visible .for-who-icon-wrap svg *{transition-delay:.6s}
 
+/* ====== SECTION IMAGE ====== */
+.section-image{position:relative;width:100%;height:clamp(250px,35vw,420px);overflow:hidden;border-radius:var(--radius-lg);margin-top:50px;border:1px solid var(--border)}
+.section-image img{width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(1.1);transition:all .6s}
+.section-image:hover img{filter:brightness(.8) saturate(1.2);transform:scale(1.03)}
+.section-image::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(11,24,41,.7) 100%);pointer-events:none}
+.section-image-caption{position:absolute;bottom:24px;left:28px;z-index:1;font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--light-dim);max-width:400px;line-height:1.5}
+
+/* Inline image (beside text) */
+.section-image-inline{border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);height:100%;min-height:300px}
+.section-image-inline img{width:100%;height:100%;object-fit:cover;filter:brightness(.75) saturate(1.1)}
+
 /* ====== TEXT ACCENTS ====== */
 .text-shimmer{background:linear-gradient(120deg,var(--accent-dim),var(--accent-bright),var(--accent-dim));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear forwards}
 .text-accent{color:var(--accent-bright)}
