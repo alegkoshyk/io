@@ -259,7 +259,7 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 
 /* ====== LIGHT THEME ====== */
 [data-theme="light"]{
-  --space:#F8F7F4;--space-light:#EFEDE8;--space-mid:#E5E2DB;--space-surface:#DDD9D0;
+  --space:#dde3fe;--space-light:#d0d8f8;--space-mid:#c3cdf2;--space-surface:#b6c2ec;
   --light:#1C1C1E;--light-dim:#3A3A3C;--light-muted:#6B6B6E;--light-faint:#9A9A9D;
   --accent:#7C3AED;--accent-dim:rgba(124,58,237,.4);--accent-glow:rgba(124,58,237,.1);--accent-bright:#6D28D9;
   --accent2:#4F46E5;--accent2-glow:rgba(79,70,229,.1);
