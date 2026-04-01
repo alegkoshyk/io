@@ -14,12 +14,15 @@
 .hero{text-align:center}
 .hero-content{max-width:780px;margin:0 auto}
 
+/* Frosted glass section style */
+.glass-section{background:rgba(15,32,56,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+
 /* Questions */
 .questions-section{background:transparent;position:relative}
 .question-list{margin-top:50px}
-.question-item{font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;font-style:italic;color:var(--light-muted);padding:22px 20px 22px 30px;border-bottom:1px solid var(--border);transition:all .5s;cursor:default;position:relative;border-radius:var(--radius);margin-bottom:4px}
+.question-item{font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;font-style:italic;color:var(--light-muted);padding:22px 20px 22px 30px;border:1px solid var(--border);background:rgba(15,32,56,.3);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);transition:all .5s;cursor:default;position:relative;border-radius:var(--radius);margin-bottom:8px}
 .question-item::before{content:'';position:absolute;left:10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent-dim);transition:all .4s}
-.question-item:hover{color:var(--light);transform:translateX(10px);background:rgba(139,92,246,.04)}
+.question-item:hover{color:var(--light);transform:translateX(10px);background:rgba(20,42,71,.5);border-color:var(--border-hover)}
 .question-item:hover::before{background:var(--accent);box-shadow:0 0 16px var(--accent-glow)}
 .question-close{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--light-muted);margin-top:40px}
 
@@ -34,27 +37,25 @@
 
 /* Authority */
 .authority{background:transparent;position:relative;overflow:hidden}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin:60px 0}
-.stat-item{text-align:center}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:60px 0}
+.stat-item{text-align:center;padding:32px 16px;background:rgba(15,32,56,.4);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .4s}
+.stat-item:hover{border-color:var(--border-hover);transform:translateY(-4px)}
 .stat-number{font-family:var(--display);font-size:clamp(2.4rem,4vw,3.6rem);font-weight:400;color:var(--light);line-height:1;margin-bottom:8px}
 .stat-label{font-size:.82rem;color:var(--light-muted);letter-spacing:.03em}
 .stat-item:nth-child(1) .stat-number{color:var(--accent)}.stat-item:nth-child(3) .stat-number{color:var(--anahata)}
-.authority-bio{max-width:680px;margin:0 auto;text-align:center}.authority-bio p{font-size:1.06rem;line-height:1.9}
+.authority-bio{max-width:680px;margin:0 auto;text-align:center;padding:40px;background:rgba(15,32,56,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius-lg)}.authority-bio p{font-size:1.06rem;line-height:1.9}
 
 /* Education */
 .education{border-top:none;border-bottom:none;background:transparent}
 
-/* Cases */
-.cases-placeholder{text-align:center;padding:80px 40px;border:1px solid var(--border);margin-top:40px;background:rgba(15,32,56,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);position:relative;overflow:hidden;border-radius:var(--radius-lg)}
-.cases-placeholder p{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--light-muted);position:relative;z-index:1}
-
 /* Principles */
 .principles{position:relative;overflow:hidden}
-.principles-content{max-width:680px;margin:0 auto;text-align:center;position:relative;z-index:2}
+.principles-content{max-width:680px;margin:0 auto;text-align:center;position:relative;z-index:2;padding:48px 40px;background:rgba(15,32,56,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:var(--radius-lg)}
 .principles-content p{font-family:var(--serif);font-size:1.15rem;line-height:2;color:var(--light-dim)}
 
 /* FAQ section */
 .faq-section{border-top:none;background:transparent}
+.faq-list{background:rgba(15,32,56,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius-lg);padding:8px}
 
 /* For-who 2-col on index */
 .for-who-list{grid-template-columns:1fr 1fr}
@@ -63,6 +64,7 @@
 @media(max-width:1024px){
   .stats-row{grid-template-columns:repeat(2,1fr)}
   .positioning-content{grid-template-columns:1fr;gap:40px}
+  .principles-content{padding:36px 28px}
 }
 </style>
 </head>
@@ -139,7 +141,7 @@
 </div></div></section>
 
 <!-- POSITIONING -->
-<section class="positioning section-pad">
+<section class="positioning section-pad glass-section">
 <div class="section-wide"><div class="positioning-content">
 <div class="reveal"><div class="positioning-quote">Я не навчаю — я допомагаю згадати, хто ти є <span class="text-shimmer">насправді</span></div></div>
 <div class="reveal rd2">
@@ -218,7 +220,6 @@
 
 <!-- FINAL -->
 <section class="final-section section-pad" id="final">
-<div class="final-bg"><img src="/assets/img/transform-cosmic.png" alt="" loading="lazy"></div>
 <div class="orb-3"></div>
 <div class="final-content reveal">
 <div class="label">Наступний крок</div><h2>Можливо, ти вже відчуваєш це всередині</h2><div class="sep sep-center"></div>
