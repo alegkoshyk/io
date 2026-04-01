@@ -10,9 +10,9 @@
 <style>
 /* ====== NAVCHANNYA PAGE-SPECIFIC ====== */
 /* What is */
-.what-section{background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 50%,var(--space) 100%)}
+.what-section{background:transparent}
 .what-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
-.what-pill{padding:24px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .4s}
+.what-pill{padding:24px;background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .4s}
 .what-pill:hover{border-color:var(--accent-dim);transform:translateY(-4px)}
 .what-pill-word{font-family:var(--serif);font-size:1.3rem;color:var(--light);margin-bottom:6px}
 .what-pill-desc{font-size:.88rem;color:var(--light-muted);margin:0}
@@ -20,7 +20,7 @@
 /* Courses (detailed blocks) */
 .courses-section{position:relative;overflow:hidden}
 .courses-section .courses-grid{display:grid;gap:40px;margin-top:60px;grid-template-columns:1fr}
-.course-block{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:start;padding:50px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .5s;position:relative;overflow:hidden}
+.course-block{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:start;padding:50px;background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .5s;position:relative;overflow:hidden}
 .course-block::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:var(--radius-lg) 0 0 var(--radius-lg)}
 .course-block:nth-child(1)::before{background:var(--accent)}
 .course-block:nth-child(2)::before{background:#8B5CF6}
@@ -48,7 +48,7 @@
 .course-cta-wrap{margin-top:24px}
 
 /* Connection */
-.connection{background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.connection{background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
 .connection::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,var(--accent-glow),transparent 50%);pointer-events:none}
 .conn-flow{display:flex;align-items:center;justify-content:center;gap:0;margin-top:50px;position:relative;z-index:2;flex-wrap:wrap}
 .conn-step{text-align:center;padding:28px 24px;flex:1;min-width:180px}
@@ -60,8 +60,8 @@
 
 /* Who */
 .who-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:40px}
-.who-card{padding:24px 28px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius);transition:all .4s;cursor:default}
-.who-card:hover{border-color:var(--accent-dim);transform:translateY(-3px);background:var(--space-mid)}
+.who-card{padding:24px 28px;background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius);transition:all .4s;cursor:default}
+.who-card:hover{border-color:var(--accent-dim);transform:translateY(-3px);background:rgba(20,42,71,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .who-card p{margin:0;color:var(--light-dim);font-size:1rem}
 .who-card .who-icon{display:inline-block;margin-right:10px;color:var(--accent)}
 
@@ -69,14 +69,14 @@
 .recommend{position:relative;overflow:hidden}
 .recommend::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,var(--accent-glow),transparent 50%);pointer-events:none}
 .rec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:44px;position:relative;z-index:2}
-.rec-card{padding:36px 28px;background:var(--space-light);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .4s;text-align:center}
+.rec-card{padding:36px 28px;background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--border);border-radius:var(--radius-lg);transition:all .4s;text-align:center}
 .rec-card:hover{border-color:var(--border-hover);transform:translateY(-5px)}
 .rec-condition{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:var(--light-muted);margin-bottom:16px}
 .rec-arrow{font-size:1.2rem;color:var(--accent-dim);margin-bottom:12px;display:block}
 .rec-course{font-family:var(--display);font-size:1.2rem;color:var(--light)}
 
 /* Next steps */
-.next-steps{background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.next-steps{background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .next-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
 .next-card{padding:32px 24px;border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;transition:all .4s;background:var(--space)}
 .next-card:hover{border-color:var(--border-hover);transform:translateY(-4px)}
@@ -316,32 +316,8 @@ reveals.forEach(el=>obs.observe(el));
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}})});
 window.addEventListener('scroll',()=>{const s=scrollY,h=document.querySelector('.hero-content');if(h&&s<innerHeight){h.style.transform=`translateY(${s*.1}px)`;h.style.opacity=1-s/(innerHeight*.85)}});
 
-(function(){
-  const canvas=document.getElementById('three-bg');
-  if(!window.THREE){canvas.style.display='none';return}
-  const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true});
-  renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
-  const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,1,2000);camera.position.z=500;
-  const offCanvas=document.createElement('canvas');const RES=160;offCanvas.width=RES;offCanvas.height=RES*(795/714);const offCtx=offCanvas.getContext('2d');
-  const img=new Image();
-  const svgBlob=new Blob([`<svg viewBox="0 0 714 795" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M388.515 730.355C406.274 712.516 406.274 683.593 388.515 665.754C370.755 647.915 341.961 647.915 324.201 665.754C306.442 683.593 306.442 712.516 324.201 730.355C341.961 748.195 370.755 748.195 388.515 730.355Z"/><path fill="white" d="M367.98 447.263C395.209 440.807 412.072 413.402 405.646 386.052C399.219 358.701 371.936 341.762 344.708 348.217C317.479 354.673 300.616 382.078 307.042 409.428C313.469 436.779 340.752 453.718 367.98 447.263Z"/><path fill="white" d="M388.514 130.137C406.273 112.298 406.273 83.3749 388.514 65.5356C370.754 47.6964 341.96 47.6964 324.201 65.5356C306.441 83.3749 306.441 112.298 324.201 130.137C341.96 147.976 370.754 147.976 388.514 130.137Z"/><path fill="white" d="M519.58 79C508.16 73 496.377 67.7 484.285 63C487.266 74.1 488.859 85.8 488.859 97.8C488.832 100.6C488.642 109.9 487.504 119 485.51 127.7C483.553 136.3 480.772 144.5 477.255 152.4C473.802 160.1 469.634 167.4 464.843 174.3C459.705 181.6 453.84 188.4 447.363 194.6C436.469 204.9 423.834 213.4 409.937 219.6L373.639 195C386.512 192.7 398.523 187.9 409.141 181C417.742 175.5 425.433 168.7 431.932 160.8C437.406 154.2 442.035 146.9 445.656 139C449.2 131.2 451.77 122.9 453.217 114.3C454.106 108.9 454.572 103.4 454.572 97.8C454.382 90.7 454.008 87.2C452.566 73.7 448.398 61 442.068 49.6C425.244 19.5 393.162-0.8 356.354-0.8C319.546-0.8 287.828 19.3 270.934 49.1C264.533 60.4 260.289 73.1 258.766 86.6C258.348 90.3 258.137 94 258.137 97.8C258.57 108.5 259.4 113.7C260.793 122.4 263.318 130.7 266.814 138.4C270.381 146.4 274.972 153.7 280.408 160.4C286.863 168.3 294.511 175.2 303.075 180.7L305.687 182.4L358.967 218.5L375.26 229.6L410.669 253.6L435.07 270.2C437.585 271.8 440.003 273.4 442.366 275.1C479.992 302.3 504.464 346.7 504.464 396.7C504.464 459.8 465.667 513.7 410.75 535.8L379.357 515.1C434.116 504.3 475.428 455.9 475.428 397.7C475.428 354.8 452.908 317.1 419.081 296L367.297 262.5L344.094 247.5C344.094 247.5 278.365 207.1 264.755 194C258.316 187.8 252.495 181 247.394 173.6C242.641 166.8 238.527 159.4 235.118 151.7C231.643 143.8 228.912 135.5 227.004 126.9C225.063 118.2 223.979 109.1 223.844 99.8C223.828 85.5 225.492 73.6 228.608 62.3C216.483 66.9 204.673 72.2 193.22 78.1C77.556 137.4-1.654 258.3-1.654 397.7C-1.654 537.2 77.604 658.1 193.35 717.4C204.5 723.1 215.985 728.3 227.768 732.8C224.635 721.5 222.96 709.5 222.96 697.2C222.977 695.2C223.112 685.9 224.191 676.8 226.137 668.1C228.039 659.5 230.776 651.2 234.25 643.3C237.329 636.3 240.993 629.7 245.177 623.4L273.839 642.9C270.966 647.3 268.435 652 266.283 656.8C262.836 664.6 260.359 672.9 259.015 681.6C258.24 686.6 257.839 691.7 257.839 696.9C258.077 704.9 258.543 708.7C260.159 722.3 264.522 735.1 271.058 746.4C288.061 775.8 319.758 795.6 356.056 795.6C392.355 795.6 424.295 775.6 441.244 746C447.737 734.7 452.051 721.9 453.612 708.4C454.051 704.6 454.268 700.8 454.268 696.9C453.845 686.3 453.038 681.2C451.661 672.5 449.146 664.2 445.667 656.5C442.116 648.5 437.553 641.2 432.149 634.5C426.501 627.6 419.932 621.4 412.626 616.2L409.666 614.2C407.742 613 405.802 611.8 403.818 610.7L352.999 575.6L337.812 565.3L302.137 540.9L279.779 525.7C274.397 522.5 269.237 519 264.316 515.2C229.101 487.8 206.445 444.9 206.445 396.7C206.445 333.8 245.085 280 299.834 257.8L333.872 280.2C278.852 290.8 237.264 339.4 237.264 397.7C258.24 475.7 290.105 497.2L293.373 499.3H293.384L343.996 532.2L365.357 546.1C365.357 546.1 430.073 585.7 443.428 597.6C451.314 604.7 458.36 612.7 464.393 621.4C469.146 628.3 473.26 635.6 476.675 643.3C480.149 651.2 482.881 659.5 484.789 668.1C486.735 676.8 487.819 685.9 487.949 695.2C487.965 697.2C487.965 709.5 486.29 721.5 483.157 732.8C495.613 728 507.732 722.6 519.477 716.5C634.188 656.8 712.579 536.5 712.579 397.7C712.579 259 634.242 138.8 519.586 79.1Z"/></svg>`],{type:'image/svg+xml'});
-  const url=URL.createObjectURL(svgBlob);
-  img.onload=function(){
-    offCtx.drawImage(img,0,0,RES,RES*(795/714));
-    const id=offCtx.getImageData(0,0,offCanvas.width,offCanvas.height);
-    const pts=[];const step=3;
-    for(let y=0;y<offCanvas.height;y+=step)for(let x=0;x<offCanvas.width;x+=step){const i=(y*offCanvas.width+x)*4;if(id.data[i]>128)pts.push((x-offCanvas.width/2)*2.5,-(y-offCanvas.height/2)*2.5,(Math.random()-.5)*60)}
-    const N=pts.length/3;const geo=new THREE.BufferGeometry();
-    const pos=new Float32Array(pts);const cols=new Float32Array(N*3);const orig=new Float32Array(pts);
-    for(let i=0;i<N;i++){const r=Math.random();if(r<.4){cols[i*3]=.204;cols[i*3+1]=.827;cols[i*3+2]=.6}else if(r<.7){cols[i*3]=.545;cols[i*3+1]=.361;cols[i*3+2]=.965}else{cols[i*3]=.984;cols[i*3+1]=.749;cols[i*3+2]=.141}}
-    geo.setAttribute('position',new THREE.BufferAttribute(pos,3));geo.setAttribute('color',new THREE.BufferAttribute(cols,3));
-    const mat=new THREE.PointsMaterial({size:1.3,vertexColors:true,transparent:true,opacity:.2,blending:THREE.AdditiveBlending,depthWrite:false,sizeAttenuation:true});
-    const mesh=new THREE.Points(geo,mat);scene.add(mesh);
-    let t=0;
-    function animate(){requestAnimationFrame(animate);t+=.003;const p=geo.attributes.position.array;for(let i=0;i<N;i++){p[i*3]=orig[i*3]+Math.sin(t+i*.012)*2.5;p[i*3+1]=orig[i*3+1]+Math.cos(t+i*.018)*2.5;p[i*3+2]=orig[i*3+2]+Math.sin(t*.4+i*.025)*4}geo.attributes.position.needsUpdate=true;mesh.rotation.z=Math.sin(t*.25)*.015;renderer.render(scene,camera)}animate();URL.revokeObjectURL(url)};
-  img.src=url;
-  window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-})();
+// Particles loaded from external file
 </script>
+<script src="/assets/particles.js"></script>
 </body>
 </html>
