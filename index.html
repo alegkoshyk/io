@@ -7,7 +7,7 @@
 <meta name="description" content="Персональне наставництво для підприємців. Масштаб життя починається з масштабу особистості.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/global.css?v=4">
+<link rel="stylesheet" href="/assets/global.css?v=5">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 /* ====== INDEX PAGE-SPECIFIC ====== */
@@ -60,6 +60,15 @@
 /* For-who 2-col on index */
 .for-who-list{grid-template-columns:1fr 1fr}
 @media(max-width:768px){.for-who-list{grid-template-columns:1fr}}
+
+/* Light theme overrides for index */
+[data-theme="light"] .question-item{background:rgba(255,255,255,.45);border-color:rgba(28,28,30,.06)}
+[data-theme="light"] .question-item:hover{background:rgba(255,255,255,.65);border-color:rgba(28,28,30,.12)}
+[data-theme="light"] .stat-item{background:rgba(255,255,255,.5);border-color:rgba(28,28,30,.06)}
+[data-theme="light"] .authority-bio{background:rgba(255,255,255,.45);border-color:rgba(28,28,30,.06)}
+[data-theme="light"] .principles-content{background:rgba(255,255,255,.4);border-color:rgba(28,28,30,.06)}
+[data-theme="light"] .faq-list{background:rgba(255,255,255,.35);border-color:rgba(28,28,30,.06)}
+[data-theme="light"] .glass-section{background:rgba(255,255,255,.25);border-color:rgba(28,28,30,.06)}
 
 @media(max-width:1024px){
   .stats-row{grid-template-columns:repeat(2,1fr)}
