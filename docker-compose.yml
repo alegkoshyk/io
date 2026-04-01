@@ -1,0 +1,18 @@
+services:
+  pi:
+    image: nginx:alpine
+    container_name: pi
+    restart: unless-stopped
+    volumes:
+      - ./public:/usr/share/nginx/html:ro
+    networks:
+      - web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.pi.rule=Host(`pi.redcats.uk`)"
+      - "traefik.http.routers.pi.entrypoints=websecure"
+      - "traefik.http.routers.pi.tls.certresolver=letsencrypt"
+      - "traefik.http.services.pi.loadbalancer.server.port=80"
+networks:
+  web:
+    external: true

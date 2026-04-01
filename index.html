@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Юрій Дмитрієв — Інженерія Особистості</title>
+<meta name="description" content="Персональне наставництво для підприємців. Масштаб життя починається з масштабу особистості.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --space:#0B1829;--space-light:#0f2038;--space-mid:#142a47;--space-surface:#1a3355;
+  --light:#F2F0DB;--light-dim:#d4d2be;--light-muted:#8a897a;--light-faint:#4a4940;
+  --accent:#8B5CF6;--accent-dim:rgba(139,92,246,.5);--accent-glow:rgba(139,92,246,.15);--accent-bright:#A78BFA;
+  --accent2:#6366F1;--accent2-glow:rgba(99,102,241,.12);
+  --pink:#E879F9;--pink-dim:rgba(232,121,249,.4);
+  --anahata:#00CC44;--anahata-dim:rgba(0,204,68,.5);--anahata-glow:rgba(0,204,68,.12);
+  --muladhara:#FF1A1A;--muladhara-dim:rgba(255,26,26,.5);
+  --border:rgba(242,240,219,.08);--border-hover:rgba(242,240,219,.18);
+  --serif:'Cormorant Garamond','Georgia',serif;--sans:'Raleway',sans-serif;--display:'Playfair Display',serif;
+  --radius:16px;--radius-lg:24px;--radius-pill:50px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--space);color:var(--light);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden;font-size:16px;-webkit-font-smoothing:antialiased}
+body.loading{overflow:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--space)}::-webkit-scrollbar-thumb{background:var(--space-surface);border-radius:3px}
+
+/* ====== PRELOADER ====== */
+#preloader{position:fixed;inset:0;z-index:10000;background:var(--space);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s ease,visibility .8s ease}
+#preloader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+#preloader svg{width:min(300px,60vw);height:auto;margin-bottom:40px}
+#preloader svg path{fill:none;stroke:var(--accent);stroke-width:2}
+#preloader svg .dot-path{stroke:var(--accent-bright);stroke-width:3}
+@keyframes drawSvg{to{stroke-dashoffset:0}}
+.preloader-text{font-family:var(--sans);font-size:clamp(.8rem,2vw,1rem);font-weight:500;letter-spacing:.35em;text-transform:uppercase;color:var(--accent);overflow:hidden}
+.preloader-text span{display:inline-block;opacity:0;transform:translateY(20px);animation:letterIn .4s forwards}
+.preloader-skip{margin-top:50px;background:none;border:1px solid var(--accent-dim);color:var(--accent);font-family:var(--sans);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;padding:10px 32px;border-radius:var(--radius-pill);cursor:pointer;transition:all .3s;opacity:0;animation:fadeIn 1s 2s forwards}
+.preloader-skip:hover{background:var(--accent);color:var(--space)}
+@keyframes letterIn{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{to{opacity:1}}
+
+/* ====== NAV ====== */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;transition:all .6s cubic-bezier(.22,1,.36,1)}
+nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:16px 60px;border-bottom:1px solid var(--border)}
+.nav-logo{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--light);letter-spacing:.06em;text-decoration:none}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{color:var(--light-dim);text-decoration:none;font-size:.78rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .4s cubic-bezier(.22,1,.36,1)}
+.nav-links a:hover{color:var(--light)}.nav-links a:hover::after{width:100%}
+.nav-cta{padding:10px 28px!important;border:1px solid var(--accent-dim)!important;color:var(--accent)!important;transition:all .4s!important;border-radius:var(--radius-pill)!important}
+.nav-cta::after{display:none!important}.nav-cta:hover{background:var(--accent)!important;color:var(--space)!important}
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}.menu-toggle span{display:block;width:22px;height:1.5px;background:var(--light);transition:.3s}
+.menu-toggle.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}.menu-toggle.active span:nth-child(2){opacity:0}.menu-toggle.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+/* ====== MOBILE NAV ====== */
+@media(max-width:768px){
+  .nav-links{position:fixed;top:0;right:-100%;width:min(320px,80vw);height:100vh;background:rgba(11,24,41,.98);backdrop-filter:blur(30px);flex-direction:column;justify-content:center;gap:28px;padding:40px;transition:right .5s cubic-bezier(.22,1,.36,1);border-left:1px solid var(--border)}
+  .nav-links.show{right:0}
+  .nav-links a{font-size:.9rem}
+  .menu-toggle{display:flex}
+}
+
+/* ====== REVEAL ====== */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s cubic-bezier(.22,1,.36,1),transform 1s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}.rd1{transition-delay:.15s}.rd2{transition-delay:.3s}.rd3{transition-delay:.45s}.rd4{transition-delay:.6s}
+
+/* ====== LAYOUT ====== */
+.section-pad{padding:130px 60px}.section-narrow{max-width:860px;margin:0 auto}.section-wide{max-width:1200px;margin:0 auto}
+.sep{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--accent-dim),transparent);margin:40px 0;border-radius:2px}.sep-center{margin:40px auto}
+.label{font-family:var(--sans);font-size:.7rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:inline-block;padding:6px 18px;border:1px solid rgba(139,92,246,.2);border-radius:var(--radius-pill);background:rgba(139,92,246,.05)}
+h1{font-family:var(--display);font-size:clamp(2.6rem,5vw,4.2rem);font-weight:400;line-height:1.15;color:var(--light);margin-bottom:30px}
+h2{font-family:var(--display);font-size:clamp(2rem,3.5vw,3rem);font-weight:400;line-height:1.2;color:var(--light);margin-bottom:24px}
+h3{font-family:var(--serif);font-size:1.5rem;font-weight:500;color:var(--light);margin-bottom:16px}
+p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
+
+/* ====== BUTTONS ====== */
+.btn{display:inline-block;padding:16px 44px;font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;transition:all .5s cubic-bezier(.22,1,.36,1);border-radius:var(--radius-pill)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-bright);transform:translateY(-2px);box-shadow:0 12px 50px var(--accent-glow)}
+.btn-outline{background:transparent;color:var(--light);border:1px solid rgba(242,240,219,.2);border-radius:var(--radius-pill)}
+.btn-outline:hover{border-color:var(--light-dim);background:rgba(242,240,219,.05);transform:translateY(-2px)}
+.btn-group{display:flex;gap:20px;flex-wrap:wrap;margin-top:36px}
+
+/* ====== THREE.JS CANVAS ====== */
+#three-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ====== HERO ====== */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:140px 60px 100px}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
+.orb-1{width:500px;height:500px;background:var(--accent-glow);top:10%;right:10%;animation:orbFloat 10s ease-in-out infinite alternate}
+.orb-2{width:350px;height:350px;background:var(--accent2-glow);bottom:10%;left:5%;animation:orbFloat 12s ease-in-out 2s infinite alternate}
+@keyframes orbFloat{from{transform:translate(0,0)}to{transform:translate(40px,-40px)}}
+
+/* HERO IMAGE */
+.hero-image{position:absolute;right:-5%;top:50%;transform:translateY(-50%);width:55%;height:90%;z-index:1;opacity:0;animation:heroImgIn 2s 1s cubic-bezier(.22,1,.36,1) forwards}
+.hero-image img{width:100%;height:100%;object-fit:contain;object-position:center;filter:brightness(.9) saturate(1.1)}
+.hero-image::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,var(--space) 0%,transparent 35%,transparent 70%,rgba(11,24,41,.3) 100%)}
+@keyframes heroImgIn{to{opacity:.45}}
+
+.hero-content{max-width:700px;position:relative;z-index:2}
+.hero-name{font-size:.78rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;opacity:0;animation:fadeUp 1s .3s forwards}
+.hero-role{font-family:var(--serif);font-size:1.05rem;font-weight:300;color:var(--light-muted);margin-bottom:40px;opacity:0;animation:fadeUp 1s .5s forwards}
+.hero h1{opacity:0;animation:fadeUp 1s .7s forwards}.hero h1 em{font-style:italic;color:var(--accent-bright)}
+.hero-text{font-size:1.12rem;line-height:1.9;color:var(--light-dim);max-width:600px;opacity:0;animation:fadeUp 1s .9s forwards}
+.hero-quote{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--light);margin:40px 0;padding:24px 28px;border-left:3px solid var(--accent-dim);line-height:1.7;opacity:0;animation:fadeUp 1s 1.1s forwards;background:rgba(139,92,246,.04);border-radius:0 var(--radius) var(--radius) 0}
+.hero .btn-group{opacity:0;animation:fadeUp 1s 1.3s forwards}
+.trust-bar{margin-top:60px;padding-top:28px;border-top:1px solid var(--border);font-size:.82rem;color:var(--light-muted);letter-spacing:.02em;opacity:0;animation:fadeUp 1s 1.5s forwards}
+.trust-bar span{color:var(--accent-dim);margin:0 10px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ====== VISUAL DIVIDER ====== */
+.visual-divider{position:relative;width:100%;height:clamp(200px,30vw,400px);overflow:hidden}
+.visual-divider img{width:100%;height:100%;object-fit:cover;object-position:center 40%}
+.visual-divider::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,var(--space) 0%,transparent 25%,transparent 75%,var(--space) 100%);z-index:1}
+.visual-divider::after{content:'';position:absolute;inset:0;background:rgba(11,24,41,.35);z-index:0}
+
+/* ====== QUESTIONS ====== */
+.questions-section{background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 50%,var(--space) 100%);position:relative}
+.question-list{margin-top:50px}
+.question-item{font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;font-style:italic;color:var(--light-muted);padding:22px 20px 22px 30px;border-bottom:1px solid var(--border);transition:all .5s;cursor:default;position:relative;border-radius:var(--radius);margin-bottom:4px}
+.question-item::before{content:'';position:absolute;left:10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent-dim);transition:all .4s}
+.question-item:hover{color:var(--light);padding-left:40px;background:rgba(139,92,246,.04)}
+.question-item:hover::before{background:var(--accent);box-shadow:0 0 16px var(--accent-glow)}
+.question-close{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--light-muted);margin-top:40px}
+
+/* ====== RECOGNITION ====== */
+.recognition-text{font-size:1.12rem;line-height:2;max-width:660px}
+.recognition-text strong{color:var(--light);font-weight:400}
+
+/* ====== POSITIONING ====== */
+.positioning{background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.positioning-content{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:2}
+.positioning-quote{font-family:var(--display);font-size:clamp(1.7rem,3vw,2.5rem);font-weight:400;font-style:italic;color:var(--light);line-height:1.4}
+.text-shimmer{background:linear-gradient(120deg,var(--accent-dim),var(--accent-bright),var(--accent-dim));background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+@keyframes shimmer{to{background-position:200% center}}
+.text-accent{color:var(--accent-bright)}
+
+/* ====== FOR WHO ====== */
+.for-who-list{display:grid;gap:16px;margin-top:40px}
+.for-who-item{display:flex;align-items:flex-start;gap:20px;padding:20px 28px;background:var(--space-light);border:1px solid var(--border);transition:all .5s;border-radius:var(--radius)}
+.for-who-item:hover{border-color:var(--border-hover);transform:translateX(8px);background:var(--space-mid)}
+.for-who-icon{width:8px;height:8px;background:var(--anahata);border-radius:50%;margin-top:8px;flex-shrink:0;box-shadow:0 0 12px var(--anahata-glow)}
+.for-who-text{font-size:1.02rem;color:var(--light-dim);margin:0}
+
+/* ====== AUTHORITY ====== */
+.authority{background:linear-gradient(135deg,var(--space-light),var(--space));position:relative;overflow:hidden}
+.authority::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--accent-glow),transparent 60%);pointer-events:none}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin:60px 0}
+.stat-item{text-align:center}
+.stat-number{font-family:var(--display);font-size:clamp(2.4rem,4vw,3.6rem);font-weight:400;color:var(--light);line-height:1;margin-bottom:8px}
+.stat-label{font-size:.82rem;color:var(--light-muted);letter-spacing:.03em}
+.stat-item:nth-child(1) .stat-number{color:var(--accent)}.stat-item:nth-child(3) .stat-number{color:var(--anahata)}
+.authority-bio{max-width:680px;margin:0 auto;text-align:center}.authority-bio p{font-size:1.06rem;line-height:1.9}
+
+/* ====== FORMATS ====== */
+.formats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:60px}
+.format-card{background:var(--space-light);border:1px solid var(--border);padding:48px 34px;position:relative;overflow:hidden;transition:all .6s cubic-bezier(.22,1,.36,1);border-radius:var(--radius-lg)}
+.format-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transition:transform .6s cubic-bezier(.22,1,.36,1);border-radius:var(--radius-lg) var(--radius-lg) 0 0}
+.format-card:nth-child(1)::before{background:var(--accent)}.format-card:nth-child(2)::before{background:var(--accent2)}.format-card:nth-child(3)::before{background:var(--pink)}
+.format-card:hover{border-color:var(--border-hover);transform:translateY(-8px);box-shadow:0 30px 80px rgba(0,0,0,.5)}.format-card:hover::before{transform:scaleX(1)}
+.format-number{font-family:var(--display);font-size:4rem;font-weight:400;position:absolute;top:16px;right:20px;line-height:1}
+.format-card:nth-child(1) .format-number{color:rgba(139,92,246,.07)}.format-card:nth-child(2) .format-number{color:rgba(99,102,241,.07)}.format-card:nth-child(3) .format-number{color:rgba(232,121,249,.07)}
+.format-title{font-family:var(--display);font-size:1.45rem;margin-bottom:18px}
+.format-card:nth-child(1) .format-title{color:var(--accent-bright)}.format-card:nth-child(2) .format-title{color:var(--accent2)}.format-card:nth-child(3) .format-title{color:var(--pink)}
+.format-desc{color:var(--light-dim);font-size:.96rem;line-height:1.8;margin-bottom:24px}
+.format-features{list-style:none;margin-bottom:32px}
+.format-features li{position:relative;padding-left:18px;color:var(--light-muted);font-size:.9rem;margin-bottom:8px}
+.format-features li::before{content:'—';position:absolute;left:0;color:var(--light-faint)}
+.format-card .btn{width:100%;text-align:center;padding:14px 20px;font-size:.74rem;border-radius:var(--radius-pill)}
+.format-card:nth-child(1) .btn-primary{background:var(--accent)}.format-card:nth-child(1) .btn-primary:hover{box-shadow:0 12px 40px var(--accent-glow)}
+.format-card:nth-child(2) .btn{border-color:var(--accent2);color:var(--accent2)}.format-card:nth-child(2) .btn:hover{background:var(--accent2);color:#fff}
+.format-card:nth-child(3) .btn{border-color:var(--pink-dim);color:var(--pink)}.format-card:nth-child(3) .btn:hover{background:var(--pink);color:var(--space)}
+
+/* ====== EDUCATION ====== */
+.education{background:var(--space-light);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.courses-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:50px}
+.course-card{padding:40px 30px;border:1px solid var(--border);background:var(--space);transition:all .4s;border-radius:var(--radius-lg)}
+.course-card:hover{border-color:var(--border-hover);transform:translateY(-4px)}
+.course-tag{font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;display:inline-block;padding:4px 14px;border:1px solid;border-radius:var(--radius-pill)}
+.course-card:nth-child(1) .course-tag{color:var(--anahata);border-color:var(--anahata-dim)}
+.course-card:nth-child(2) .course-tag{color:var(--accent);border-color:var(--accent-dim)}
+.course-card:nth-child(3) .course-tag{color:var(--pink);border-color:var(--pink-dim)}
+.course-title{font-family:var(--display);font-size:1.35rem;color:var(--light);margin-bottom:16px}
+.course-desc{color:var(--light-muted);font-size:.93rem;line-height:1.7;margin:0}
+
+/* ====== CASES ====== */
+.cases-placeholder{text-align:center;padding:80px 40px;border:1px solid var(--border);margin-top:40px;background:var(--space-light);position:relative;overflow:hidden;border-radius:var(--radius-lg)}
+.cases-placeholder::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,var(--accent-glow),transparent 60%);opacity:.3}
+.cases-placeholder p{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--light-muted);position:relative;z-index:1}
+
+/* ====== PRINCIPLES ====== */
+.principles{position:relative;overflow:hidden}
+.principles-content{max-width:680px;margin:0 auto;text-align:center;position:relative;z-index:2}
+.principles-content p{font-family:var(--serif);font-size:1.15rem;line-height:2;color:var(--light-dim)}
+.highlight-text{font-family:var(--display);font-size:1.5rem;font-style:italic;color:var(--accent-bright);margin:30px 0;line-height:1.5}
+
+/* ====== FAQ ====== */
+.faq-section{background:var(--space-light);border-top:1px solid var(--border)}
+.faq-list{max-width:800px;margin:50px auto 0}
+.faq-item{border-bottom:1px solid var(--border);overflow:hidden;border-radius:var(--radius);margin-bottom:4px}
+.faq-question{width:100%;background:none;border:none;color:var(--light);font-family:var(--serif);font-size:1.15rem;font-weight:400;text-align:left;padding:26px 40px 26px 20px;cursor:pointer;position:relative;transition:color .3s,background .3s;border-radius:var(--radius)}
+.faq-question:hover{color:var(--accent);background:rgba(139,92,246,.04)}
+.faq-question::after{content:'+';position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:var(--sans);font-size:1.3rem;font-weight:300;color:var(--light-faint);transition:all .3s}
+.faq-item.active .faq-question::after{content:'−';color:var(--accent)}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height .5s cubic-bezier(.22,1,.36,1)}
+.faq-answer-inner{padding:0 20px 26px;color:var(--light-dim);font-size:.96rem;line-height:1.85}
+
+/* ====== FINAL ====== */
+.final-section{text-align:center;position:relative;overflow:hidden;background:linear-gradient(180deg,var(--space) 0%,#060e18 100%)}
+.final-bg{position:absolute;inset:0;z-index:0}
+.final-bg img{width:100%;height:100%;object-fit:cover;opacity:.2;filter:saturate(1.2)}
+.final-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 20%,#060e18 75%)}
+.final-section .orb-3{position:absolute;width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,var(--accent-glow),transparent 60%);filter:blur(80px);animation:finalPulse 5s ease-in-out infinite alternate;z-index:1}
+@keyframes finalPulse{from{transform:translate(-50%,-50%) scale(1);opacity:.5}to{transform:translate(-50%,-50%) scale(1.3);opacity:1}}
+.final-content{position:relative;z-index:2;max-width:680px;margin:0 auto}
+.final-content h2{font-size:clamp(1.9rem,3.5vw,2.8rem);margin-bottom:28px}
+.final-content p{font-family:var(--serif);font-size:1.1rem;line-height:1.9}
+
+/* ====== FOOTER ====== */
+footer{padding:60px;border-top:1px solid var(--border);text-align:center;background:#060e18}
+.footer-brand{font-family:var(--serif);font-size:1rem;color:var(--light-faint);margin-bottom:10px}
+.footer-copy{font-size:.78rem;color:var(--light-faint);margin:0;opacity:.6}
+
+/* ====== RESPONSIVE ====== */
+@media(max-width:1024px){
+  .section-pad{padding:90px 40px}nav{padding:16px 30px}.hero{padding:120px 40px 80px}
+  .formats-grid,.courses-grid{grid-template-columns:1fr;max-width:560px;margin-left:auto;margin-right:auto}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .positioning-content{grid-template-columns:1fr;gap:40px}
+  .hero-image{width:70%;right:-15%;opacity:.25}
+}
+@media(max-width:768px){
+  .section-pad{padding:60px 24px}nav{padding:14px 24px}.hero{padding:100px 24px 60px}
+  .trust-bar span{display:none}.trust-bar{font-size:.72rem;line-height:2.2}
+  .btn-group{flex-direction:column}.btn{width:100%;text-align:center}
+  footer{padding:40px 24px}
+  .hero-image{display:none}
+  .visual-divider{height:180px}
+}
+</style>
+</head>
+<body class="loading">
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <svg viewBox="0 0 714 795" xmlns="http://www.w3.org/2000/svg">
+    <path class="main-path" d="M519.58 79.0451C508.16 73.0998 496.377 67.7534 484.285 63.0549C487.266 74.1451 488.859 85.8016 488.859 97.8391C488.859 98.7701 488.848 99.7011 488.832 100.627C488.642 109.92 487.504 118.98 485.51 127.707C483.553 136.282 480.772 144.541 477.255 152.392C473.802 160.107 469.634 167.429 464.843 174.273C459.705 181.623 453.84 188.423 447.363 194.575C436.469 204.92 423.834 213.424 409.937 219.598L373.639 194.962C386.512 192.664 398.523 187.851 409.141 181.04C417.742 175.525 425.433 168.703 431.932 160.847C437.406 154.232 442.035 146.882 445.656 138.966C449.2 131.224 451.77 122.938 453.217 114.27C454.106 108.918 454.572 103.431 454.572 97.8282C454.572 94.2404 454.382 90.6906 454.008 87.2008C452.566 73.666 448.398 60.9533 442.068 49.6181C425.244 19.5269 393.162-0.818848 356.354-0.818848C319.546-0.818848 287.828 19.2928 270.934 49.1117C264.533 60.4089 260.289 73.1052 258.766 86.6237C258.348 90.3041 258.137 94.0498 258.137 97.8391C258.137 103.24 258.57 108.532 259.4 113.699C260.793 122.372 263.318 130.669 266.814 138.433C270.381 146.37 274.972 153.748 280.408 160.401C286.863 168.295 294.511 175.166 303.075 180.73L305.687 182.374L358.967 218.531L375.26 229.588L410.669 253.62L435.07 270.176C437.585 271.771 440.003 273.416 442.366 275.131C479.992 302.32 504.464 346.654 504.464 396.726C504.464 459.766 465.667 513.699 410.75 535.759L379.357 515.103C434.116 504.34 475.428 455.874 475.428 397.717C475.428 354.777 452.908 317.129 419.081 296.026L367.297 262.494L344.094 247.473C344.094 247.473 278.365 207.114 264.755 194.031C258.316 187.846 252.495 181.008 247.394 173.631C242.641 166.754 238.527 159.41 235.118 151.673C231.643 143.795 228.912 135.525 227.004 126.934C225.063 118.196 223.979 109.131 223.844 99.8372C223.833 99.1784 223.828 98.5088 223.828 97.8446C223.828 85.5293 225.492 73.6061 228.608 62.2872C216.483 66.9149 204.673 72.1906 193.22 78.0705C77.5557 137.42-1.65356 258.275-1.65356 397.717C-1.65356 537.159 77.6044 658.095 193.35 717.428C204.5 723.145 215.985 728.29 227.768 732.819C224.635 721.473 222.96 709.517 222.96 697.17C222.96 696.511 222.96 695.857 222.977 695.204C223.112 685.9 224.191 676.824 226.137 668.08C228.039 659.489 230.776 651.208 234.25 643.33C237.329 636.345 240.993 629.67 245.177 623.382L273.839 642.916C270.966 647.321 268.435 651.965 266.283 656.821C262.836 664.607 260.359 672.92 259.015 681.609C258.24 686.591 257.839 691.692 257.839 696.892C257.839 700.904 258.077 704.857 258.543 708.744C260.159 722.323 264.522 735.052 271.058 746.36C288.061 775.77 319.758 795.55 356.056 795.55C392.355 795.55 424.295 775.618 441.244 746.022C447.737 734.692 452.051 721.942 453.612 708.352C454.051 704.59 454.268 700.768 454.268 696.892C454.268 691.556 453.845 686.324 453.038 681.217C451.661 672.534 449.146 664.225 445.667 656.456C442.116 648.529 437.553 641.158 432.149 634.51C426.501 627.568 419.932 621.411 412.626 616.239L409.666 614.219C407.742 612.961 405.802 611.78 403.818 610.674L352.999 575.607L337.812 565.257L302.137 540.943L279.779 525.704C274.397 522.519 269.237 518.991 264.316 515.163C229.101 487.783 206.445 444.92 206.445 396.742C206.445 333.827 245.085 279.976 299.834 257.834L333.872 280.237C278.852 290.794 237.264 339.385 237.264 397.728C237.264 439.165 258.24 475.68 290.105 497.153L293.373 499.282H293.384L343.996 532.204L365.357 546.098C365.357 546.098 430.073 585.723 443.428 597.646C451.314 604.685 458.36 612.656 464.393 621.389C469.146 628.26 473.26 635.61 476.675 643.341C480.149 651.219 482.881 659.5 484.789 668.091C486.735 676.835 487.819 685.91 487.949 695.215C487.96 695.868 487.965 696.522 487.965 697.18C487.965 709.534 486.29 721.484 483.157 732.83C495.613 728.039 507.732 722.568 519.477 716.454C634.188 656.778 712.579 536.451 712.579 397.728C712.579 259.004 634.242 138.754 519.586 79.0559L519.58 79.0451Z"/>
+    <path class="dot-path" d="M388.515 730.355C406.274 712.516 406.274 683.593 388.515 665.754C370.755 647.915 341.961 647.915 324.201 665.754C306.442 683.593 306.442 712.516 324.201 730.355C341.961 748.195 370.755 748.195 388.515 730.355Z"/>
+    <path class="dot-path" d="M367.98 447.263C395.209 440.807 412.072 413.402 405.646 386.052C399.219 358.701 371.936 341.762 344.708 348.217C317.479 354.673 300.616 382.078 307.042 409.428C313.469 436.779 340.752 453.718 367.98 447.263Z"/>
+    <path class="dot-path" d="M388.514 130.137C406.273 112.298 406.273 83.3749 388.514 65.5356C370.754 47.6964 341.96 47.6964 324.201 65.5356C306.441 83.3749 306.441 112.298 324.201 130.137C341.96 147.976 370.754 147.976 388.514 130.137Z"/>
+  </svg>
+  <div class="preloader-text" id="preloaderText"></div>
+  <button class="preloader-skip" onclick="closePreloader()">Пропустити</button>
+</div>
+
+<!-- THREE.JS BG -->
+<canvas id="three-bg"></canvas>
+
+<!-- NAV -->
+<nav id="mainNav">
+<a href="#" class="nav-logo">personality.engineering</a>
+<div class="nav-links" id="navLinks">
+<a href="#formats">Формати</a><a href="#education">Навчання</a><a href="#principles">Принципи</a><a href="#faq">FAQ</a>
+<a href="#final" class="nav-cta">Заявка</a>
+</div>
+<button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+<div class="orb orb-1"></div><div class="orb orb-2"></div>
+<div class="hero-image"><img src="/assets/img/hero-cosmic.png" alt="" loading="eager"></div>
+<div class="hero-content">
+<div class="hero-name">Юрій Дмитрієв</div>
+<div class="hero-role">Підприємець, наставник і архітектор масштабу особистості</div>
+<h1>Ти вже виріс зі свого життя.<br>Але ще не до кінця <em>зайшов у нове.</em></h1>
+<p class="hero-text">Є момент, який не видно зовні. Коли в тебе вже є результат, досвід, рівень. Але всередині з'являється відчуття: ти живеш не на повну силу. Не на свій масштаб. Не своє життя. І справа не в стратегії. Справа в тобі.</p>
+<div class="hero-quote">Масштаб життя починається з масштабу особистості.<br>А бізнес ніколи не росте швидше, ніж росте його власник.</div>
+<div class="btn-group"><a href="#final" class="btn btn-primary">Подати заявку на наставництво</a><a href="#formats" class="btn btn-outline">Обрати формат роботи</a></div>
+<div class="trust-bar">20+ років у підприємництві <span>•</span> 6+ років наставництва <span>•</span> сертифікований коуч і психолог <span>•</span> соціальний діяч</div>
+</div></section>
+
+<!-- QUESTIONS -->
+<section class="questions-section section-pad"><div class="section-narrow">
+<div class="reveal"><div class="label">Точка входу</div><h2>Запитання, з яких починаються справжні зміни</h2></div>
+<div class="question-list">
+<div class="question-item reveal rd1">Хто ти насправді — без ролей, статусу і очікувань інших?</div>
+<div class="question-item reveal rd2">Чого ти насправді хочеш?</div>
+<div class="question-item reveal rd3">Яким ти бачиш своє по-справжньому щасливе життя?</div>
+<div class="question-item reveal rd4">Який масштаб твого справжнього потенціалу?</div>
+<div class="question-item reveal">Що ти хочеш створити у цьому житті і що залишити після себе?</div>
+</div>
+<p class="question-close reveal">Іноді саме ці запитання змінюють напрямок життя сильніше,<br>ніж нові цілі, стратегії чи плани.</p>
+</div></section>
+
+<!-- VISUAL DIVIDER: LANDSCAPE -->
+<div class="visual-divider reveal"><img src="/assets/img/landscape-cosmic.png" alt="" loading="lazy"></div>
+
+<!-- RECOGNITION -->
+<section class="section-pad"><div class="section-narrow">
+<div class="reveal"><div class="label">Впізнавання</div><h2>Можливо, настав час для нової версії тебе</h2></div>
+<div class="recognition-text reveal rd1">
+<p>Зовні все може виглядати добре — бізнес, статус, результати.</p>
+<p>Але всередині з'являється відчуття, що настав час зупинитися і чесно подивитися глибше. Не тільки на те, що робити далі. А й на те, <strong>ким ти є</strong>, для чого тобі цей шлях і чому, маючи вже багато, можна все одно не відчувати справжньої повноти.</p>
+<p>У такі моменти потрібні не просто поради. Потрібні <strong>ясність, сильне дзеркало, підтримка, віра, натхнення</strong> і нова внутрішня опора.</p>
+</div></div></section>
+
+<!-- POSITIONING -->
+<section class="positioning section-pad">
+<div class="section-wide"><div class="positioning-content">
+<div class="reveal"><div class="positioning-quote">Я не навчаю — я допомагаю згадати, хто ти є <span class="text-shimmer">насправді</span></div></div>
+<div class="reveal rd2">
+<p>Моя робота — не про мотиваційні розмови і не про готові рецепти. Я працюю на стику підприємництва, мислення, психології, стану і сенсів.</p>
+<p>Допомагаю людині побачити головне, прибрати зайве і повернутися до своєї сили, ясності та масштабу.</p>
+<p class="text-accent">Бо часто наступний рівень життя починається не з нової стратегії. А з нової версії себе.</p>
+</div></div></div></section>
+
+<!-- FOR WHO -->
+<section class="section-pad"><div class="section-narrow">
+<div class="reveal"><div class="label">Аудиторія</div><h2>Кому відгукується ця робота</h2></div>
+<div class="for-who-list">
+<div class="for-who-item reveal rd1"><div class="for-who-icon"></div><p class="for-who-text">Підприємці, CEO, топи або лідери, які відчувають, що можуть значно більше</p></div>
+<div class="for-who-item reveal rd2"><div class="for-who-icon"></div><p class="for-who-text">Ті, хто знаходиться в точці переходу на новий рівень життя, ролі або бізнесу</p></div>
+<div class="for-who-item reveal rd3"><div class="for-who-icon"></div><p class="for-who-text">Люди, що відчувають внутрішній хаос попри зовнішній успіх</p></div>
+<div class="for-who-item reveal rd4"><div class="for-who-icon"></div><p class="for-who-text">Ті, хто хоче краще зрозуміти себе, свої сенси і свій справжній потенціал</p></div>
+<div class="for-who-item reveal"><div class="for-who-icon"></div><p class="for-who-text">Ті, хто шукає не просто поради, а глибину, чесність і розвиток</p></div>
+<div class="for-who-item reveal rd1"><div class="for-who-icon"></div><p class="for-who-text">Ті, хто готовий працювати над собою так само серйозно, як працює над бізнесом</p></div>
+</div></div></section>
+
+<!-- AUTHORITY -->
+<section class="authority section-pad"><div class="section-wide">
+<div class="reveal" style="text-align:center"><div class="label">Досвід</div><h2>Підприємець. Наставник. Людина практики.</h2></div>
+<div class="stats-row reveal rd1">
+<div class="stat-item"><div class="stat-number">20+</div><div class="stat-label">років у підприємництві</div></div>
+<div class="stat-item"><div class="stat-number">6+</div><div class="stat-label">років наставництва</div></div>
+<div class="stat-item"><div class="stat-number">100+</div><div class="stat-label">людей змінили мислення</div></div>
+<div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">шлях, що продовжується</div></div>
+</div>
+<div class="authority-bio reveal rd2">
+<p>Я не прийшов у цю роль після курсів. Я прийшов через 20+ років підприємництва, десятки складних рішень, власні кризи, злети, падіння, втрати, ріст, пошук сенсів і постійне повернення до себе.</p>
+<p>Я сам є підприємцем. Сам проходжу шлях відповідальності, невизначеності, масштабу і внутрішньої роботи.</p>
+<p style="color:var(--accent-bright)">Саме тому я добре розумію сильних людей і підприємців. Не з теорії. А з прожитого життя.</p>
+</div></div></section>
+
+<!-- FORMATS -->
+<section class="section-pad" id="formats"><div class="section-wide">
+<div class="reveal" style="text-align:center"><div class="label">Формати</div><h2>Обери формат, який відповідає<br>глибині твого запиту</h2></div>
+<div class="formats-grid">
+<div class="format-card reveal rd1"><div class="format-number">01</div><div class="format-title">Персональне наставництво</div><p class="format-desc">Глибока індивідуальна робота для тих, хто готовий вирости як Особистість — і через це змінити масштаб свого життя, рішень і бізнесу.</p><ul class="format-features"><li>2 зустрічі на місяць (60+ хв)</li><li>підтримка між зустрічами</li><li>6 або 12 місяців роботи</li><li>від 7 000€ за 6 місяців</li></ul><a href="#final" class="btn btn-primary">Подати заявку</a></div>
+<div class="format-card reveal rd2"><div class="format-number">02</div><div class="format-title">Разові консультації</div><p class="format-desc">Одна сильна розмова, яка може дати ясність, змінити кут мислення або допомогти прийняти рішення, що вплине на подальший шлях.</p><ul class="format-features"><li>онлайн, 90 хвилин</li><li>повний фокус на запиті</li><li>запис залишається у тебе</li><li>800€ за консультацію</li></ul><a href="#final" class="btn btn-outline">Записатися</a></div>
+<div class="format-card reveal rd3"><div class="format-number">03</div><div class="format-title">Друг Другу</div><p class="format-desc">Персональна рада директорів твого життя і бізнесу. Мале коло сильних людей — джерело чесності, довіри, мислення і росту.</p><ul class="format-features"><li>до 10 людей у групі</li><li>2 зустрічі на місяць</li><li>6 місяців роботи</li><li>2 400€ за 6 місяців</li></ul><a href="#final" class="btn btn-outline">Дізнатися більше</a></div>
+</div></div></section>
+
+<!-- EDUCATION -->
+<section class="education section-pad" id="education"><div class="section-wide">
+<div class="reveal" style="text-align:center"><div class="label">Навчання</div><h2>Системний розвиток через навчання</h2><p style="max-width:620px;margin:0 auto">Освітні продукти, які допомагають працювати з собою самостійно, поглиблювати розвиток і будувати сильніше життя.</p></div>
+<div class="courses-grid">
+<div class="course-card reveal rd1"><div class="course-tag">Курс</div><div class="course-title">«Стан»</div><p class="course-desc">Робота з внутрішнім станом, енергією і опорою. З тим, з чого починається якість життя, рішень і результатів.</p></div>
+<div class="course-card reveal rd2"><div class="course-tag">Незабаром</div><div class="course-title">«Життя Мрії»</div><p class="course-desc">Про створення життя через сенси, бачення і усвідомлені дії. Життя, яке ти по-справжньому обираєш і будуєш.</p></div>
+<div class="course-card reveal rd3"><div class="course-tag">Незабаром</div><div class="course-title">«365 днів щастя»</div><p class="course-desc">Система щоденної роботи з собою. Практики, усвідомлення і фокус, які допомагають змінювати життя глибоко.</p></div>
+</div></div></section>
+
+<!-- CASES -->
+<section class="section-pad"><div class="section-narrow">
+<div class="reveal" style="text-align:center"><div class="label">Результати</div><h2>Це не історії успіху. Це моменти, коли люди почали жити по-справжньому.</h2></div>
+<div class="cases-placeholder reveal rd1"><p>Тут будуть реальні історії людей,<br>які прийняли складні рішення, вийшли на новий рівень<br>і повернули себе справжнього.</p><div class="sep sep-center" style="margin:20px auto 0"></div><p style="font-size:.85rem;color:var(--light-faint);font-style:normal">Розділ наповнюється</p></div>
+</div></section>
+
+<!-- PRINCIPLES -->
+<section class="principles section-pad" id="principles"><div class="section-narrow"><div class="principles-content reveal">
+<div class="label">Філософія</div><h2>На чому тримається моя робота</h2><div class="sep sep-center"></div>
+<p>Майже всі бізнес-запити рано чи пізно приводять до питань Особистості. До сенсів. До стану. До розуміння себе. До прийняття себе. До чесності з собою.</p>
+<div class="highlight-text">До відповіді на головне запитання: «щоб що?»</div>
+<p>Коли змінюється це — змінюється і бізнес. Бо бізнес — це продовження свого власника.</p>
+<p style="color:var(--anahata);margin-top:28px">За кожним сильним брендом завжди стоїть Людина.</p>
+</div></div></section>
+
+<!-- FAQ -->
+<section class="faq-section section-pad" id="faq"><div class="section-narrow">
+<div class="reveal" style="text-align:center"><div class="label">Відповіді</div><h2>Часті запитання</h2></div>
+<div class="faq-list reveal rd1">
+<div class="faq-item"><button class="faq-question">Чи це тільки для підприємців?</button><div class="faq-answer"><div class="faq-answer-inner">Я працюю тільки з підприємцями, CEO та керівниками. Я сам підприємець уже понад 20 років і дуже добре розумію підприємницьке мислення, відповідальність, ризики, масштаб, кризи і внутрішні питання. Саме тому моя робота найкраще працює з людьми, які живуть у цій реальності.</div></div></div>
+<div class="faq-item"><button class="faq-question">Чому наставництво коштує стільки?</button><div class="faq-answer"><div class="faq-answer-inner">Це — інвестиція в себе, свій розвиток, своє мислення і свою здатність будувати життя та бізнес на іншому рівні. За цією роботою стоїть 20+ років підприємництва, тисячі годин навчання і особистий досвід.</div></div></div>
+<div class="faq-item"><button class="faq-question">Чому формат тільки 6 або 12 місяців?</button><div class="faq-answer"><div class="faq-answer-inner">Справжні трансформації потребують часу: побачити старі моделі, прийняти нові рішення, прожити їх, пройти через опір і закріпити новий рівень. Я працюю зі сталими змінами на роки.</div></div></div>
+<div class="faq-item"><button class="faq-question">Що реально змінюється після роботи?</button><div class="faq-answer"><div class="faq-answer-inner">Формула: рішення → відповідальність → дії. Коли ці три речі з'являються — зміни неминучі. Рішення і дії — завжди на стороні людини.</div></div></div>
+<div class="faq-item"><button class="faq-question">Чим це відрізняється від коучингу?</button><div class="faq-answer"><div class="faq-answer-inner">Наставництво — це досвід. Психологія працює з минулим. Наставництво — з теперішнім і майбутнім. Коучинг — лише один із інструментів. Основа — прожитий шлях і здатність бачити людину ширше.</div></div></div>
+<div class="faq-item"><button class="faq-question">Чи можна просто поговорити?</button><div class="faq-answer"><div class="faq-answer-inner">Так. Для цього існує формат разових консультацій. Іноді однієї сильної розмови достатньо для ясності або важливого рішення.</div></div></div>
+</div></div></section>
+
+<!-- FINAL -->
+<section class="final-section section-pad" id="final">
+<div class="final-bg"><img src="/assets/img/transform-cosmic.png" alt="" loading="lazy"></div>
+<div class="orb-3"></div>
+<div class="final-content reveal">
+<div class="label">Наступний крок</div><h2>Можливо, ти вже відчуваєш це всередині</h2><div class="sep sep-center"></div>
+<p>Є моменти, коли вже не працює «ще трохи потерпіти». Коли не допомагають нові цілі, стратегії, досягнення. Бо питання — в тобі.</p>
+<p>Іноді достатньо однієї чесної розмови. А іноді потрібен шлях. Глибокий. Справжній.</p>
+<p style="color:var(--accent-bright);font-family:var(--serif);font-size:1.15rem;font-style:italic;margin-top:28px">Якщо ти дочитав до цього місця — значить щось вже відгукнулось.</p>
+<div class="btn-group" style="justify-content:center">
+<a href="#" class="btn btn-primary">Подати заявку на наставництво</a>
+<a href="#" class="btn btn-outline">Записатися на консультацію</a>
+<a href="#" class="btn btn-outline">Дізнатися про «Друг Другу»</a>
+</div></div></section>
+
+<footer><div class="footer-brand">personality.engineering</div><p class="footer-copy">&copy; 2024 Юрій Дмитрієв — Інженерія Особистості</p></footer>
+
+<script src="/assets/particles.js"></script>
+<script>
+// ====== PRELOADER ======
+// Measure real path lengths and set correct dasharray
+document.querySelectorAll('#preloader svg path').forEach(function(path) {
+  var len = path.getTotalLength();
+  path.style.strokeDasharray = len;
+  path.style.strokeDashoffset = len;
+  if (path.classList.contains('dot-path')) {
+    path.style.animation = 'drawSvg 1.2s ' + (3.5) + 's cubic-bezier(.4,0,.2,1) forwards';
+  } else {
+    path.style.animation = 'drawSvg 5s cubic-bezier(.25,.1,.25,1) forwards';
+  }
+});
+
+const preloaderText = 'ЗАВАНТАЖУЙ НОВУ ВЕРСІЮ СЕБЕ';
+const ptEl = document.getElementById('preloaderText');
+preloaderText.split('').forEach((ch, i) => {
+  const span = document.createElement('span');
+  span.textContent = ch === ' ' ? '\u00A0' : ch;
+  span.style.animationDelay = (2 + i * 0.06) + 's';
+  ptEl.appendChild(span);
+});
+
+function closePreloader() {
+  const p = document.getElementById('preloader');
+  p.classList.add('hidden');
+  document.body.classList.remove('loading');
+}
+// Wait for main path (5s) + dots (1.2s after 3.5s = 4.7s) + pause
+setTimeout(closePreloader, 7000);
+
+// Particles loaded from external file
+
+// ====== NAV ======
+const nav = document.getElementById('mainNav');
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navLinks.classList.toggle('show'); });
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menuToggle.classList.remove('active'); navLinks.classList.remove('show'); }));
+
+// ====== REVEAL ======
+const reveals = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(e => {
+  e.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: .1, rootMargin: '0px 0px -30px 0px' });
+reveals.forEach(el => obs.observe(el));
+
+// ====== FAQ ======
+document.querySelectorAll('.faq-question').forEach(b => {
+  b.addEventListener('click', () => {
+    const i = b.parentElement, a = i.querySelector('.faq-answer'), v = i.classList.contains('active');
+    document.querySelectorAll('.faq-item').forEach(x => { x.classList.remove('active'); x.querySelector('.faq-answer').style.maxHeight = '0'; });
+    if (!v) { i.classList.add('active'); a.style.maxHeight = a.scrollHeight + 'px'; }
+  });
+});
+
+// ====== SMOOTH SCROLL ======
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+// ====== HERO PARALLAX ======
+window.addEventListener('scroll', () => {
+  const s = scrollY, h = document.querySelector('.hero-content');
+  if (s < innerHeight) { h.style.transform = 'translateY('+s*.12+'px)'; h.style.opacity = 1 - s/(innerHeight*.85); }
+});
+
+// ====== COUNTER ======
+const sn = document.querySelectorAll('.stat-number');
+const co = new IntersectionObserver(e => {
+  e.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, t = el.textContent;
+    if (t === '\u221E') return;
+    const n = parseInt(t); if (isNaN(n)) return;
+    const sf = t.replace(/[0-9]/g, '');
+    let c = 0; const st = Math.ceil(n/35);
+    const tm = setInterval(() => { c += st; if (c >= n) { c = n; clearInterval(tm); } el.textContent = c + sf; }, 35);
+    co.unobserve(el);
+  });
+}, { threshold: .5 });
+sn.forEach(el => co.observe(el));
+</script>
+</body>
+</html>
