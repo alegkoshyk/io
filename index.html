@@ -15,7 +15,7 @@
 .hero-content{max-width:780px;margin:0 auto}
 
 /* Questions */
-.questions-section{background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 30%,var(--space-light) 70%,var(--space) 100%);position:relative}
+.questions-section{background:transparent;position:relative}
 .question-list{margin-top:50px}
 .question-item{font-family:var(--serif);font-size:clamp(1.2rem,2.2vw,1.7rem);font-weight:300;font-style:italic;color:var(--light-muted);padding:22px 20px 22px 30px;border-bottom:1px solid var(--border);transition:all .5s;cursor:default;position:relative;border-radius:var(--radius);margin-bottom:4px}
 .question-item::before{content:'';position:absolute;left:10px;top:50%;transform:translateY(-50%);width:6px;height:6px;border-radius:50%;background:var(--accent-dim);transition:all .4s}
@@ -28,13 +28,12 @@
 .recognition-text strong{color:var(--light);font-weight:400}
 
 /* Positioning */
-.positioning{border-top:none;border-bottom:none;background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 20%,var(--space-light) 80%,var(--space) 100%);position:relative;overflow:hidden}
+.positioning{border-top:none;border-bottom:none;background:transparent;position:relative;overflow:hidden}
 .positioning-content{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:2}
 .positioning-quote{font-family:var(--display);font-size:clamp(1.7rem,3vw,2.5rem);font-weight:400;font-style:italic;color:var(--light);line-height:1.4}
 
 /* Authority */
-.authority{background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 25%,var(--space) 100%);position:relative;overflow:hidden}
-.authority::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,var(--accent-glow),transparent 60%);pointer-events:none}
+.authority{background:transparent;position:relative;overflow:hidden}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;margin:60px 0}
 .stat-item{text-align:center}
 .stat-number{font-family:var(--display);font-size:clamp(2.4rem,4vw,3.6rem);font-weight:400;color:var(--light);line-height:1;margin-bottom:8px}
@@ -43,11 +42,10 @@
 .authority-bio{max-width:680px;margin:0 auto;text-align:center}.authority-bio p{font-size:1.06rem;line-height:1.9}
 
 /* Education */
-.education{border-top:none;border-bottom:none;background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 20%,var(--space-light) 80%,var(--space) 100%)}
+.education{border-top:none;border-bottom:none;background:transparent}
 
 /* Cases */
-.cases-placeholder{text-align:center;padding:80px 40px;border:1px solid var(--border);margin-top:40px;background:var(--space-light);position:relative;overflow:hidden;border-radius:var(--radius-lg)}
-.cases-placeholder::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,var(--accent-glow),transparent 60%);opacity:.3}
+.cases-placeholder{text-align:center;padding:80px 40px;border:1px solid var(--border);margin-top:40px;background:rgba(15,32,56,.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);position:relative;overflow:hidden;border-radius:var(--radius-lg)}
 .cases-placeholder p{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--light-muted);position:relative;z-index:1}
 
 /* Principles */
@@ -56,7 +54,7 @@
 .principles-content p{font-family:var(--serif);font-size:1.15rem;line-height:2;color:var(--light-dim)}
 
 /* FAQ section */
-.faq-section{border-top:none;background:linear-gradient(180deg,var(--space) 0%,var(--space-light) 20%,var(--space-light) 80%,var(--space) 100%)}
+.faq-section{border-top:none;background:transparent}
 
 /* For-who 2-col on index */
 .for-who-list{grid-template-columns:1fr 1fr}
