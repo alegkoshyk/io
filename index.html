@@ -90,7 +90,7 @@ p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 #three-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 /* ====== HERO ====== */
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:140px 60px 100px}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:160px 60px 80px}
 .orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none}
 .orb-1{width:500px;height:500px;background:var(--accent-glow);top:10%;right:10%;animation:orbFloat 10s ease-in-out infinite alternate}
 .orb-2{width:350px;height:350px;background:var(--accent2-glow);bottom:10%;left:5%;animation:orbFloat 12s ease-in-out 2s infinite alternate}
@@ -102,10 +102,18 @@ p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 .hero-role{font-family:var(--serif);font-size:1.05rem;font-weight:300;color:var(--light-muted);margin-bottom:40px;opacity:0;animation:fadeUp 1s .5s forwards}
 .hero h1{opacity:0;animation:fadeUp 1s .7s forwards}.hero h1 em{font-style:italic;color:var(--accent-bright)}
 .hero-text{font-size:1.12rem;line-height:1.9;color:var(--light-dim);max-width:640px;margin:0 auto;opacity:0;animation:fadeUp 1s .9s forwards}
-.hero-quote{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--light);margin:40px 0;padding:24px 28px;border-left:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:28px 0;line-height:1.7;opacity:0;animation:fadeUp 1s .9s forwards;background:rgba(139,92,246,.04);border-radius:0 var(--radius) var(--radius) 0}
+.hero-quote{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--light);margin:40px 0;padding:28px 32px;border-left:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border);line-height:1.7;opacity:0;animation:fadeUp 1s .9s forwards;background:rgba(139,92,246,.04);border-radius:var(--radius)}
 .hero .btn-group{opacity:0;animation:fadeUp 1s 1.1s forwards}
-.trust-bar{margin-top:60px;padding-top:28px;border-top:1px solid var(--border);font-size:.82rem;color:var(--light-muted);letter-spacing:.02em;opacity:0;animation:fadeUp 1s 1.3s forwards}
-.trust-bar span{color:var(--accent-dim);margin:0 10px}
+
+
+.trust-bar{margin-top:52px;display:flex;flex-wrap:wrap;justify-content:center;gap:14px;opacity:0;animation:fadeUp 1s 1.3s forwards}
+.trust-item{display:flex;align-items:center;gap:8px;padding:10px 20px;background:rgba(139,92,246,.04);border:1px solid rgba(139,92,246,.12);border-radius:var(--radius-pill);font-size:.78rem;color:var(--light-dim);letter-spacing:.02em;transition:all .4s cubic-bezier(.22,1,.36,1);white-space:nowrap}
+.trust-item:hover{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.25);transform:translateY(-2px)}
+.trust-item svg{width:16px;height:16px;stroke:var(--accent);stroke-width:1.5;fill:none;flex-shrink:0}
+.trust-item:nth-child(1) svg{stroke:var(--accent-bright)}
+.trust-item:nth-child(2) svg{stroke:var(--anahata)}
+.trust-item:nth-child(3) svg{stroke:var(--pink)}
+.trust-item:nth-child(4) svg{stroke:var(--accent2)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
 /* ====== VISUAL DIVIDER ====== */
@@ -327,7 +335,6 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 <div class="hero-name">Юрій Дмитрієв</div>
 <div class="hero-role">Підприємець, наставник і архітектор масштабу особистості</div>
 <h1>Ти вже виріс зі свого життя.<br>Але ще не до кінця <em>зайшов у нове.</em></h1>
-<p class="hero-text">Є момент, який не видно зовні. Коли в тебе вже є результат, досвід, рівень. Але всередині з'являється відчуття: ти живеш не на повну силу. Не на свій масштаб. Не своє життя. І справа не в стратегії. Справа в тобі.</p>
 <div class="hero-quote">Масштаб життя починається з масштабу особистості.<br>А бізнес ніколи не росте швидше, ніж росте його власник.</div>
 <div class="btn-group"><a href="#final" class="btn btn-primary">Подати заявку на наставництво</a><a href="#formats" class="btn btn-outline">Обрати формат роботи</a></div>
 <div class="trust-bar">

@@ -38,10 +38,10 @@
     }
 
     var N = rawPoints.length / 3;
+    var i, r;
     var geo = new THREE.BufferGeometry();
     var positions = new Float32Array(rawPoints);
     var colors = new Float32Array(N * 3);
-    var i, r;
 
     for (i = 0; i < N; i++) {
       r = Math.random();
@@ -55,56 +55,57 @@
 
     // ====== MORPH TARGETS ======
 
-    // Target 0: Logo (original SVG)
+    // 0: Logo
     var logoPos = new Float32Array(rawPoints);
 
-    // Target 1: Galaxy / Spiral
-    var galaxyPos = new Float32Array(N * 3);
+    // 1: Expanding nebula (sphere with noise)
+    var nebulaPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
-      var angle = (i / N) * Math.PI * 6 + Math.random() * 0.5;
-      var dist = (i / N) * 280 + Math.random() * 40;
-      var armOffset = Math.sin(angle * 2) * 30;
-      galaxyPos[i*3] = Math.cos(angle) * (dist + armOffset);
-      galaxyPos[i*3+1] = (Math.random() - 0.5) * 30 * (1 - i/N);
-      galaxyPos[i*3+2] = Math.sin(angle) * (dist + armOffset);
+      var phi = Math.acos(2 * (i / N) - 1);
+      var theta = 2.399963 * i; // golden angle
+      var rad = 200 + Math.sin(phi * 5 + theta * 3) * 50;
+      nebulaPos[i*3] = rad * Math.sin(phi) * Math.cos(theta);
+      nebulaPos[i*3+1] = rad * Math.cos(phi);
+      nebulaPos[i*3+2] = rad * Math.sin(phi) * Math.sin(theta);
     }
 
-    // Target 2: Flowing Wave
-    var wavePos = new Float32Array(N * 3);
-    var cols = Math.ceil(Math.sqrt(N * 1.6));
-    var rows = Math.ceil(N / cols);
+    // 2: Flowing aurora (organic wave)
+    var auroraPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
-      var wx = (i % cols - cols/2) * 4.5;
-      var wz = (Math.floor(i / cols) - rows/2) * 4.5;
-      wavePos[i*3] = wx;
-      wavePos[i*3+1] = Math.sin(wx * 0.04) * Math.cos(wz * 0.04) * 100 + Math.sin(wx*0.08+wz*0.06) * 30;
-      wavePos[i*3+2] = wz;
+      var t = i / N;
+      var ax = (t - 0.5) * 800;
+      var phase = t * Math.PI * 4;
+      var ay = Math.sin(phase) * 120 + Math.sin(phase * 2.5) * 40;
+      var az = Math.cos(phase * 1.3) * 80 + (Math.random() - 0.5) * 40;
+      auroraPos[i*3] = ax;
+      auroraPos[i*3+1] = ay;
+      auroraPos[i*3+2] = az;
     }
 
-    // Target 3: DNA Double Helix
+    // 3: Double helix (DNA)
     var helixPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
-      var t = (i / N) * Math.PI * 10;
-      var hh = (i / N - 0.5) * 700;
-      var hr = 100 + Math.sin(t * 3) * 20;
+      var ht = (i / N) * Math.PI * 8;
+      var hh = (i / N - 0.5) * 600;
+      var hr = 100 + Math.sin(ht * 3) * 15;
       var strand = i % 2 === 0 ? 1 : -1;
-      helixPos[i*3] = Math.cos(t) * hr * strand;
+      helixPos[i*3] = Math.cos(ht) * hr * strand;
       helixPos[i*3+1] = hh;
-      helixPos[i*3+2] = Math.sin(t) * hr * strand;
+      helixPos[i*3+2] = Math.sin(ht) * hr * strand;
     }
 
-    // Target 4: Expanding Universe / scattered stars
-    var scatterPos = new Float32Array(N * 3);
+    // 4: Stardust (scattered with clusters)
+    var starPos = new Float32Array(N * 3);
     for (i = 0; i < N; i++) {
-      var phi = Math.acos(2 * Math.random() - 1);
-      var theta = Math.random() * Math.PI * 2;
-      var sr = 200 + Math.random() * 500;
-      scatterPos[i*3] = sr * Math.sin(phi) * Math.cos(theta);
-      scatterPos[i*3+1] = sr * Math.sin(phi) * Math.sin(theta);
-      scatterPos[i*3+2] = sr * Math.cos(phi);
+      var sphi = Math.acos(2 * Math.random() - 1);
+      var stheta = Math.random() * Math.PI * 2;
+      var sr = 150 + Math.pow(Math.random(), 0.5) * 400;
+      starPos[i*3] = sr * Math.sin(sphi) * Math.cos(stheta);
+      starPos[i*3+1] = sr * Math.sin(sphi) * Math.sin(stheta);
+      starPos[i*3+2] = sr * Math.cos(sphi);
     }
 
-    var targets = [logoPos, galaxyPos, wavePos, helixPos, scatterPos];
+    var targets = [logoPos, nebulaPos, auroraPos, helixPos, starPos];
     var targetCount = targets.length;
 
     var mat = new THREE.PointsMaterial({
@@ -115,7 +116,6 @@
     var mesh = new THREE.Points(geo, mat);
     scene.add(mesh);
 
-    // ====== SCROLL STATE ======
     var scrollProgress = 0;
     var smoothScroll = 0;
 
@@ -124,59 +124,50 @@
       scrollProgress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
     }, { passive: true });
 
-    // ====== ANIMATE ======
     var time = 0;
     var pos = geo.attributes.position.array;
     var col = geo.attributes.color.array;
 
-    // Color palettes per state
     var palettes = [
-      [[0.545,0.361,0.965],[0.388,0.4,0.945],[0.655,0.546,0.98]],    // Logo: purple
-      [[0.4,0.35,0.96],[0.3,0.45,0.95],[0.6,0.35,0.98]],             // Galaxy: deep purple
-      [[0.0,0.8,0.27],[0.2,0.7,0.5],[0.4,0.9,0.55]],                 // Wave: green/anahata
-      [[0.91,0.475,0.976],[0.7,0.4,0.96],[0.95,0.55,0.85]],          // Helix: pink
-      [[0.65,0.55,0.98],[0.5,0.5,0.95],[0.8,0.7,0.9]]                // Scatter: light purple
+      [[0.545,0.361,0.965],[0.388,0.4,0.945],[0.655,0.546,0.98]],
+      [[0.4,0.35,0.96],[0.3,0.5,0.95],[0.55,0.4,0.98]],
+      [[0.0,0.75,0.3],[0.2,0.65,0.5],[0.35,0.85,0.5]],
+      [[0.91,0.475,0.976],[0.7,0.4,0.96],[0.95,0.55,0.85]],
+      [[0.6,0.55,0.97],[0.5,0.5,0.94],[0.75,0.65,0.88]]
     ];
 
     function smoothstep(x) { return x * x * (3 - 2 * x); }
 
     function animate() {
       requestAnimationFrame(animate);
-      time += 0.003;
+      time += 0.002;
 
-      // Smooth interpolation of scroll
-      smoothScroll += (scrollProgress - smoothScroll) * 0.04;
+      smoothScroll += (scrollProgress - smoothScroll) * 0.035;
 
-      // Determine morph state
-      var totalTransitions = targetCount - 1;
-      var rawState = smoothScroll * totalTransitions;
-      var stateIdx = Math.min(Math.floor(rawState), totalTransitions - 1);
-      if (stateIdx < 0) stateIdx = 0;
-      var blend = smoothstep(Math.min(Math.max(rawState - stateIdx, 0), 1));
+      var totalT = targetCount - 1;
+      var rawState = smoothScroll * totalT;
+      var si = Math.min(Math.floor(rawState), totalT - 1);
+      if (si < 0) si = 0;
+      var blend = smoothstep(Math.min(Math.max(rawState - si, 0), 1));
 
-      var from = targets[stateIdx];
-      var to = targets[Math.min(stateIdx + 1, totalTransitions)];
-      var fromPal = palettes[stateIdx];
-      var toPal = palettes[Math.min(stateIdx + 1, totalTransitions)];
+      var from = targets[si];
+      var to = targets[Math.min(si + 1, totalT)];
+      var fp = palettes[si];
+      var tp = palettes[Math.min(si + 1, totalT)];
 
       for (i = 0; i < N; i++) {
         var i3 = i * 3;
-
-        // Lerp position
         var tx = from[i3]   + (to[i3]   - from[i3])   * blend;
         var ty = from[i3+1] + (to[i3+1] - from[i3+1]) * blend;
         var tz = from[i3+2] + (to[i3+2] - from[i3+2]) * blend;
 
-        // Add subtle floating
-        var floatScale = 1 + smoothScroll * 2;
-        pos[i3]   = tx + Math.sin(time + i * 0.01) * 3 * floatScale;
-        pos[i3+1] = ty + Math.cos(time + i * 0.015) * 3 * floatScale;
-        pos[i3+2] = tz + Math.sin(time * 0.5 + i * 0.02) * 5 * floatScale;
+        var fs = 1 + smoothScroll * 1.5;
+        pos[i3]   = tx + Math.sin(time + i * 0.008) * 2.5 * fs;
+        pos[i3+1] = ty + Math.cos(time + i * 0.012) * 2.5 * fs;
+        pos[i3+2] = tz + Math.sin(time * 0.4 + i * 0.015) * 4 * fs;
 
-        // Lerp colors
         var ci = i % 3;
-        var fc = fromPal[ci];
-        var tc = toPal[ci];
+        var fc = fp[ci]; var tc = tp[ci];
         col[i3]   = fc[0] + (tc[0] - fc[0]) * blend;
         col[i3+1] = fc[1] + (tc[1] - fc[1]) * blend;
         col[i3+2] = fc[2] + (tc[2] - fc[2]) * blend;
@@ -184,13 +175,11 @@
       geo.attributes.position.needsUpdate = true;
       geo.attributes.color.needsUpdate = true;
 
-      // Rotate mesh based on scroll
-      mesh.rotation.y = smoothScroll * Math.PI * 0.5;
-      mesh.rotation.x = Math.sin(smoothScroll * Math.PI) * 0.15;
-      mesh.rotation.z = Math.sin(time * 0.3) * 0.02;
+      mesh.rotation.y = smoothScroll * Math.PI * 0.4;
+      mesh.rotation.x = Math.sin(smoothScroll * Math.PI) * 0.12;
+      mesh.rotation.z = Math.sin(time * 0.25) * 0.015;
 
-      // Adjust opacity: slightly brighter in middle states
-      mat.opacity = 0.35 + Math.sin(smoothScroll * Math.PI) * 0.15;
+      mat.opacity = 0.35 + Math.sin(smoothScroll * Math.PI) * 0.12;
 
       renderer.render(scene, camera);
     }
