@@ -77,12 +77,13 @@
 .invest-context .highlight{color:var(--accent-bright)}
 
 /* Comparison */
-.compare-strip{background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:60px;text-align:center}
-.compare-inner{display:flex;gap:40px;justify-content:center;align-items:center;flex-wrap:wrap}
-.compare-item{text-align:center}
-.compare-label{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--light-muted);margin-bottom:6px}
-.compare-value{font-family:var(--display);font-size:1.8rem;color:var(--light)}
-.compare-vs{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--light-faint)}
+.compare-strip{background:rgba(15,32,56,.45);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 60px;text-align:center}
+.position-quote{max-width:680px;margin:0 auto}
+.position-label{font-family:var(--sans);font-size:.74rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:inline-block;padding:6px 18px;border:1px solid rgba(99,102,241,.2);border-radius:var(--radius-pill);background:rgba(99,102,241,.05)}
+.position-quote p{font-family:var(--display);font-size:clamp(1.3rem,2.2vw,1.7rem);font-style:italic;color:var(--light);line-height:1.5;font-weight:400;margin:0 0 28px}
+.position-quote em{font-style:italic;color:var(--accent-bright)}
+.position-meta{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;font-family:var(--sans);font-size:.82rem;letter-spacing:.04em;color:var(--light-muted)}
+.position-dot{width:4px;height:4px;border-radius:50%;background:var(--accent-dim);flex-shrink:0}
 
 @media(max-width:1024px){.hero-layout{grid-template-columns:1fr;gap:50px}.gives-layout{grid-template-columns:1fr;gap:40px}.how-grid{grid-template-columns:1fr;max-width:480px;margin-left:auto;margin-right:auto}.when-grid{grid-template-columns:1fr}}
 @media(max-width:768px){.forWho-list{flex-direction:column}.compare-inner{flex-direction:column;gap:24px}}
@@ -215,21 +216,14 @@
 </div>
 </div></section>
 
-<!-- COMPARISON STRIP -->
+<!-- POSITIONING STRIP -->
 <div class="compare-strip">
 <div class="reveal">
-<div class="compare-inner">
-<div class="compare-item">
-<div class="compare-label">Консультація</div>
-<div class="compare-value">800€</div>
+<div class="position-quote">
+<div class="position-label">Чому саме так</div>
+<p>Консультація — не про «одну годину розмови».<br>Це <em>концентрована ясність</em>, що економить тобі місяці нерішучості.</p>
+<div class="position-meta"><span>1 зустріч</span><span class="position-dot"></span><span>90 хвилин</span><span class="position-dot"></span><span>повний фокус</span></div>
 </div>
-<div class="compare-vs">свідомо вище, ніж</div>
-<div class="compare-item">
-<div class="compare-label">Одна зустріч у наставництві</div>
-<div class="compare-value">~580€</div>
-</div>
-</div>
-<p style="font-family:var(--serif);font-size:1rem;font-style:italic;color:var(--light-muted);margin-top:20px;margin-bottom:0">Бо наставництво — це довга робота і інша глибина.<br>А консультація — це концентрована ясність тут і зараз.</p>
 </div>
 </div>
 

@@ -12,7 +12,10 @@
 <style>
 /* ====== INDEX PAGE-SPECIFIC ====== */
 .hero{text-align:center}
-.hero-content{max-width:780px;margin:0 auto}
+.hero-content{max-width:880px;margin:0 auto}
+.hero h1{font-size:clamp(1.7rem,3.6vw,3rem)}
+.hero h1 .h1-line{white-space:nowrap;display:inline-block}
+@media(max-width:560px){.hero h1 .h1-line{white-space:normal;display:inline}}
 
 /* Frosted glass section style */
 .glass-section{background:rgba(15,32,56,.35);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -116,7 +119,7 @@
 <div class="hero-content">
 <div class="hero-name">Юрій Дмитрієв</div>
 <div class="hero-role">Підприємець, наставник і архітектор масштабу особистості</div>
-<h1>Ти вже виріс зі свого життя.<br>Але ще не до кінця <em>зайшов у нове.</em></h1>
+<h1><span class="h1-line">Ти вже виріс зі свого життя.</span><br>Але ще не до кінця <em>зайшов у нове.</em></h1>
 <div class="hero-quote">Масштаб життя починається з масштабу особистості.<br>А бізнес ніколи не росте швидше, ніж росте його власник.</div>
 <div class="btn-group"><a href="/ankety.html#mentorship" class="btn btn-primary">Подати заявку на наставництво</a><a href="#formats" class="btn btn-outline">Обрати формат роботи</a></div>
 <div class="trust-bar">
