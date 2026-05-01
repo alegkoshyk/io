@@ -55,9 +55,12 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 /* ====== NAV ====== */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;transition:all .6s cubic-bezier(.22,1,.36,1)}
 nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:16px 60px;border-bottom:1px solid var(--border);border-radius:0 0 var(--radius-lg) var(--radius-lg)}
-.nav-logo{display:inline-flex;align-items:center;color:var(--light);text-decoration:none;height:36px;transition:opacity .3s}
+.nav-logo{display:inline-flex;align-items:center;text-decoration:none;height:36px;transition:opacity .3s}
 .nav-logo:hover{opacity:.8}
-.nav-logo svg{height:100%;width:auto;display:block}
+.nav-logo .logo-img{height:100%;width:auto;display:block}
+.nav-logo .logo-on-light{display:none}
+[data-theme="light"] .nav-logo .logo-on-dark{display:none}
+[data-theme="light"] .nav-logo .logo-on-light{display:block}
 nav.scrolled .nav-logo{height:32px}
 .nav-links{display:flex;gap:32px;align-items:center}
 .nav-links a{color:var(--light-dim);text-decoration:none;font-size:.84rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;position:relative}
