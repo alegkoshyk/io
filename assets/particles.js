@@ -197,6 +197,28 @@
         col[i3+1] = fc[1] + (tc[1] - fc[1]) * blend;
         col[i3+2] = fc[2] + (tc[2] - fc[2]) * blend;
       }
+      
+      // Mouse repulsion
+      var mc = window.__cursorMouse;
+      if (mc && mc.active) {
+        var visH = 2 * Math.tan(Math.PI/6) * 500;
+        var visW = visH * (innerWidth/innerHeight);
+        var mx = mc.ndcX * visW/2;
+        var my = mc.ndcY * visH/2;
+        var rR = 80, rS = 35;
+        for (var ri = 0; ri < N; ri++) {
+          var ri3 = ri * 3;
+          var dx = pos[ri3] - mx;
+          var dy = pos[ri3+1] - my;
+          var d2 = dx*dx + dy*dy;
+          if (d2 < rR*rR) {
+            var d = Math.sqrt(d2) || 1;
+            var f = (1 - d/rR) * rS;
+            pos[ri3] += (dx/d) * f;
+            pos[ri3+1] += (dy/d) * f;
+          }
+        }
+      }
       geo.attributes.position.needsUpdate = true;
       geo.attributes.color.needsUpdate = true;
 

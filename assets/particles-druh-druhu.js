@@ -56,7 +56,29 @@
       pos[i3+1]=from[i3+1]+(to[i3+1]-from[i3+1])*bl+Math.cos(time+i*.011)*2*fs;
       pos[i3+2]=from[i3+2]+(to[i3+2]-from[i3+2])*bl+Math.sin(time*.4+i*.014)*3*fs;
       var ci=i%3,fc=fp[ci],tc=tp[ci];col[i3]=fc[0]+(tc[0]-fc[0])*bl;col[i3+1]=fc[1]+(tc[1]-fc[1])*bl;col[i3+2]=fc[2]+(tc[2]-fc[2])*bl}
-    geo.attributes.position.needsUpdate=true;geo.attributes.color.needsUpdate=true;
+    
+      // Mouse repulsion
+      var mc = window.__cursorMouse;
+      if (mc && mc.active) {
+        var visH = 2 * Math.tan(Math.PI/6) * 500;
+        var visW = visH * (innerWidth/innerHeight);
+        var mx = mc.ndcX * visW/2;
+        var my = mc.ndcY * visH/2;
+        var rR = 80, rS = 35;
+        for (var ri = 0; ri < N; ri++) {
+          var ri3 = ri * 3;
+          var dx = pos[ri3] - mx;
+          var dy = pos[ri3+1] - my;
+          var d2 = dx*dx + dy*dy;
+          if (d2 < rR*rR) {
+            var d = Math.sqrt(d2) || 1;
+            var f = (1 - d/rR) * rS;
+            pos[ri3] += (dx/d) * f;
+            pos[ri3+1] += (dy/d) * f;
+          }
+        }
+      }
+      geo.attributes.position.needsUpdate=true;geo.attributes.color.needsUpdate=true;
     mesh.rotation.y=smoothS*Math.PI*.5+time*.1;mesh.rotation.x=Math.sin(smoothS*Math.PI)*.1;mesh.rotation.z=Math.sin(time*.2)*.01;
     mat.opacity=.3+Math.sin(smoothS*Math.PI)*.12;renderer.render(scene,camera)}
   animate();

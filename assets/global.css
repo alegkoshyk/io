@@ -245,6 +245,21 @@ footer{padding:60px;border-top:1px solid var(--border);text-align:center;backgro
 .text-accent{color:var(--accent-bright)}
 .highlight-text{font-family:var(--display);font-size:1.5rem;font-style:italic;color:var(--accent-bright);margin:30px 0;line-height:1.5}
 
+/* ====== CUSTOM CURSOR ====== */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, .btn, input, textarea, select, .option-item, .tab, .scale-btn, .menu-toggle, .theme-toggle, .faq-question { cursor: none }
+  .cursor-dot, .cursor-ring { position:fixed; top:0; left:0; pointer-events:none; z-index:99998; will-change:transform; mix-blend-mode:difference }
+  .cursor-dot { width:6px; height:6px; background:var(--accent-bright); border-radius:50%; transition:width .25s cubic-bezier(.22,1,.36,1), height .25s cubic-bezier(.22,1,.36,1), opacity .25s, background .3s }
+  .cursor-ring { width:36px; height:36px; border:1.5px solid var(--accent-dim); border-radius:50%; transition:width .35s cubic-bezier(.22,1,.36,1), height .35s cubic-bezier(.22,1,.36,1), border-color .3s, background .3s, opacity .25s }
+  .cursor-dot.hover { width:0; height:0; opacity:0 }
+  .cursor-ring.hover { width:64px; height:64px; border-color:var(--accent); background:rgba(139,92,246,.06); border-width:1px }
+  .cursor-ring.click { width:24px; height:24px; border-color:var(--accent-bright) }
+  .cursor-dot.hidden, .cursor-ring.hidden { opacity:0 }
+  [data-theme="light"] .cursor-dot { background:var(--accent) }
+  [data-theme="light"] .cursor-ring { border-color:rgba(124,58,237,.4) }
+  [data-theme="light"] .cursor-ring.hover { background:rgba(124,58,237,.06); border-color:var(--accent) }
+}
+
 /* ====== FOCUS STATES ====== */
 *:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .btn:focus-visible{outline-offset:4px}
