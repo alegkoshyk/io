@@ -590,10 +590,28 @@ function showPanel(id) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   const panel = document.getElementById('panel-' + id);
   if (panel) panel.classList.add('active');
-  event.target.classList.add('active');
-  document.getElementById('confirmation').style.display = 'none';
+  const ev = (typeof event !== 'undefined') ? event : null;
+  if (ev && ev.target && ev.target.classList && ev.target.classList.contains('tab')) {
+    ev.target.classList.add('active');
+  } else {
+    const tab = Array.from(document.querySelectorAll('.tab')).find(t =>
+      (t.getAttribute('onclick') || '').indexOf("'" + id + "'") !== -1
+    );
+    if (tab) tab.classList.add('active');
+  }
+  const conf = document.getElementById('confirmation');
+  if (conf) conf.style.display = 'none';
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (history.replaceState) history.replaceState(null, '', '#' + id);
 }
+
+// Open form from URL hash on load
+window.addEventListener('DOMContentLoaded', function() {
+  const hash = (location.hash || '').replace('#', '');
+  if (['mentorship','consultation','druh','course'].indexOf(hash) !== -1) {
+    showPanel(hash);
+  }
+});
 
 function selectRadio(el) {
   const group = el.closest('.option-group');
