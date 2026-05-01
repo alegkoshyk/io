@@ -15,7 +15,7 @@
   --anahata:#00CC44;--anahata-dim:rgba(0,204,68,.5);--anahata-glow:rgba(0,204,68,.12);
   --amber:#FBBF24;--amber-dim:rgba(251,191,36,.4);--amber-glow:rgba(251,191,36,.12);
   --border:rgba(242,240,219,.08);--border-hover:rgba(242,240,219,.18);
-  --serif:'Cormorant Garamond','Georgia',serif;--sans:'Raleway',sans-serif;--display:'Playfair Display',serif;--mono:'JetBrains Mono',monospace;
+  --serif:'Cormorant Garamond','Georgia',serif;--sans:'Raleway',sans-serif;--display:'Cinzel','Aviano Sans','Playfair Display',serif;--headline:'Cinzel','Aviano Sans','Playfair Display',serif;--mono:'JetBrains Mono',monospace;
   --radius:16px;--radius-lg:24px;--radius-pill:50px;
 }
 
@@ -55,7 +55,10 @@ body::after{content:'';position:fixed;inset:0;background-image:url("data:image/s
 /* ====== NAV ====== */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;transition:all .6s cubic-bezier(.22,1,.36,1)}
 nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:16px 60px;border-bottom:1px solid var(--border);border-radius:0 0 var(--radius-lg) var(--radius-lg)}
-.nav-logo{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--light);letter-spacing:.06em;text-decoration:none}
+.nav-logo{display:inline-flex;align-items:center;color:var(--light);text-decoration:none;height:36px;transition:opacity .3s}
+.nav-logo:hover{opacity:.8}
+.nav-logo svg{height:100%;width:auto;display:block}
+nav.scrolled .nav-logo{height:32px}
 .nav-links{display:flex;gap:32px;align-items:center}
 .nav-links a{color:var(--light-dim);text-decoration:none;font-size:.84rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;position:relative}
 .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--accent);transition:width .4s cubic-bezier(.22,1,.36,1)}
@@ -86,9 +89,9 @@ nav.scrolled{background:rgba(11,24,41,.92);backdrop-filter:blur(24px);-webkit-ba
 .label{font-family:var(--sans);font-size:.76rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:inline-block;padding:6px 18px;border:1px solid rgba(139,92,246,.2);border-radius:var(--radius-pill);background:rgba(139,92,246,.05)}
 
 /* ====== TYPOGRAPHY ====== */
-h1{font-family:var(--display);font-size:clamp(2.4rem,5vw,3.8rem);font-weight:400;line-height:1.18;color:var(--light);margin-bottom:28px}
-h2{font-family:var(--display);font-size:clamp(1.9rem,3.5vw,2.8rem);font-weight:400;line-height:1.22;color:var(--light);margin-bottom:24px}
-h3{font-family:var(--serif);font-size:1.5rem;font-weight:500;color:var(--light);margin-bottom:16px}
+h1{font-family:var(--headline);font-size:clamp(2.1rem,4.5vw,3.4rem);font-weight:500;line-height:1.18;color:var(--light);margin-bottom:28px;letter-spacing:.02em}
+h2{font-family:var(--headline);font-size:clamp(1.7rem,3.2vw,2.5rem);font-weight:500;line-height:1.22;color:var(--light);margin-bottom:24px;letter-spacing:.02em}
+h3{font-family:var(--headline);font-size:1.3rem;font-weight:500;color:var(--light);margin-bottom:16px;letter-spacing:.02em}
 p{color:var(--light-dim);font-size:1.05rem;line-height:1.85;margin-bottom:16px}
 
 /* ====== BUTTONS ====== */
