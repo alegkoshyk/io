@@ -384,7 +384,7 @@ textarea{width:100%;padding:16px 20px;background:var(--space-light);border:1px s
 </div>
 
 <div class="form-submit">
-<button class="btn btn-violet" onclick="showConfirmation('mentorship')">Відправити заявку</button>
+<button class="btn btn-violet" onclick="submitForm('mentorship')">Відправити заявку</button>
 <div class="submit-note">Після відправки я особисто переглядаю кожну анкету і зв'язуюсь протягом 3 робочих днів.</div>
 </div>
 </div>
@@ -449,7 +449,7 @@ textarea{width:100%;padding:16px 20px;background:var(--space-light);border:1px s
 <div class="privacy-note">🔒 Конфіденційність гарантована. Вартість: 800€. Оплата після підтвердження дати.</div>
 
 <div class="form-submit">
-<button class="btn btn-indigo" onclick="showConfirmation('consultation')">Записатися</button>
+<button class="btn btn-indigo" onclick="submitForm('consultation')">Записатися</button>
 <div class="submit-note">Зв'яжусь протягом 24 годин для узгодження дати і часу.</div>
 </div>
 </div>
@@ -520,7 +520,7 @@ textarea{width:100%;padding:16px 20px;background:var(--space-light);border:1px s
 <div class="privacy-note">🔒 Конфіденційність. Інвестиція: 2 400€ за 6 місяців (400€/міс, оплата наперед).</div>
 
 <div class="form-submit">
-<button class="btn btn-pink" onclick="showConfirmation('druh')">Подати заявку</button>
+<button class="btn btn-pink" onclick="submitForm('druh')">Подати заявку</button>
 <div class="submit-note">Після перегляду анкети я запрошу вас на коротку знайомчу зустріч.</div>
 </div>
 </div>
@@ -564,7 +564,7 @@ textarea{width:100%;padding:16px 20px;background:var(--space-light);border:1px s
 <div class="privacy-note">🔒 Email використовується тільки для повідомлень про курси. Без спаму.</div>
 
 <div class="form-submit">
-<button class="btn btn-emerald" onclick="showConfirmation('course')">Залишити заявку</button>
+<button class="btn btn-emerald" onclick="submitForm('course')">Залишити заявку</button>
 <div class="submit-note">Повідомлю про старт і дам ранній доступ.</div>
 </div>
 </div>
@@ -608,6 +608,121 @@ function toggleCheck(el) {
 function selectScale(el) {
   el.parentElement.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
+}
+
+const FORM_TITLES = {
+  mentorship: 'Заявка: Персональне наставництво',
+  consultation: 'Заявка: Разова консультація',
+  druh: 'Заявка: Друг Другу',
+  course: 'Заявка: Навчання'
+};
+
+function collectFormData(type) {
+  const panel = document.getElementById('panel-' + type);
+  if (!panel) return null;
+
+  const data = {
+    _subject: FORM_TITLES[type] || ('Заявка: ' + type),
+    _captcha: 'false',
+    _template: 'table',
+    'Тип заявки': FORM_TITLES[type]
+  };
+
+  let userEmail = '';
+
+  // Iterate sections for context
+  panel.querySelectorAll('.form-section').forEach(section => {
+    const sectionTitle = section.querySelector('.form-section-title')?.textContent.trim() || '';
+
+    section.querySelectorAll('.field').forEach(field => {
+      const labelEl = field.querySelector('.field-label');
+      if (!labelEl) return;
+      const label = labelEl.textContent.replace('*', '').trim();
+      const key = sectionTitle ? sectionTitle + ' / ' + label : label;
+
+      // Text/email/tel/number/url inputs and selects
+      const input = field.querySelector('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"], select');
+      if (input && input.value.trim()) {
+        data[key] = input.value.trim();
+        if (input.type === 'email') userEmail = input.value.trim();
+        return;
+      }
+
+      // Textareas
+      const textarea = field.querySelector('textarea');
+      if (textarea && textarea.value.trim()) {
+        data[key] = textarea.value.trim();
+        return;
+      }
+
+      // Radio (single selected option-item)
+      const radioGroup = field.querySelector('.option-group');
+      if (radioGroup) {
+        const isCheckbox = radioGroup.querySelector('input[type="checkbox"]');
+        const selected = Array.from(radioGroup.querySelectorAll('.option-item.selected'))
+          .map(el => el.querySelector('.option-text')?.textContent.trim())
+          .filter(Boolean);
+        if (selected.length) {
+          data[key] = isCheckbox ? selected.join(', ') : selected[0];
+        }
+        return;
+      }
+
+      // Scale (1-5 / 1-10)
+      const scale = field.querySelector('.scale-row, .scale-buttons');
+      if (scale) {
+        const sel = scale.querySelector('.scale-btn.selected');
+        if (sel) data[key] = sel.textContent.trim();
+        return;
+      }
+    });
+  });
+
+  if (userEmail) data._replyto = userEmail;
+
+  return data;
+}
+
+async function submitForm(type) {
+  const btn = event.target;
+  const originalText = btn.textContent;
+  const data = collectFormData(type);
+
+  if (!data) {
+    alert('Помилка: форма не знайдена');
+    return;
+  }
+
+  // Basic validation: email + name required
+  const hasName = Object.entries(data).some(([k, v]) => k.toLowerCase().includes("ім'я") && v);
+  const hasEmail = !!data._replyto;
+  if (!hasName || !hasEmail) {
+    alert("Будь ласка, заповніть ім'я та email — вони обов'язкові.");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Відправляється...';
+  btn.style.opacity = '.7';
+
+  try {
+    const res = await fetch('https://formsubmit.co/ajax/dmitrievcomp@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    const result = await res.json();
+    if (result.success === 'true' || result.success === true) {
+      showConfirmation(type);
+    } else {
+      throw new Error(result.message || 'Помилка відправки');
+    }
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = originalText;
+    btn.style.opacity = '1';
+    alert("Не вдалось відправити заявку. Спробуй ще раз або напиши на email напряму: dmitrievcomp@gmail.com\n\n" + err.message);
+  }
 }
 
 function showConfirmation(type) {
