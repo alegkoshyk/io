@@ -629,56 +629,61 @@ function collectFormData(type) {
   };
 
   let userEmail = '';
+  let userName = '';
 
-  // Iterate sections for context
-  panel.querySelectorAll('.form-section').forEach(section => {
-    const sectionTitle = section.querySelector('.form-section-title')?.textContent.trim() || '';
+  // Iterate ALL .field within the panel (some are outside form-sections)
+  panel.querySelectorAll('.field').forEach(field => {
+    const labelEl = field.querySelector('.field-label');
+    if (!labelEl) return;
+    const label = labelEl.textContent.replace('*', '').trim();
 
-    section.querySelectorAll('.field').forEach(field => {
-      const labelEl = field.querySelector('.field-label');
-      if (!labelEl) return;
-      const label = labelEl.textContent.replace('*', '').trim();
-      const key = sectionTitle ? sectionTitle + ' / ' + label : label;
+    // Find section context (if any)
+    const section = field.closest('.form-section');
+    const sectionTitle = section?.querySelector('.form-section-title')?.textContent.trim() || '';
+    const key = sectionTitle ? sectionTitle + ' / ' + label : label;
 
-      // Text/email/tel/number/url inputs and selects
-      const input = field.querySelector('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"], select');
-      if (input && input.value.trim()) {
-        data[key] = input.value.trim();
-        if (input.type === 'email') userEmail = input.value.trim();
-        return;
+    // Text/email/tel/number/url inputs and selects
+    const input = field.querySelector('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="url"], select');
+    if (input && input.value.trim()) {
+      data[key] = input.value.trim();
+      const lowerLabel = label.toLowerCase();
+      if (input.type === 'email') userEmail = input.value.trim();
+      if (lowerLabel.indexOf("ім'я") !== -1 || lowerLabel.indexOf('имя') !== -1 || lowerLabel.indexOf('name') !== -1) userName = input.value.trim();
+      return;
+    }
+
+    // Textareas
+    const textarea = field.querySelector('textarea');
+    if (textarea && textarea.value.trim()) {
+      data[key] = textarea.value.trim();
+      return;
+    }
+
+    // Radio / Checkbox group (single or multi)
+    const radioGroup = field.querySelector('.option-group');
+    if (radioGroup) {
+      const isCheckbox = !!radioGroup.querySelector('input[type="checkbox"]');
+      const selected = Array.from(radioGroup.querySelectorAll('.option-item.selected'))
+        .map(el => el.querySelector('.option-text')?.textContent.trim())
+        .filter(Boolean);
+      if (selected.length) {
+        data[key] = isCheckbox ? selected.join(', ') : selected[0];
       }
+      return;
+    }
 
-      // Textareas
-      const textarea = field.querySelector('textarea');
-      if (textarea && textarea.value.trim()) {
-        data[key] = textarea.value.trim();
-        return;
-      }
-
-      // Radio (single selected option-item)
-      const radioGroup = field.querySelector('.option-group');
-      if (radioGroup) {
-        const isCheckbox = radioGroup.querySelector('input[type="checkbox"]');
-        const selected = Array.from(radioGroup.querySelectorAll('.option-item.selected'))
-          .map(el => el.querySelector('.option-text')?.textContent.trim())
-          .filter(Boolean);
-        if (selected.length) {
-          data[key] = isCheckbox ? selected.join(', ') : selected[0];
-        }
-        return;
-      }
-
-      // Scale (1-5 / 1-10)
-      const scale = field.querySelector('.scale-row, .scale-buttons');
-      if (scale) {
-        const sel = scale.querySelector('.scale-btn.selected');
-        if (sel) data[key] = sel.textContent.trim();
-        return;
-      }
-    });
+    // Scale (1-5 / 1-10)
+    const scale = field.querySelector('.scale-row, .scale-buttons');
+    if (scale) {
+      const sel = scale.querySelector('.scale-btn.selected');
+      if (sel) data[key] = sel.textContent.trim();
+      return;
+    }
   });
 
   if (userEmail) data._replyto = userEmail;
+  data.__hasName = !!userName;
+  data.__hasEmail = !!userEmail;
 
   return data;
 }
@@ -694,10 +699,16 @@ async function submitForm(type) {
   }
 
   // Basic validation: email + name required
-  const hasName = Object.entries(data).some(([k, v]) => k.toLowerCase().includes("ім'я") && v);
-  const hasEmail = !!data._replyto;
-  if (!hasName || !hasEmail) {
-    alert("Будь ласка, заповніть ім'я та email — вони обов'язкові.");
+  const hasName = data.__hasName;
+  const hasEmail = data.__hasEmail;
+  delete data.__hasName;
+  delete data.__hasEmail;
+  if (!hasName) {
+    alert("Будь ласка, заповніть поле «Ім'я».");
+    return;
+  }
+  if (!hasEmail) {
+    alert("Будь ласка, заповніть поле «Email».");
     return;
   }
 
